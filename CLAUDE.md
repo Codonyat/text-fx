@@ -13,7 +13,7 @@ JSX / standalone `.html` / PNG / share-link). 49 effects across 13 categories; n
 - `pnpm test` — Vitest (engine: determinism, scope-lint, export parity, share codec, over every effect).
 - `pnpm e2e` — Playwright: studio smoke, per-letter editing, per-effect SEO page, and SEO/GEO endpoints (manages its own server; screenshots → `tests/e2e/__screens__/`).
 - `node scripts/gen-favicon.mjs` — regenerate `app/favicon.ico` / `app/apple-icon.png` / `public/icon-{192,512}.png` from `app/icon.svg`.
-- Env: `NEXT_PUBLIC_SITE_URL` (no trailing slash) drives canonical/OG/sitemap/JSON-LD URLs; defaults to the `https://text-fx.app` placeholder (see `.env.example`).
+- Canonical/OG/sitemap/JSON-LD URLs use the hardcoded `SITE_URL` (`https://text-fx.app`) in `lib/site.ts`.
 
 ## Architecture (single source of truth)
 One declarative **`EffectDefinition`** per effect; one pure **`build(ctx)`** returns
