@@ -11,6 +11,7 @@ export default defineConfig({
   use: {
     baseURL: `http://localhost:${PORT}`,
     viewport: { width: 1280, height: 900 },
+    colorScheme: "dark", // keep first-visit OS detection from flipping screenshots to light
   },
   webServer: {
     command: `pnpm start -p ${PORT}`,

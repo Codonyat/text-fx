@@ -97,10 +97,15 @@ export function Studio() {
     const onMq = (e: MediaQueryListEvent) => setReduceMotion(e.matches);
     mq.addEventListener("change", onMq);
 
+    let saved: Theme | null = null;
     try {
-      const t = localStorage.getItem("textfx_theme") as Theme | null;
-      if (t === "dark" || t === "light") setTheme(t);
+      saved = localStorage.getItem("textfx_theme") as Theme | null;
     } catch {}
+    if (saved === "dark" || saved === "light") {
+      setTheme(saved);
+    } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+      setTheme("light"); // first visit: follow the OS; default stays dark otherwise
+    }
 
     setFavorites(loadFavorites());
 
