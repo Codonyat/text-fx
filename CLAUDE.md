@@ -11,7 +11,9 @@ JSX / standalone `.html` / PNG / share-link). 49 effects across 13 categories; n
 - `pnpm build` — one-shot production build (use this to verify, not a watcher).
 - `pnpm typecheck` · `pnpm lint`
 - `pnpm test` — Vitest (engine: determinism, scope-lint, export parity, share codec, over every effect).
-- `pnpm e2e` — Playwright smoke + per-letter editing (manages its own server; screenshots → `tests/e2e/__screens__/`).
+- `pnpm e2e` — Playwright: studio smoke, per-letter editing, per-effect SEO page, and SEO/GEO endpoints (manages its own server; screenshots → `tests/e2e/__screens__/`).
+- `node scripts/gen-favicon.mjs` — regenerate `app/favicon.ico` / `app/apple-icon.png` / `public/icon-{192,512}.png` from `app/icon.svg`.
+- Env: `NEXT_PUBLIC_SITE_URL` (no trailing slash) drives canonical/OG/sitemap/JSON-LD URLs; defaults to the `https://text-fx.app` placeholder (see `.env.example`).
 
 ## Architecture (single source of truth)
 One declarative **`EffectDefinition`** per effect; one pure **`build(ctx)`** returns
@@ -28,7 +30,13 @@ parity + scope-lint tests in `tests/engine.test.ts`.
 - `lib/engine/split.ts` — grapheme/word/line splitting (Intl.Segmenter).
 - `lib/engine/serialize.ts` — exporters (export scope = `text-effect`). `lib/engine/share.ts` — lz-string spec codec with safety limits. `lib/export/{png,download}.ts`.
 - `lib/effects/<category>/<id>.ts` — one effect each (default export). `registry.ts` is **generated** (imports all + `MANIFEST`); regenerate after adding/removing effect files. `taxonomy.ts` = the 13 categories. `catalog.json` = the 280-effect research catalog (implementation backlog, not bundled).
-- `components/` — `Studio.tsx` (orchestrator/state) · two-layer `Stage.tsx` (single-element effects edit in place; per-letter effects use an editable ghost layer over a preview layer — never mutate the editable node into spans) · `StyleHost.tsx` (owns all `<style>` tags) · Header/ActionBar/AdjustPanel/CssPanel/ExportMenu/SavedStrip/Gallery + `controls/Control.tsx`.
+- `components/` — `Studio.tsx` (orchestrator/state) · two-layer `Stage.tsx` (single-element effects edit in place; per-letter effects use an editable ghost layer over a preview layer — never mutate the editable node into spans) · `StyleHost.tsx` (owns all `<style>` tags) · `EffectPreview.tsx` (server-side SSR preview for SEO pages) · Header/ActionBar/AdjustPanel/CssPanel/ExportMenu/SavedStrip/Gallery/SeoFooter + `controls/Control.tsx`.
+
+### SEO / GEO
+- `lib/site.ts` (constants + `SITE_URL`), `lib/jsonld.ts` (`serializeJsonLd` + schema builders), `lib/effects/descriptions.ts` (per-effect SEO prose).
+- Icons/OG: `app/icon.svg` (geometric neon "Fx") + generated `favicon.ico`/`apple-icon.png`/`icon-{192,512}.png`; `app/{opengraph,twitter}-image.tsx` + per-effect `app/effects/[id]/opengraph-image.tsx` (ImageResponse, Satori-safe, Space Mono from `lib/og/`).
+- Metadata in `app/layout.tsx` (+ `metadataBase`, viewport); `app/robots.ts` (allows AI retrieval+training bots), `app/sitemap.ts`, `app/manifest.ts`, `app/llms.txt/route.ts`.
+- JSON-LD (server-only): home = WebApplication/WebSite/FAQPage; `/effects` = CollectionPage; `/effects/[id]` = SoftwareSourceCode + BreadcrumbList. Crawlable SSR pages: `/effects` (static, grouped) + `/effects/[id]` (49 SSG, full CSS + live preview) are the GEO payload. `next.config.ts` `outputFileTracingIncludes` bundles the OG font.
 
 ### Conventions / gotchas
 - **Scoping is mandatory**: every selector starts with `.${scope}`; every keyframe/@property/SVG id is salted. Two instances (preview + many thumbnails) share a page — unsalted globals collide.

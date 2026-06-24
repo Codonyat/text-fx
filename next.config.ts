@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Ensure the OG font is bundled for the image-generation routes.
+  outputFileTracingIncludes: {
+    "/opengraph-image": ["./lib/og/**"],
+    "/twitter-image": ["./lib/og/**"],
+    "/effects/[id]/opengraph-image": ["./lib/og/**"],
+  },
 };
 
 export default nextConfig;

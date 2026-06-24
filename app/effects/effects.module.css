@@ -1,0 +1,116 @@
+.page {
+  min-height: 100vh;
+  background: #0a0a0a;
+  color: #fafafa;
+  font-family: "Space Mono", monospace;
+  padding: 28px 28px 80px;
+}
+
+.header {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+}
+
+.breadcrumb {
+  font-size: 12px;
+  color: #7a7a7a;
+  margin-bottom: 20px;
+}
+.breadcrumb a {
+  color: #22e3ff;
+  text-decoration: none;
+}
+.breadcrumb span {
+  color: #555;
+}
+.current {
+  color: #fafafa !important;
+}
+
+.h1 {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+.lede {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #b5b5b5;
+  margin-top: 12px;
+  max-width: 70ch;
+}
+
+.cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+.chip,
+.chipActive {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 12px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fafafa;
+}
+.chipActive {
+  background: #fafafa;
+  color: #0a0a0a;
+  border-color: #fafafa;
+}
+
+.count {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #7a7a7a;
+  margin-top: 16px;
+}
+
+.catSection {
+  max-width: 1200px;
+  margin: 0 auto 44px;
+  scroll-margin-top: 20px;
+}
+.catDesc {
+  font-size: 13px;
+  color: #9a9a9a;
+  margin: 4px 0 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  border: 2px solid #fafafa;
+  text-decoration: none;
+  color: #fafafa;
+  overflow: hidden;
+  display: block;
+}
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-top: 2px solid #fafafa;
+}
+.name {
+  font-size: 13px;
+  font-weight: 700;
+}
+.tag {
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #7a7a7a;
+}

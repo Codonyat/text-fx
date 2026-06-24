@@ -1,0 +1,150 @@
+.page {
+  min-height: 100vh;
+  background: #0a0a0a;
+  color: #fafafa;
+  font-family: "Space Mono", monospace;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 28px 28px 80px;
+}
+
+.breadcrumb {
+  font-size: 12px;
+  color: #7a7a7a;
+  letter-spacing: 0.5px;
+  margin-bottom: 28px;
+}
+.breadcrumb a {
+  color: #22e3ff;
+  text-decoration: none;
+}
+.breadcrumb span {
+  color: #555;
+}
+.current {
+  color: #fafafa !important;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+.h1 {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+.kicker {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #7a7a7a;
+  margin-top: 6px;
+}
+.desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #b5b5b5;
+  margin-top: 14px;
+  max-width: 64ch;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.cta {
+  background: #fafafa;
+  color: #0a0a0a;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px 20px;
+  text-decoration: none;
+}
+.secondary {
+  border: 2px solid #fafafa;
+  color: #fafafa;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 18px;
+  text-decoration: none;
+}
+
+.previewWrap {
+  border: 2px solid #fafafa;
+  margin: 8px 0 32px;
+}
+
+.section {
+  margin: 28px 0;
+}
+.h2 {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #7a7a7a;
+  margin-bottom: 10px;
+}
+.code {
+  background: #000;
+  color: #fafafa;
+  border: 2px solid #fafafa;
+  padding: 16px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  overflow: auto;
+  white-space: pre;
+  tab-size: 2;
+}
+.note {
+  font-size: 13px;
+  color: #9a9a9a;
+  line-height: 1.6;
+}
+.note code {
+  color: #22e3ff;
+}
+
+.facts {
+  margin: 28px 0;
+}
+.factGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 18px;
+}
+.factGrid dt {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #7a7a7a;
+  margin-bottom: 3px;
+}
+.factGrid dd {
+  font-size: 13px;
+}
+.factGrid a {
+  color: #22e3ff;
+  text-decoration: none;
+}
+
+.related {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.related a {
+  display: inline-block;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 8px 14px;
+  font-size: 13px;
+  color: #fafafa;
+  text-decoration: none;
+}
+.related a:hover {
+  background: rgba(255, 255, 255, 0.08);
+}

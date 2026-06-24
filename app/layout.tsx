@@ -1,26 +1,66 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { GOOGLE_FONTS_HREF } from "@/lib/fonts";
+import { SITE_URL, SITE_NAME, TAGLINE, DESCRIPTION } from "@/lib/site";
+import { serializeJsonLd, graph, webApplicationLd, webSiteLd } from "@/lib/jsonld";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "TEXT-FX — Random CSS Text Effects Generator",
-  description:
-    "Shuffle, tune, and copy 280+ pure-CSS text effects — neon, gradient, chrome, glitch, 3D, fire and more. Export CSS, HTML, JSX, PNG or a share link.",
-  applicationName: "TEXT-FX",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} — ${TAGLINE}`,
+    template: `%s · ${SITE_NAME}`,
+  },
+  description: DESCRIPTION,
+  applicationName: SITE_NAME,
   keywords: [
     "CSS text effects",
     "text effect generator",
+    "CSS generator",
     "neon text CSS",
     "gradient text",
     "glitch text",
-    "CSS generator",
+    "chrome text",
+    "3D text CSS",
+    "fire text",
+    "animated text CSS",
+    "copy CSS",
   ],
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
+  category: "technology",
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "TEXT-FX — Random CSS Text Effects Generator",
-    description:
-      "Generate, tune and export 280+ pure-CSS text effects. Built for coders who want cool typography fast.",
     type: "website",
+    url: "/",
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} — ${TAGLINE}`,
+    description: DESCRIPTION,
+    locale: "en_US",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} — ${TAGLINE}`,
+    description: DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+};
+
+export const viewport: Viewport = {
+  colorScheme: "dark light",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+    { media: "(prefers-color-scheme: light)", color: "#fafaf7" },
+  ],
 };
 
 export default function RootLayout({
@@ -30,14 +70,18 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href={GOOGLE_FONTS_HREF} />
       </head>
-      <body>{children}</body>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeJsonLd(graph(webApplicationLd(), webSiteLd())),
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

@@ -58,3 +58,48 @@ test("per-letter effect is editable via the ghost layer", async ({ page }) => {
   const spans = await page.locator(".fx-live .fx-ch").count();
   expect(spans).toBeGreaterThanOrEqual(4);
 });
+
+test("per-effect SEO page renders content, canonical and JSON-LD", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("console", (m) => {
+    if (m.type() === "error") errors.push(m.text());
+  });
+  page.on("pageerror", (e) => errors.push(String(e)));
+
+  await page.goto("/effects/neon-glow");
+  await expect(page.locator("h1")).toContainText("Neon Glow");
+  await expect(page.locator("pre code").first()).toContainText(".text-effect");
+
+  const ldCount = await page.locator('script[type="application/ld+json"]').count();
+  expect(ldCount).toBeGreaterThan(0);
+
+  const canonical = await page.locator('link[rel="canonical"]').getAttribute("href");
+  expect(canonical).toContain("/effects/neon-glow");
+
+  await page.screenshot({ path: "tests/e2e/__screens__/05-effect-page.png", fullPage: true });
+  expect(errors, "console/runtime errors:\n" + errors.join("\n")).toEqual([]);
+});
+
+test("SEO/GEO endpoints serve correct content", async ({ page }) => {
+  const robots = await (await page.request.get("/robots.txt")).text();
+  expect(robots.toLowerCase()).toContain("user-agent");
+  expect(robots).toContain("GPTBot");
+  expect(robots).toContain("PerplexityBot");
+  expect(robots).toContain("Sitemap:");
+
+  const sitemap = await (await page.request.get("/sitemap.xml")).text();
+  expect(sitemap).toContain("<urlset");
+  expect(sitemap).toContain("/effects/neon-glow");
+
+  const llms = await (await page.request.get("/llms.txt")).text();
+  expect(llms).toContain("TEXT-FX");
+  expect(llms).toContain("/effects/neon-glow");
+
+  const manifest = await (await page.request.get("/manifest.webmanifest")).json();
+  expect(String(manifest.name)).toContain("TEXT-FX");
+
+  const og = await page.request.get("/opengraph-image");
+  expect(og.headers()["content-type"]).toContain("image/png");
+  const effOg = await page.request.get("/effects/neon-glow/opengraph-image");
+  expect(effOg.headers()["content-type"]).toContain("image/png");
+});

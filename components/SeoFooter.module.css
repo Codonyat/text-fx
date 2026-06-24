@@ -1,0 +1,84 @@
+.footer {
+  background: #0a0a0a;
+  color: #fafafa;
+  border-top: 2px solid #fafafa;
+  padding: 40px 28px 28px;
+  font-family: "Space Mono", monospace;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1.6fr;
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.h1 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.h2 {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #7a7a7a;
+  margin-bottom: 12px;
+}
+
+.p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #b5b5b5;
+}
+
+.link {
+  color: #22e3ff;
+  text-decoration: none;
+}
+.link:hover {
+  text-decoration: underline;
+}
+
+.links {
+  list-style: none;
+  display: grid;
+  gap: 7px;
+  font-size: 13px;
+}
+
+.faq > div {
+  margin-bottom: 12px;
+}
+.q {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.a {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #9a9a9a;
+}
+
+.credit {
+  max-width: 1200px;
+  margin: 28px auto 0;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #6a6a6a;
+}
