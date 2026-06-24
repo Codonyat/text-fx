@@ -42,6 +42,6 @@ parity + scope-lint tests in `tests/engine.test.ts`.
 - **Scoping is mandatory**: every selector starts with `.${scope}`; every keyframe/@property/SVG id is salted. Two instances (preview + many thumbnails) share a page — unsalted globals collide.
 - Effects read values with casts (`ctx.values.hue as number`) and adapt colors to `ctx.theme`.
 - Knob/theme changes rebuild CSS with literal values (export-correct); animations restart on tune (accepted v1 tradeoff; `cssVar` field reserved for future live-var tuning).
-- Theme tokens (brutalist | lab × dark | light) live in `app/globals.css`, keyed by `data-skin`/`data-theme` on `.app`. Fonts load via one Google Fonts `<link>` (real family names so preview, hand-edited CSS, and exports all match).
-- Persistence: favorites in `localStorage` (`textfx_favs_v2`), theme/skin in `localStorage`; share state in the URL hash (`#s=`). Client-only init runs in a mount effect; initial render is deterministic (seed 1) to avoid hydration mismatch.
+- Theme tokens (brutalist, dark | light) live in `app/globals.css`, keyed by `data-theme` on `.app`. Fonts load via one Google Fonts `<link>` (real family names so preview, hand-edited CSS, and exports all match).
+- Persistence: favorites in `localStorage` (`textfx_favs_v2`), theme in `localStorage` (`textfx_theme`); share state in the URL hash (`#s=`). Client-only init runs in a mount effect; initial render is deterministic (seed 1) to avoid hydration mismatch.
 - Adding effects: drop a file in `lib/effects/<category>/<id>.ts`, regenerate `registry.ts`, run `pnpm test` (auto-validates scope-lint/parity for the new effect).

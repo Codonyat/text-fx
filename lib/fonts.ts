@@ -29,11 +29,6 @@ export const FONTS: FontDef[] = [
 /** Fonts offered in the per-effect Font control (display set). */
 export const DISPLAY_FONTS = FONTS;
 
-/** UI chrome fonts. */
-export const UI_FONT_BRUTALIST = "'Space Mono', monospace";
-export const UI_FONT_LAB = "'Space Grotesk', sans-serif";
-export const CODE_FONT = "'Space Mono', monospace";
-
 /** Single stylesheet href covering every typeface. */
 export const GOOGLE_FONTS_HREF =
   "https://fonts.googleapis.com/css2?" +

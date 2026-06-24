@@ -3,21 +3,15 @@
 import type { Theme } from "@/lib/engine/types";
 import styles from "./Header.module.css";
 
-export type Skin = "brutalist" | "lab";
-
 export function Header({
   theme,
-  skin,
   view,
   onToggleTheme,
-  onToggleSkin,
   onToggleView,
 }: {
   theme: Theme;
-  skin: Skin;
   view: "studio" | "gallery";
   onToggleTheme: () => void;
-  onToggleSkin: () => void;
   onToggleView: () => void;
 }) {
   return (
@@ -32,9 +26,6 @@ export function Header({
       <div className={styles.actions}>
         <button type="button" className={styles.btn} onClick={onToggleView}>
           {view === "studio" ? "▦ BROWSE" : "← STUDIO"}
-        </button>
-        <button type="button" className={styles.btn} onClick={onToggleSkin}>
-          {skin === "brutalist" ? "▪ BRUTAL" : "● LAB"}
         </button>
         <button type="button" className={styles.btn} onClick={onToggleTheme}>
           {theme === "dark" ? "◐ DARK" : "◑ LIGHT"}

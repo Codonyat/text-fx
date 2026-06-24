@@ -34,7 +34,6 @@ export function EffectPreview({
   return (
     <div
       className="app"
-      data-skin="brutalist"
       data-theme="dark"
       style={{ minHeight: "unset", display: "block" }}
     >

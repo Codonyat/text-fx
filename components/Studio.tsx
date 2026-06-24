@@ -12,7 +12,7 @@ import {
   persistFavorites,
   type Favorite,
 } from "@/lib/store/favorites";
-import { Header, type Skin } from "./Header";
+import { Header } from "./Header";
 import { Stage } from "./Stage";
 import { ActionBar } from "./ActionBar";
 import { AdjustPanel } from "./AdjustPanel";
@@ -33,7 +33,6 @@ function flag(setter: (v: boolean) => void, ref: { current: number | undefined }
 }
 
 export function Studio() {
-  const [skin, setSkin] = useState<Skin>("brutalist");
   const [theme, setTheme] = useState<Theme>("dark");
   const [view, setView] = useState<"studio" | "gallery">("studio");
   const [lockCategory, setLockCategory] = useState("");
@@ -100,9 +99,7 @@ export function Studio() {
 
     try {
       const t = localStorage.getItem("textfx_theme") as Theme | null;
-      const s = localStorage.getItem("textfx_skin") as Skin | null;
       if (t === "dark" || t === "light") setTheme(t);
-      if (s === "brutalist" || s === "lab") setSkin(s);
     } catch {}
 
     setFavorites(loadFavorites());
@@ -128,9 +125,8 @@ export function Studio() {
   useEffect(() => {
     try {
       localStorage.setItem("textfx_theme", theme);
-      localStorage.setItem("textfx_skin", skin);
     } catch {}
-  }, [theme, skin]);
+  }, [theme]);
 
   // ---- actions ----
   const doShuffle = useCallback(() => {
@@ -219,14 +215,12 @@ export function Studio() {
   }, []);
 
   return (
-    <div className="app" data-skin={skin} data-theme={theme}>
+    <div className="app" data-theme={theme}>
       <StyleHost styles={styleEntries} />
       <Header
         theme={theme}
-        skin={skin}
         view={view}
         onToggleTheme={onToggleTheme}
-        onToggleSkin={() => setSkin((s) => (s === "brutalist" ? "lab" : "brutalist"))}
         onToggleView={() => setView((v) => (v === "studio" ? "gallery" : "studio"))}
       />
 
