@@ -1,0 +1,55 @@
+.stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 28px;
+  background: var(--stage);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 34px 34px;
+  overflow: hidden;
+}
+
+/* Shared text metrics for the editable node / preview / ghost.
+   Font-family and weight are owned by the effect's generated CSS. */
+.text {
+  font-size: clamp(40px, 8.5vw, 92px);
+  line-height: 1.05;
+  text-align: center;
+  max-width: 90%;
+  outline: none;
+  word-break: break-word;
+  cursor: text;
+}
+
+.caption {
+  position: absolute;
+  left: 28px;
+  bottom: 16px;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: var(--label-ls);
+  text-transform: var(--label-tt);
+  pointer-events: none;
+}
+
+.layers {
+  position: relative;
+  display: grid;
+  max-width: 90%;
+}
+.preview,
+.ghost {
+  grid-area: 1 / 1;
+}
+.preview {
+  pointer-events: none;
+}
+.ghost {
+  color: transparent;
+  caret-color: var(--fg);
+}

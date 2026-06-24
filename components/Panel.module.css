@@ -1,0 +1,27 @@
+.panel {
+  border: var(--bd);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  max-height: 320px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 11px 16px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  flex: 0 0 auto;
+}
+
+.body {
+  padding: 4px 16px 12px;
+  overflow-y: auto;
+}

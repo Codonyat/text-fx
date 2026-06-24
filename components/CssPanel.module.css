@@ -1,0 +1,65 @@
+.panel {
+  border: var(--bd);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--code-bg);
+  display: flex;
+  flex-direction: column;
+  max-height: 320px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+  flex: 0 0 auto;
+}
+
+.title {
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--code-comment);
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.copy {
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--accent-fg);
+  background: var(--accent);
+  border: none;
+  border-radius: var(--btn-radius);
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.code {
+  flex: 1 1 auto;
+  min-height: 180px;
+  resize: none;
+  border: none;
+  outline: none;
+  margin: 0;
+  padding: 16px;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  font-family: "Space Mono", monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+  white-space: pre;
+  tab-size: 2;
+  overflow: auto;
+}

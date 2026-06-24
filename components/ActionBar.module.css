@@ -1,0 +1,91 @@
+.bar {
+  display: flex;
+  gap: 14px;
+  align-items: stretch;
+  padding: 18px 28px 14px;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+}
+
+.shuffle {
+  flex: 1 1 220px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: var(--label-ls);
+  text-transform: var(--label-tt);
+  color: var(--accent-fg);
+  background: var(--accent);
+  border: var(--bd);
+  border-radius: var(--btn-radius);
+  padding: 18px 24px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.shuffle:active {
+  transform: translateY(1px);
+}
+
+.glyph {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.lock {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: var(--label-ls);
+  text-transform: var(--label-tt);
+  color: var(--fg);
+  background: transparent;
+  border: var(--bd);
+  border-radius: var(--btn-radius);
+  padding: 0 14px;
+  cursor: pointer;
+  max-width: 160px;
+}
+
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: var(--label-ls);
+  text-transform: var(--label-tt);
+  color: var(--fg);
+  background: transparent;
+  border: var(--bd);
+  border-radius: var(--btn-radius);
+  padding: 0 22px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.secondary:hover {
+  background: color-mix(in srgb, var(--fg) 8%, transparent);
+}
+
+.badge {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 18px;
+  min-width: 140px;
+  border: var(--bd);
+  border-radius: var(--radius-sm);
+}
+.badgeLabel {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.badgeName {
+  font-size: 16px;
+  font-weight: 700;
+}

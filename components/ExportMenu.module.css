@@ -1,0 +1,65 @@
+.trigger {
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--fg) 35%, transparent);
+  border-radius: var(--btn-radius);
+  padding: 6px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.trigger:hover {
+  background: color-mix(in srgb, var(--fg) 10%, transparent);
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+}
+
+.menu {
+  position: fixed;
+  z-index: 1000;
+  width: 210px;
+  background: var(--bg);
+  border: var(--bd);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 14px 40px -12px rgba(0, 0, 0, 0.5);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu button {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: var(--label-ls);
+  text-transform: var(--label-tt);
+  color: var(--fg);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 9px 10px;
+  cursor: pointer;
+}
+.menu button:hover {
+  background: color-mix(in srgb, var(--fg) 10%, transparent);
+}
+
+.sep {
+  height: 1px;
+  background: color-mix(in srgb, var(--fg) 18%, transparent);
+  margin: 5px 4px;
+}
+
+.disabled {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 9px 10px;
+}

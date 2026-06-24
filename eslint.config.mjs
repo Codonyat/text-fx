@@ -13,6 +13,16 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    // React-Compiler (eslint-plugin-react-hooks v6) optimization hints. Demoted
+    // to warnings: this is a stateful client tool whose init legitimately reads
+    // localStorage / matchMedia in a mount effect and uses immutable updaters.
+    rules: {
+      "react-hooks/set-state-in-effect": "warn",
+      "react-hooks/preserve-manual-memoization": "warn",
+      "react-hooks/immutability": "warn",
+    },
+  },
 ]);
 
 export default eslintConfig;

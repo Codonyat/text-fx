@@ -1,0 +1,66 @@
+.strip {
+  border-top: var(--bd);
+  padding: 14px 28px 18px;
+  flex: 0 0 auto;
+}
+
+.label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.card {
+  position: relative;
+  flex: 0 0 auto;
+  width: 152px;
+  height: 84px;
+  border: var(--bd);
+  border-radius: var(--radius-sm);
+  background: var(--stage);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.inner {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+  max-width: 88%;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.del {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Space Mono", monospace;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--bg);
+  background: var(--fg);
+  border: none;
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  z-index: 2;
+}
