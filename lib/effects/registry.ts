@@ -4,15 +4,15 @@ import dualNeon from "./neon-glow/dual-neon";
 import neonGlow from "./neon-glow/neon-glow";
 import pulseGlow from "./neon-glow/pulse-glow";
 import softGlow from "./neon-glow/soft-glow";
-import colorCycleGlow from "./neon-glow/color-cycle-glow";
 import neonSignFrame from "./neon-glow/neon-sign-frame";
 import conicSpin from "./gradient-fill/conic-spin";
 import duotoneFill from "./gradient-fill/duotone-fill";
 import gradientFlow from "./gradient-fill/gradient-flow";
-import rainbowFill from "./gradient-fill/rainbow-fill";
 import meshGradient from "./gradient-fill/mesh-gradient";
 import gradientGlow from "./gradient-fill/gradient-glow";
 import gradientFollow from "./gradient-fill/gradient-follow";
+import spotlight from "./gradient-fill/spotlight";
+import softDuotone from "./gradient-fill/soft-duotone";
 import chrome from "./metallic-holographic/chrome";
 import goldFoil from "./metallic-holographic/gold-foil";
 import holographic from "./metallic-holographic/holographic";
@@ -22,6 +22,8 @@ import brushedMetal from "./metallic-holographic/brushed-metal";
 import glassFrost from "./metallic-holographic/glass-frost";
 import glareSweep from "./metallic-holographic/glare-sweep";
 import holoPointer from "./metallic-holographic/holo-pointer";
+import sheen from "./metallic-holographic/sheen";
+import glassPill from "./metallic-holographic/glass-pill";
 import extrude3d from "./threed-depth/extrude-3d";
 import isometric3d from "./threed-depth/isometric-3d";
 import longShadow from "./threed-depth/long-shadow";
@@ -43,24 +45,14 @@ import vhs from "./glitch-distortion/vhs";
 import blockGlitch from "./glitch-distortion/block-glitch";
 import colorSplit from "./glitch-distortion/color-split";
 import terminalPhosphor from "./glitch-distortion/terminal-phosphor";
-import candyStripe from "./retro-themed/candy-stripe";
-import pixel8bit from "./retro-themed/pixel-8bit";
-import sticker from "./retro-themed/sticker";
 import vaporwave from "./retro-themed/vaporwave";
-import comicPop from "./retro-themed/comic-pop";
 import distressStamp from "./retro-themed/distress-stamp";
-import balloonPuff from "./retro-themed/balloon-puff";
-import cartoonBubble from "./retro-themed/cartoon-bubble";
-import westernWood from "./retro-themed/western-wood";
-import graffitiSpray from "./retro-themed/graffiti-spray";
 import chalkboard from "./retro-themed/chalkboard";
-import ransomNote from "./retro-themed/ransom-note";
 import dropShadow from "./shadow-press/drop-shadow";
 import emboss from "./shadow-press/emboss";
 import hardOffset from "./shadow-press/hard-offset";
 import letterpress from "./shadow-press/letterpress";
 import long45 from "./shadow-press/long-45";
-import rainbowStack from "./shadow-press/rainbow-stack";
 import engrave from "./shadow-press/engrave";
 import aurora from "./elemental/aurora";
 import fire from "./elemental/fire";
@@ -77,6 +69,7 @@ import stripeFill from "./fill-texture/stripe-fill";
 import halftoneDots from "./fill-texture/halftone-dots";
 import camouflageFill from "./fill-texture/camouflage-fill";
 import scrollingTexture from "./fill-texture/scrolling-texture";
+import grainGradient from "./fill-texture/grain-gradient";
 import fadeIn from "./entrance-kinetic/fade-in";
 import letterWave from "./entrance-kinetic/letter-wave";
 import staggerReveal from "./entrance-kinetic/stagger-reveal";
@@ -115,22 +108,23 @@ import liquidWarp from "./interactive-advanced/liquid-warp";
 import cursorFlashlight from "./interactive-advanced/cursor-flashlight";
 import focusLens from "./interactive-advanced/focus-lens";
 import weightRippleHover from "./interactive-advanced/weight-ripple-hover";
+import gradientLink from "./interactive-advanced/gradient-link";
 
-/** Every implemented effect (registry generated from lib/effects/<category>/<id>.ts). */
+/** Every implemented effect (hand-maintained: import + array entry per file). */
 export const EFFECTS: EffectDefinition[] = [
   dualNeon,
   neonGlow,
   pulseGlow,
   softGlow,
-  colorCycleGlow,
   neonSignFrame,
   conicSpin,
   duotoneFill,
   gradientFlow,
-  rainbowFill,
   meshGradient,
   gradientGlow,
   gradientFollow,
+  spotlight,
+  softDuotone,
   chrome,
   goldFoil,
   holographic,
@@ -140,6 +134,8 @@ export const EFFECTS: EffectDefinition[] = [
   glassFrost,
   glareSweep,
   holoPointer,
+  sheen,
+  glassPill,
   extrude3d,
   isometric3d,
   longShadow,
@@ -161,24 +157,14 @@ export const EFFECTS: EffectDefinition[] = [
   blockGlitch,
   colorSplit,
   terminalPhosphor,
-  candyStripe,
-  pixel8bit,
-  sticker,
   vaporwave,
-  comicPop,
   distressStamp,
-  balloonPuff,
-  cartoonBubble,
-  westernWood,
-  graffitiSpray,
   chalkboard,
-  ransomNote,
   dropShadow,
   emboss,
   hardOffset,
   letterpress,
   long45,
-  rainbowStack,
   engrave,
   aurora,
   fire,
@@ -195,6 +181,7 @@ export const EFFECTS: EffectDefinition[] = [
   halftoneDots,
   camouflageFill,
   scrollingTexture,
+  grainGradient,
   fadeIn,
   letterWave,
   staggerReveal,
@@ -233,6 +220,7 @@ export const EFFECTS: EffectDefinition[] = [
   cursorFlashlight,
   focusLens,
   weightRippleHover,
+  gradientLink,
 ];
 
 export const EFFECTS_BY_ID: Record<string, EffectDefinition> = Object.fromEntries(

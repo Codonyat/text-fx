@@ -11,8 +11,6 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A neon glow that gently breathes in and out via an animated text-shadow. Calm, sub-1Hz pulsing that draws the eye without being distracting.",
   "soft-glow":
     "A subtle ambient halo from a few low-blur text-shadow layers in a single hue, with no hot white core. Great for a soft, premium glow on headings.",
-  "color-cycle-glow":
-    "A neon tube whose entire glow rotates through the spectrum via filter:hue-rotate. The classic layered-shadow halo, endlessly color-cycling.",
   "neon-sign-frame":
     "Glowing text inside a glowing rounded border box — outer and inset halos that breathe on a loop. A complete neon storefront sign.",
   // gradient-fill
@@ -22,14 +20,16 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A conic gradient clipped to the letters that rotates forever using an animated @property angle. A modern, hypnotic color wheel through your text.",
   "duotone-fill":
     "A crisp two-color split gradient filling the glyphs via background-clip. Bold, poster-like, and endlessly recolorable by hue.",
-  "rainbow-fill":
-    "Full-spectrum rainbow piped through the letters with background-clip:text. Playful and instantly eye-catching; angle and saturation are adjustable.",
   "mesh-gradient":
     "Four soft color blobs blended into a smooth mesh and clipped to the glyphs, with an optional slow drift. A modern, multi-directional gradient fill.",
   "gradient-glow":
     "A flowing multi-stop gradient clipped to the text and lit from behind by a matching drop-shadow bloom. A gradient headline that radiates.",
   "gradient-follow":
     "A multi-hue radial gradient fills the glyphs from a focal point that tracks your cursor, so the color wheel slides under the text as you move.",
+  "spotlight":
+    "A near-white heading lit by a soft off-center gradient — almost monochrome, just a whisper of hue. The restrained way premium product sites treat hero type.",
+  "soft-duotone":
+    "A refined two-tone gradient in close, muted hues — the editorial gradient on modern headings, not a bold poster split. Low saturation keeps it tasteful.",
   // metallic-holographic
   chrome:
     "A vertical metallic gradient clipped to the text with a soft drop-shadow for that shiny chrome bevel. Tint it warm or cool with a single control.",
@@ -49,6 +49,10 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A polished metal fill with a bright specular highlight that slides to wherever your cursor is, like light catching a chrome plaque.",
   "holo-pointer":
     "An iridescent foil whose hue bands tilt and shimmer as you move the cursor, which repositions the oversized gradient. Pointer-reactive holographic.",
+  "sheen":
+    "A soft silver heading with a slow specular highlight gliding across now and then — the understated glint premium brands use on a wordmark.",
+  "glass-pill":
+    "The word set in a frosted glassmorphism chip: a translucent panel with a hairline border, inset highlight and backdrop blur. The modern changelog-badge treatment.",
   // threed-depth
   "extrude-3d":
     "Stacked offset text-shadows build a solid 3D extrusion with depth and direction controls, plus an optional float. The quintessential chunky 3D title.",
@@ -94,30 +98,12 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
   "terminal-phosphor":
     "Glowing CRT-monitor text with an irregular power-on flicker, like an old phosphor screen warming up and stuttering.",
   // retro-themed
-  sticker:
-    "A white fill with a bold colored stroke and a hard drop-shadow — the die-cut sticker look. paint-order keeps thick strokes clean.",
   vaporwave:
     "A pink-to-cyan gradient title with a soft, dreamy glow. The signature 80s/synthwave aesthetic in pure CSS.",
-  "pixel-8bit":
-    "Blocky 8-bit lettering faked with hard stepped text-shadows and crisp edges. An instant retro-game headline.",
-  "candy-stripe":
-    "Diagonal candy-cane stripes filling the glyphs via a repeating gradient clip. Sweet, festive and fully recolorable.",
-  "comic-pop":
-    "A bright fill with a heavy ink outline and a chained offset, for chunky comic-book pop. paint-order keeps the face crisp over the stroke.",
   "distress-stamp":
     "A solid ink run through an SVG filter that roughens the edges and punches noise holes, for a worn rubber-stamp look. Grungy and tunable.",
-  "balloon-puff":
-    "Glossy inflated balloon lettering — a radial latex highlight clipped to the glyphs with a rounded edge and a gentle inflate-deflate pulse.",
-  "cartoon-bubble":
-    "A bright fill ringed by an inner white outline and a thick outer ink ring, built from stacked copies. The classic sticker/comic bubble.",
-  "western-wood":
-    "A vertical light-to-dark wood ramp with fine grain lines clipped to the glyphs, plus a carved edge — a saloon-sign plank.",
-  "graffiti-spray":
-    "A vivid multi-color fill wrapped in a soft spray haze and dropped with a hard offset, for bright stencil-tag street lettering.",
   "chalkboard":
     "Chalk-dust lettering with edges roughened by an SVG turbulence displacement and a faint dusty halo. White chalk on dark, charcoal on light.",
-  "ransom-note":
-    "Every letter is a cut-out chip with its own typeface, tilt and paper shade — the classic mismatched kidnapper-note collage (per-letter markup).",
   // shadow-press
   "drop-shadow":
     "A simple soft drop shadow under solid text, with blur and distance controls. The dependable, readable depth cue.",
@@ -129,8 +115,6 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A pressed-in letterpress look: a light highlight and a dark inset that match the background tone. Subtle, classy and theme-aware.",
   emboss:
     "A raised, embossed relief created with opposing light and dark text-shadows that adapt to the theme. A tactile, debossed-paper feel.",
-  "rainbow-stack":
-    "A flat face over a chain of hard offset shadows whose hue walks each step, building a candy-colored 3D ribbon behind the letters.",
   "engrave":
     "Letters carved into the surface — a low-contrast fill with a shadow on top and a highlight below (the inverse of emboss). Debossed and tactile.",
   // elemental
@@ -163,6 +147,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Soft multiply-blended blobs in army, desert, navy or urban palettes, clipped to the glyphs. A textured camo material fill.",
   "scrolling-texture":
     "A fine two-tone crosshatch weave clipped to the text that scrolls diagonally on a loop. A moving woven material fill.",
+  "grain-gradient":
+    "A restrained low-saturation gradient with a faint film grain dusted over the glyphs (SVG noise) — the matte, tactile gradient finish on modern brand type.",
   // entrance-kinetic
   "fade-in":
     "The whole word fades and gently rises into place on load. A tasteful, universal entrance animation.",
@@ -242,6 +228,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "The word is soft and out of focus everywhere except a sharp disc under your cursor, which tracks the pointer like a magnifying lens.",
   "weight-ripple-hover":
     "Hovering sends a wave of boldness sweeping through the letters via per-letter variable-font weight transitions — a ripple of weight, no JavaScript.",
+  "gradient-link":
+    "A clean neutral heading that crossfades into a soft gradient on hover — the understated fill-with-color-on-hover treatment from modern docs and marketing links.",
 };
 
 /** Full description with a sensible fallback. */
