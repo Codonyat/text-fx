@@ -4,7 +4,7 @@
 
 A client-side Next.js (App Router) tool: type text, **SHUFFLE** a randomized pure-CSS text
 effect, tune it with live knobs, hand-edit the CSS, save favorites, and export (CSS / HTML /
-JSX / standalone `.html` / PNG / share-link). 61 effects across 13 categories; no backend.
+JSX / standalone `.html` / PNG / share-link). 73 effects across 13 categories; no backend.
 
 ## Commands
 - `pnpm dev` — dev server (do NOT background it; stop any you start).
@@ -36,7 +36,7 @@ parity + scope-lint tests in `tests/engine.test.ts`.
 - `lib/site.ts` (constants + `SITE_URL`), `lib/jsonld.ts` (`serializeJsonLd` + schema builders), `lib/effects/descriptions.ts` (per-effect SEO prose).
 - Icons/OG: `app/icon.svg` (geometric neon "Fx") + generated `favicon.ico`/`apple-icon.png`/`icon-{192,512}.png`; `app/{opengraph,twitter}-image.tsx` + per-effect `app/effects/[id]/opengraph-image.tsx` (ImageResponse, Satori-safe, Space Mono from `lib/og/`).
 - Metadata in `app/layout.tsx` (+ `metadataBase`, viewport); `app/robots.ts` (allows AI retrieval+training bots), `app/sitemap.ts`, `app/manifest.ts`, `app/llms.txt/route.ts`.
-- JSON-LD (server-only): home = WebApplication/WebSite/FAQPage; `/effects` = CollectionPage; `/effects/[id]` = SoftwareSourceCode + BreadcrumbList. Crawlable SSR pages: `/effects` (static, grouped) + `/effects/[id]` (61 SSG, full CSS + live preview) are the GEO payload. `next.config.ts` `outputFileTracingIncludes` bundles the OG font.
+- JSON-LD (server-only): home = WebApplication/WebSite/FAQPage; `/effects` = CollectionPage; `/effects/[id]` = SoftwareSourceCode + BreadcrumbList. Crawlable SSR pages: `/effects` (static, grouped) + `/effects/[id]` (73 SSG, full CSS + live preview) are the GEO payload. `next.config.ts` `outputFileTracingIncludes` bundles the OG font.
 
 ### Conventions / gotchas
 - **Scoping is mandatory**: every selector starts with `.${scope}`; every keyframe/@property/SVG id is salted. Two instances (preview + many thumbnails) share a page — unsalted globals collide.

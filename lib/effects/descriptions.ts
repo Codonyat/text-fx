@@ -11,6 +11,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A neon glow that gently breathes in and out via an animated text-shadow. Calm, sub-1Hz pulsing that draws the eye without being distracting.",
   "soft-glow":
     "A subtle ambient halo from a few low-blur text-shadow layers in a single hue, with no hot white core. Great for a soft, premium glow on headings.",
+  "color-cycle-glow":
+    "A neon tube whose entire glow rotates through the spectrum via filter:hue-rotate. The classic layered-shadow halo, endlessly color-cycling.",
   // gradient-fill
   "gradient-flow":
     "A multi-stop gradient clipped to the text that slowly flows by animating its background position. The go-to lively gradient headline.",
@@ -31,6 +33,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Iridescent foil that shifts hue continuously via an animated @property angle on a conic gradient. That holographic-sticker shimmer, in pure CSS.",
   "shine-sweep":
     "A metallic base with a bright highlight bar that sweeps across the text on a loop. Adds a premium glint to any wordmark.",
+  "oil-slick":
+    "A dark petrol iridescence — deep blue, violet, green and magenta in a slowly rotating conic sheen clipped to the text. Moodier than holographic foil.",
   // threed-depth
   "extrude-3d":
     "Stacked offset text-shadows build a solid 3D extrusion with depth and direction controls, plus an optional float. The quintessential chunky 3D title.",
@@ -59,6 +63,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
   "scanline-glitch":
     "CRT-style scanlines over the text with a subtle flicker. Adds a retro-monitor texture without obscuring the letters.",
   vhs: "VHS chroma-bleed: offset color copies, vertical jitter and scanlines for that worn-tape look. Lo-fi nostalgia for titles.",
+  "block-glitch":
+    "A solid word with a colored bar flickering across horizontal bands on stepped clip-path keyframes, plus a tiny positional jump. Blocky data-corruption energy.",
   // retro-themed
   sticker:
     "A white fill with a bold colored stroke and a hard drop-shadow — the die-cut sticker look. paint-order keeps thick strokes clean.",
@@ -72,6 +78,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A bright fill with a heavy ink outline and a chained offset, for chunky comic-book pop. paint-order keeps the face crisp over the stroke.",
   "distress-stamp":
     "A solid ink run through an SVG filter that roughens the edges and punches noise holes, for a worn rubber-stamp look. Grungy and tunable.",
+  "balloon-puff":
+    "Glossy inflated balloon lettering — a radial latex highlight clipped to the glyphs with a rounded edge and a gentle inflate-deflate pulse.",
   // shadow-press
   "drop-shadow":
     "A simple soft drop shadow under solid text, with blur and distance controls. The dependable, readable depth cue.",
@@ -83,6 +91,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A pressed-in letterpress look: a light highlight and a dark inset that match the background tone. Subtle, classy and theme-aware.",
   emboss:
     "A raised, embossed relief created with opposing light and dark text-shadows that adapt to the theme. A tactile, debossed-paper feel.",
+  "rainbow-stack":
+    "A flat face over a chain of hard offset shadows whose hue walks each step, building a candy-colored 3D ribbon behind the letters.",
   // elemental
   fire: "Flickering flame text built from layered orange/red/yellow glows that dance on a loop. Hot, animated and attention-grabbing.",
   ice: "Crystalline ice — a cool blue gradient fill with a frosty stroke and a cold shadow. Wintry and clean.",
@@ -92,6 +102,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A goo/blob morph using an SVG Gaussian-blur and color-matrix gooey filter. Liquid, organic lettering.",
   "water-fill":
     "Hollow stroked glyphs with a waterline that rises and falls via an animated @property level. A liquid fill that ebbs like a tide.",
+  "molten-lava":
+    "A bright hotspot drifts up and down through a yellow-orange-deep-red gradient clipped to the glyphs, with a warm glow. Molten and slow-flowing.",
   // fill-texture
   "image-fill":
     "Glyphs filled with a rich multi-gradient that reads like a photographic texture, via background-clip:text. An image-in-text look with zero assets.",
@@ -103,6 +115,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A pop-art halftone dot grid over a two-tone base, clipped to the text and gently drifting. Comic-print texture in pure CSS.",
   "camouflage-fill":
     "Soft multiply-blended blobs in army, desert, navy or urban palettes, clipped to the glyphs. A textured camo material fill.",
+  "scrolling-texture":
+    "A fine two-tone crosshatch weave clipped to the text that scrolls diagonally on a loop. A moving woven material fill.",
   // entrance-kinetic
   "fade-in":
     "The whole word fades and gently rises into place on load. A tasteful, universal entrance animation.",
@@ -116,6 +130,10 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Per-letter squash-and-stretch that wobbles across the word like gel, anchored to the baseline. Playful kinetic typography (per-letter markup).",
   "blur-focus-in":
     "The word resolves out of a soft blur as opacity rises and wide tracking draws together. A cinematic focus-in entrance.",
+  "flip-in-3d":
+    "Each letter swings down into place around its baseline on a shared perspective, staggered with a slight overshoot. A crisp 3D on-load entrance (per-letter markup).",
+  "falling-letters":
+    "Letters drop in from above, squash on landing and settle, staggered by index. A bouncy gravity entrance (per-letter markup).",
   // decoration-underline
   "slide-underline":
     "A gradient underline bar grows in from the left beneath the text. Clean, modern link and heading emphasis.",
@@ -125,6 +143,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A marker highlight sweeps in behind the text like a felt-tip pen. Draws attention to a phrase with a hand-made feel.",
   "gradient-underline":
     "A full-width underline bar whose gradient hue cycles continuously via an animated @property. A flowing, colorful heading underline.",
+  "marching-underline":
+    "A dashed underline rule that marches steadily beneath the text via an animated background position. The text stays fully legible throughout.",
   // interactive-advanced
   "hover-spotlight":
     "A radial spotlight reveals the colored text on hover using a CSS mask — no JavaScript. An interactive flashlight reveal.",
@@ -134,6 +154,10 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Hue-shifted fading clones trail behind the drifting word for a clean motion after-image. An echo trail, not a chromatic glitch.",
   "hover-ripple":
     "Hovering sends a wave of lift and color rippling through the letters via per-letter delays, with a resting twinkle. Interactive, no JavaScript.",
+  "hover-glint":
+    "A bright diagonal highlight sweeps across the word on hover, like light catching glass. CSS-only, no JavaScript; the resting state is clean.",
+  "hover-depth-3d":
+    "The word lies flat until hovered, then pops up off the page as a stacked shadow extrudes underneath. CSS-only interactive depth.",
 };
 
 /** Full description with a sensible fallback. */
