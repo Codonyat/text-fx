@@ -7,7 +7,7 @@ import styles from "./SeoFooter.module.css";
 export const FAQ: { q: string; a: string }[] = [
   {
     q: "What is TEXT-FX?",
-    a: "TEXT-FX is a free generator for pure-CSS text effects. Type your text, shuffle through 97 effects across 13 categories, tune them live, then copy the CSS or export HTML, React/JSX, a PNG or a share link.",
+    a: "TEXT-FX is a free generator for pure-CSS text effects. Type your text, shuffle through 103 effects across 13 categories, tune them live, then copy the CSS or export HTML, React/JSX, a PNG or a share link.",
   },
   {
     q: "Is it free?",
@@ -34,7 +34,7 @@ export function SeoFooter() {
         <section className={styles.col}>
           <h1 className={styles.h1}>TEXT-FX — Random CSS Text Effects Generator</h1>
           <p className={styles.p}>
-            Generate, tune and export 97 pure-CSS text effects — neon, gradient, chrome, glitch, 3D,
+            Generate, tune and export 103 pure-CSS text effects — neon, gradient, chrome, glitch, 3D,
             fire and more. Free, no signup, runs in your browser.{" "}
             <Link className={styles.link} href="/effects">
               Browse all effects →

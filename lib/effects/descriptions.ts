@@ -28,6 +28,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Four soft color blobs blended into a smooth mesh and clipped to the glyphs, with an optional slow drift. A modern, multi-directional gradient fill.",
   "gradient-glow":
     "A flowing multi-stop gradient clipped to the text and lit from behind by a matching drop-shadow bloom. A gradient headline that radiates.",
+  "gradient-follow":
+    "A multi-hue radial gradient fills the glyphs from a focal point that tracks your cursor, so the color wheel slides under the text as you move.",
   // metallic-holographic
   chrome:
     "A vertical metallic gradient clipped to the text with a soft drop-shadow for that shiny chrome bevel. Tint it warm or cool with a single control.",
@@ -43,6 +45,10 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A tintable vertical metal ramp with fine vertical striations clipped to the glyphs. A matte machined-aluminium finish, distinct from glossy chrome.",
   "glass-frost":
     "A translucent glassy fill fading from bright to cool, edged with a thin light stroke and a frosty halo. Cool glassmorphism, theme-aware.",
+  "glare-sweep":
+    "A polished metal fill with a bright specular highlight that slides to wherever your cursor is, like light catching a chrome plaque.",
+  "holo-pointer":
+    "An iridescent foil whose hue bands tilt and shimmer as you move the cursor, which repositions the oversized gradient. Pointer-reactive holographic.",
   // threed-depth
   "extrude-3d":
     "Stacked offset text-shadows build a solid 3D extrusion with depth and direction controls, plus an optional float. The quintessential chunky 3D title.",
@@ -58,6 +64,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "The word leans back into the page on a CSS 3D perspective with a stacked shadow extruding toward you. A solid slab receding in space.",
   "floating-3d":
     "The word hovers above the page, casting a large soft shadow far below while it gently bobs — levitation, not a tight drop shadow.",
+  "parallax-layers":
+    "Two shaded copies trail the cursor at increasing rates behind the face, so deeper layers slide further — stacked 3D depth that follows the pointer.",
   // outline-stroke
   outline:
     "Hollow outline text via -webkit-text-stroke, with an optional offset echo shadow. Minimal, editorial and lightweight.",
@@ -206,6 +214,10 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "The word lies flat until hovered, then pops up off the page as a stacked shadow extrudes underneath. CSS-only interactive depth.",
   "liquid-warp":
     "An SVG turbulence + displacement filter wobbles the glyph edges, animated so the letters ripple like they're underwater. A liquid showpiece.",
+  "cursor-flashlight":
+    "The word sits dim until your cursor sweeps over it, lighting a bright glowing disc that tracks the pointer. A flashlight reveal driven by a tiny script.",
+  "focus-lens":
+    "The word is soft and out of focus everywhere except a sharp disc under your cursor, which tracks the pointer like a magnifying lens.",
 };
 
 /** Full description with a sensible fallback. */

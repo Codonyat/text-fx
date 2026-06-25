@@ -84,10 +84,17 @@ export function turbulenceFilter(
 export function pointerSnippet(scopeClass: string): string {
   return [
     `const fx = document.querySelector('.${scopeClass}');`,
-    `fx && fx.addEventListener('pointermove', (e) => {`,
-    `  const r = fx.getBoundingClientRect();`,
-    `  fx.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');`,
-    `  fx.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');`,
-    `});`,
+    `if (fx) {`,
+    `  fx.addEventListener('pointermove', (e) => {`,
+    `    const r = fx.getBoundingClientRect();`,
+    `    if (!r.width || !r.height) return;`,
+    `    fx.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');`,
+    `    fx.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');`,
+    `  });`,
+    `  fx.addEventListener('pointerleave', () => {`,
+    `    fx.style.removeProperty('--mx');`,
+    `    fx.style.removeProperty('--my');`,
+    `  });`,
+    `}`,
   ].join("\n");
 }

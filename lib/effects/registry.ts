@@ -12,6 +12,7 @@ import gradientFlow from "./gradient-fill/gradient-flow";
 import rainbowFill from "./gradient-fill/rainbow-fill";
 import meshGradient from "./gradient-fill/mesh-gradient";
 import gradientGlow from "./gradient-fill/gradient-glow";
+import gradientFollow from "./gradient-fill/gradient-follow";
 import chrome from "./metallic-holographic/chrome";
 import goldFoil from "./metallic-holographic/gold-foil";
 import holographic from "./metallic-holographic/holographic";
@@ -19,6 +20,8 @@ import shineSweep from "./metallic-holographic/shine-sweep";
 import oilSlick from "./metallic-holographic/oil-slick";
 import brushedMetal from "./metallic-holographic/brushed-metal";
 import glassFrost from "./metallic-holographic/glass-frost";
+import glareSweep from "./metallic-holographic/glare-sweep";
+import holoPointer from "./metallic-holographic/holo-pointer";
 import extrude3d from "./threed-depth/extrude-3d";
 import isometric3d from "./threed-depth/isometric-3d";
 import longShadow from "./threed-depth/long-shadow";
@@ -26,6 +29,7 @@ import retro3d from "./threed-depth/retro-3d";
 import paperCutout from "./threed-depth/paper-cutout";
 import perspectiveTilt from "./threed-depth/perspective-tilt";
 import floating3d from "./threed-depth/floating-3d";
+import parallaxLayers from "./threed-depth/parallax-layers";
 import doubleOutline from "./outline-stroke/double-outline";
 import filledOutline from "./outline-stroke/filled-outline";
 import gradientStroke from "./outline-stroke/gradient-stroke";
@@ -97,6 +101,8 @@ import hoverRipple from "./interactive-advanced/hover-ripple";
 import hoverGlint from "./interactive-advanced/hover-glint";
 import hoverDepth3d from "./interactive-advanced/hover-depth-3d";
 import liquidWarp from "./interactive-advanced/liquid-warp";
+import cursorFlashlight from "./interactive-advanced/cursor-flashlight";
+import focusLens from "./interactive-advanced/focus-lens";
 
 /** Every implemented effect (registry generated from lib/effects/<category>/<id>.ts). */
 export const EFFECTS: EffectDefinition[] = [
@@ -112,6 +118,7 @@ export const EFFECTS: EffectDefinition[] = [
   rainbowFill,
   meshGradient,
   gradientGlow,
+  gradientFollow,
   chrome,
   goldFoil,
   holographic,
@@ -119,6 +126,8 @@ export const EFFECTS: EffectDefinition[] = [
   oilSlick,
   brushedMetal,
   glassFrost,
+  glareSweep,
+  holoPointer,
   extrude3d,
   isometric3d,
   longShadow,
@@ -126,6 +135,7 @@ export const EFFECTS: EffectDefinition[] = [
   paperCutout,
   perspectiveTilt,
   floating3d,
+  parallaxLayers,
   doubleOutline,
   filledOutline,
   gradientStroke,
@@ -197,6 +207,8 @@ export const EFFECTS: EffectDefinition[] = [
   hoverGlint,
   hoverDepth3d,
   liquidWarp,
+  cursorFlashlight,
+  focusLens,
 ];
 
 export const EFFECTS_BY_ID: Record<string, EffectDefinition> = Object.fromEntries(

@@ -4,7 +4,7 @@
 
 A client-side Next.js (App Router) tool: type text, **SHUFFLE** a randomized pure-CSS text
 effect, tune it with live knobs, hand-edit the CSS, save favorites, and export (CSS / HTML /
-JSX / standalone `.html` / PNG / share-link). 97 effects across 13 categories; no backend.
+JSX / standalone `.html` / PNG / share-link). 103 effects across 13 categories; no backend.
 
 ## Commands
 - `pnpm dev` — dev server (do NOT background it; stop any you start).
@@ -36,11 +36,12 @@ parity + scope-lint tests in `tests/engine.test.ts`.
 - `lib/site.ts` (constants + `SITE_URL`), `lib/jsonld.ts` (`serializeJsonLd` + schema builders), `lib/effects/descriptions.ts` (per-effect SEO prose).
 - Icons/OG: `app/icon.svg` (geometric neon "Fx") + generated `favicon.ico`/`apple-icon.png`/`icon-{192,512}.png`; `app/{opengraph,twitter}-image.tsx` + `app/effects/opengraph-image.tsx` (index) + per-effect `app/effects/[id]/opengraph-image.tsx` (ImageResponse, Satori-safe, Space Mono from `lib/og/`).
 - Metadata in `app/layout.tsx` (+ `metadataBase`, viewport); `app/robots.ts` (allows AI retrieval+training bots), `app/sitemap.ts`, `app/manifest.ts`, `app/llms.txt/route.ts`.
-- JSON-LD (server-only): home = WebApplication/WebSite/FAQPage; `/effects` = CollectionPage; `/effects/[id]` = SoftwareSourceCode + BreadcrumbList. Crawlable SSR pages: `/effects` (static, grouped) + `/effects/[id]` (97 SSG, full CSS + live preview) are the GEO payload. `next.config.ts` `outputFileTracingIncludes` bundles the OG font.
+- JSON-LD (server-only): home = WebApplication/WebSite/FAQPage; `/effects` = CollectionPage; `/effects/[id]` = SoftwareSourceCode + BreadcrumbList. Crawlable SSR pages: `/effects` (static, grouped) + `/effects/[id]` (103 SSG, full CSS + live preview) are the GEO payload. `next.config.ts` `outputFileTracingIncludes` bundles the OG font.
 
 ### Conventions / gotchas
 - **Scoping is mandatory**: every selector starts with `.${scope}`; every keyframe/@property/SVG id is salted. Two instances (preview + many thumbnails) share a page — unsalted globals collide.
 - Effects read values with casts (`ctx.values.hue as number`) and adapt colors to `ctx.theme`.
+- **Pointer effects** (`caps:['pointer']`, single-element): `Stage.tsx` feeds `--mx`/`--my` (cursor %, default `50%`) onto the scoped element so they react live in the studio; `build()` returns `runtime:'pointerVars'` + `runtimeSnippet: pointerSnippet(scope)` so exports ship the listener. SSR/gallery posters show the centred default.
 - Knob/theme changes rebuild CSS with literal values (export-correct); animations restart on tune (accepted v1 tradeoff; `cssVar` field reserved for future live-var tuning).
 - Theme tokens (brutalist, dark | light) live in `app/globals.css`, keyed by `data-theme` on `.app`. Fonts load via one Google Fonts `<link>` (real family names so preview, hand-edited CSS, and exports all match).
 - Persistence: favorites in `localStorage` (`textfx_favs_v2`), theme in `localStorage` (`textfx_theme`); share state in the URL hash (`#s=`). Client-only init runs in a mount effect; initial render is deterministic (seed 1, theme `dark`) to avoid hydration mismatch — on mount a saved theme wins, else first visit follows OS `prefers-color-scheme` (then persists).

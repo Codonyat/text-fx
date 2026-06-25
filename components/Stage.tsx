@@ -24,6 +24,7 @@ export function Stage({
 }) {
   const perLetter = caps.includes("perLetter");
   const dataText = caps.includes("dataText");
+  const pointer = caps.includes("pointer");
   const editRef = useRef<HTMLDivElement>(null);
 
   // Push external text changes (shuffle/load) into the editable node without
@@ -34,6 +35,34 @@ export function Stage({
     if ((el.textContent ?? "") !== text) el.textContent = text;
     if (dataText) el.dataset.text = text;
   }, [text, dataText]);
+
+  // Pointer-reactive effects: feed the cursor position into --mx/--my (percent
+  // within the scoped element) so CSS can position masks/gradients at the cursor.
+  // Mirrors lib/engine/helpers.pointerSnippet so the live preview matches exports.
+  // Pointer effects are single-element, so the scope class lives on editRef.
+  useEffect(() => {
+    if (!pointer || perLetter) return;
+    const el = editRef.current;
+    if (!el) return;
+    const onMove = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+      el.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
+    };
+    // On leave, drop the inline vars so the effect rests at its CSS default — which
+    // several effects set off-centre so the resting/poster frame still shows it.
+    const onLeave = () => {
+      el.style.removeProperty("--mx");
+      el.style.removeProperty("--my");
+    };
+    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointerleave", onLeave);
+    return () => {
+      el.removeEventListener("pointermove", onMove);
+      el.removeEventListener("pointerleave", onLeave);
+    };
+  }, [pointer, perLetter]);
 
   const handleInput = () => {
     const el = editRef.current;
