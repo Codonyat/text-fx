@@ -194,6 +194,18 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "The letterforms reshape between a precise sans and a relaxed hand-drawn casual style (Recursive's CASL axis), with a touch of slant. Glyph morphing in pure CSS.",
   "mono-shift":
     "The type morphs between a proportional sans and a monospace face on the variable font's MONO axis, the letters widening and squaring off in sync.",
+  "arc-text":
+    "The word is arranged on a circular arc — letters dropped and tilted tangent to the curve via cos() — for an arched headline or a downward smile. Bends in on load.",
+  "wave-text":
+    "Letters frozen along a sine ribbon, each offset and tilted to its slope, so the word forms a static S-curve. A fixed wave shape, not a moving bob.",
+  "fan-text":
+    "Letters splay out like a hand of cards, each rotated about a low pivot by its distance from the center. Fans open on load.",
+  "slope-text":
+    "The word sits on a straight diagonal incline, each letter stepped and the set tilted to match — climbing or descending. Slides onto the slope on load.",
+  "zigzag-text":
+    "Alternate letters sit high and low with matching tilts — a jagged sawtooth ribbon that snaps into place on load.",
+  "bulge-text":
+    "A fish-eye on the word: the center letters scale up and the ends taper via cos(), like a lens. Pops in on load.",
   // decoration-underline
   "slide-underline":
     "A gradient underline bar grows in from the left beneath the text. Clean, modern link and heading emphasis.",

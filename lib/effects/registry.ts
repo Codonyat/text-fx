@@ -92,6 +92,12 @@ import slantWave from "./entrance-kinetic/slant-wave";
 import weightPulse from "./entrance-kinetic/weight-pulse";
 import casualMorph from "./entrance-kinetic/casual-morph";
 import monoShift from "./entrance-kinetic/mono-shift";
+import arcText from "./entrance-kinetic/arc-text";
+import waveText from "./entrance-kinetic/wave-text";
+import fanText from "./entrance-kinetic/fan-text";
+import slopeText from "./entrance-kinetic/slope-text";
+import zigzagText from "./entrance-kinetic/zigzag-text";
+import bulgeText from "./entrance-kinetic/bulge-text";
 import highlighter from "./decoration-underline/highlighter";
 import slideUnderline from "./decoration-underline/slide-underline";
 import wavyUnderline from "./decoration-underline/wavy-underline";
@@ -204,6 +210,12 @@ export const EFFECTS: EffectDefinition[] = [
   weightPulse,
   casualMorph,
   monoShift,
+  arcText,
+  waveText,
+  fanText,
+  slopeText,
+  zigzagText,
+  bulgeText,
   highlighter,
   slideUnderline,
   wavyUnderline,
