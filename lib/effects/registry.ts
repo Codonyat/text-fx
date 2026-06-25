@@ -8,6 +8,7 @@ import conicSpin from "./gradient-fill/conic-spin";
 import duotoneFill from "./gradient-fill/duotone-fill";
 import gradientFlow from "./gradient-fill/gradient-flow";
 import rainbowFill from "./gradient-fill/rainbow-fill";
+import meshGradient from "./gradient-fill/mesh-gradient";
 import chrome from "./metallic-holographic/chrome";
 import goldFoil from "./metallic-holographic/gold-foil";
 import holographic from "./metallic-holographic/holographic";
@@ -16,6 +17,7 @@ import extrude3d from "./threed-depth/extrude-3d";
 import isometric3d from "./threed-depth/isometric-3d";
 import longShadow from "./threed-depth/long-shadow";
 import retro3d from "./threed-depth/retro-3d";
+import paperCutout from "./threed-depth/paper-cutout";
 import doubleOutline from "./outline-stroke/double-outline";
 import filledOutline from "./outline-stroke/filled-outline";
 import gradientStroke from "./outline-stroke/gradient-stroke";
@@ -28,6 +30,8 @@ import candyStripe from "./retro-themed/candy-stripe";
 import pixel8bit from "./retro-themed/pixel-8bit";
 import sticker from "./retro-themed/sticker";
 import vaporwave from "./retro-themed/vaporwave";
+import comicPop from "./retro-themed/comic-pop";
+import distressStamp from "./retro-themed/distress-stamp";
 import dropShadow from "./shadow-press/drop-shadow";
 import emboss from "./shadow-press/emboss";
 import hardOffset from "./shadow-press/hard-offset";
@@ -37,18 +41,26 @@ import aurora from "./elemental/aurora";
 import fire from "./elemental/fire";
 import gooey from "./elemental/gooey";
 import ice from "./elemental/ice";
+import waterFill from "./elemental/water-fill";
 import imageFill from "./fill-texture/image-fill";
 import starfield from "./fill-texture/starfield";
 import stripeFill from "./fill-texture/stripe-fill";
+import halftoneDots from "./fill-texture/halftone-dots";
+import camouflageFill from "./fill-texture/camouflage-fill";
 import fadeIn from "./entrance-kinetic/fade-in";
 import letterWave from "./entrance-kinetic/letter-wave";
 import staggerReveal from "./entrance-kinetic/stagger-reveal";
 import typewriter from "./entrance-kinetic/typewriter";
+import jellyWobble from "./entrance-kinetic/jelly-wobble";
+import blurFocusIn from "./entrance-kinetic/blur-focus-in";
 import highlighter from "./decoration-underline/highlighter";
 import slideUnderline from "./decoration-underline/slide-underline";
 import wavyUnderline from "./decoration-underline/wavy-underline";
+import gradientUnderline from "./decoration-underline/gradient-underline";
 import hoverSpotlight from "./interactive-advanced/hover-spotlight";
 import mirrorReflection from "./interactive-advanced/mirror-reflection";
+import echoTrail from "./interactive-advanced/echo-trail";
+import hoverRipple from "./interactive-advanced/hover-ripple";
 
 /** Every implemented effect (registry generated from lib/effects/<category>/<id>.ts). */
 export const EFFECTS: EffectDefinition[] = [
@@ -60,6 +72,7 @@ export const EFFECTS: EffectDefinition[] = [
   duotoneFill,
   gradientFlow,
   rainbowFill,
+  meshGradient,
   chrome,
   goldFoil,
   holographic,
@@ -68,6 +81,7 @@ export const EFFECTS: EffectDefinition[] = [
   isometric3d,
   longShadow,
   retro3d,
+  paperCutout,
   doubleOutline,
   filledOutline,
   gradientStroke,
@@ -80,6 +94,8 @@ export const EFFECTS: EffectDefinition[] = [
   pixel8bit,
   sticker,
   vaporwave,
+  comicPop,
+  distressStamp,
   dropShadow,
   emboss,
   hardOffset,
@@ -89,18 +105,26 @@ export const EFFECTS: EffectDefinition[] = [
   fire,
   gooey,
   ice,
+  waterFill,
   imageFill,
   starfield,
   stripeFill,
+  halftoneDots,
+  camouflageFill,
   fadeIn,
   letterWave,
   staggerReveal,
   typewriter,
+  jellyWobble,
+  blurFocusIn,
   highlighter,
   slideUnderline,
   wavyUnderline,
+  gradientUnderline,
   hoverSpotlight,
   mirrorReflection,
+  echoTrail,
+  hoverRipple,
 ];
 
 export const EFFECTS_BY_ID: Record<string, EffectDefinition> = Object.fromEntries(

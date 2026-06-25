@@ -38,7 +38,7 @@ export default async function OpengraphImage() {
           <span style={{ color: "#ff3ca6" }}>FX</span>
         </div>
         <div style={{ fontSize: 36, fontWeight: 700 }}>Random CSS Text Effects Generator</div>
-        <div style={{ fontSize: 25, color: "#8A8A8A" }}>49 effects · pure CSS · copy & export</div>
+        <div style={{ fontSize: 25, color: "#8A8A8A" }}>61 effects · pure CSS · copy & export</div>
       </div>
     ),
     {

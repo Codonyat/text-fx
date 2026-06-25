@@ -4,7 +4,7 @@
 
 A client-side Next.js (App Router) tool: type text, **SHUFFLE** a randomized pure-CSS text
 effect, tune it with live knobs, hand-edit the CSS, save favorites, and export (CSS / HTML /
-JSX / standalone `.html` / PNG / share-link). 49 effects across 13 categories; no backend.
+JSX / standalone `.html` / PNG / share-link). 61 effects across 13 categories; no backend.
 
 ## Commands
 - `pnpm dev` — dev server (do NOT background it; stop any you start).
@@ -29,14 +29,14 @@ parity + scope-lint tests in `tests/engine.test.ts`.
 - `lib/engine/helpers.ts` — CSS helpers. **Salt every generated id** via `anim()`/`svgId()`/`prop()` (keyframes, @property, SVG ids). Glow guard: use `dropGlow()` (filter), NEVER `text-shadow`, on `background-clip:text`/transparent-fill text.
 - `lib/engine/split.ts` — grapheme/word/line splitting (Intl.Segmenter).
 - `lib/engine/serialize.ts` — exporters (export scope = `text-effect`). `lib/engine/share.ts` — lz-string spec codec with safety limits. `lib/export/{png,download}.ts`.
-- `lib/effects/<category>/<id>.ts` — one effect each (default export). `registry.ts` is **generated** (imports all + `MANIFEST`); regenerate after adding/removing effect files. `taxonomy.ts` = the 13 categories. `catalog.json` = the 280-effect research catalog (implementation backlog, not bundled).
+- `lib/effects/<category>/<id>.ts` — one effect each (default export). `registry.ts` is **hand-maintained** (imports all + `EFFECTS` array → `MANIFEST`); add the import + array entry when adding/removing an effect file. `taxonomy.ts` = the 13 categories. `catalog.json` = the 280-effect research catalog (implementation backlog, not bundled).
 - `components/` — `Studio.tsx` (orchestrator/state) · two-layer `Stage.tsx` (single-element effects edit in place; per-letter effects use an editable ghost layer over a preview layer — never mutate the editable node into spans) · `StyleHost.tsx` (owns all `<style>` tags) · `EffectPreview.tsx` (server-side SSR preview for SEO pages) · Header/ActionBar/AdjustPanel/CssPanel/ExportMenu/SavedStrip/Gallery/SeoFooter + `controls/Control.tsx`.
 
 ### SEO / GEO
 - `lib/site.ts` (constants + `SITE_URL`), `lib/jsonld.ts` (`serializeJsonLd` + schema builders), `lib/effects/descriptions.ts` (per-effect SEO prose).
 - Icons/OG: `app/icon.svg` (geometric neon "Fx") + generated `favicon.ico`/`apple-icon.png`/`icon-{192,512}.png`; `app/{opengraph,twitter}-image.tsx` + per-effect `app/effects/[id]/opengraph-image.tsx` (ImageResponse, Satori-safe, Space Mono from `lib/og/`).
 - Metadata in `app/layout.tsx` (+ `metadataBase`, viewport); `app/robots.ts` (allows AI retrieval+training bots), `app/sitemap.ts`, `app/manifest.ts`, `app/llms.txt/route.ts`.
-- JSON-LD (server-only): home = WebApplication/WebSite/FAQPage; `/effects` = CollectionPage; `/effects/[id]` = SoftwareSourceCode + BreadcrumbList. Crawlable SSR pages: `/effects` (static, grouped) + `/effects/[id]` (49 SSG, full CSS + live preview) are the GEO payload. `next.config.ts` `outputFileTracingIncludes` bundles the OG font.
+- JSON-LD (server-only): home = WebApplication/WebSite/FAQPage; `/effects` = CollectionPage; `/effects/[id]` = SoftwareSourceCode + BreadcrumbList. Crawlable SSR pages: `/effects` (static, grouped) + `/effects/[id]` (61 SSG, full CSS + live preview) are the GEO payload. `next.config.ts` `outputFileTracingIncludes` bundles the OG font.
 
 ### Conventions / gotchas
 - **Scoping is mandatory**: every selector starts with `.${scope}`; every keyframe/@property/SVG id is salted. Two instances (preview + many thumbnails) share a page — unsalted globals collide.
@@ -44,4 +44,4 @@ parity + scope-lint tests in `tests/engine.test.ts`.
 - Knob/theme changes rebuild CSS with literal values (export-correct); animations restart on tune (accepted v1 tradeoff; `cssVar` field reserved for future live-var tuning).
 - Theme tokens (brutalist, dark | light) live in `app/globals.css`, keyed by `data-theme` on `.app`. Fonts load via one Google Fonts `<link>` (real family names so preview, hand-edited CSS, and exports all match).
 - Persistence: favorites in `localStorage` (`textfx_favs_v2`), theme in `localStorage` (`textfx_theme`); share state in the URL hash (`#s=`). Client-only init runs in a mount effect; initial render is deterministic (seed 1, theme `dark`) to avoid hydration mismatch — on mount a saved theme wins, else first visit follows OS `prefers-color-scheme` (then persists).
-- Adding effects: drop a file in `lib/effects/<category>/<id>.ts`, regenerate `registry.ts`, run `pnpm test` (auto-validates scope-lint/parity for the new effect).
+- Adding effects: drop a file in `lib/effects/<category>/<id>.ts`, add its import + `EFFECTS` entry to `registry.ts`, add a `descriptions.ts` entry, bump the hardcoded `N effects` count strings (`lib/site.ts`, `components/SeoFooter.tsx`, `app/effects/page.tsx`, `app/opengraph-image.tsx`), run `pnpm test` (auto-validates scope-lint/parity for the new effect).
