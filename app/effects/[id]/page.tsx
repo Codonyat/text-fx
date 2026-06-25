@@ -6,7 +6,7 @@ import { CATEGORY_BY_ID } from "@/lib/effects/taxonomy";
 import { exportCss, exportHtml } from "@/lib/engine/serialize";
 import { encodeSpec } from "@/lib/engine/share";
 import type { Capability } from "@/lib/engine/types";
-import { describe, metaDescription } from "@/lib/effects/descriptions";
+import { describe, metaDescription, howItWorks, controlsSummary } from "@/lib/effects/descriptions";
 import { serializeJsonLd, graph, softwareSourceCodeLd, breadcrumbLd } from "@/lib/jsonld";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
 import { EffectPreview, posterValues } from "@/components/EffectPreview";
@@ -101,6 +101,16 @@ export default async function EffectPage({ params }: { params: Promise<{ id: str
           minHeight={260}
         />
       </div>
+
+      <section className={styles.section}>
+        <h2 className={styles.h2}>How it works</h2>
+        <p className={styles.note}>{howItWorks(effect, cat?.name ?? effect.category)}</p>
+      </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.h2}>Controls</h2>
+        <p className={styles.note}>{controlsSummary(effect)}</p>
+      </section>
 
       <section className={styles.section}>
         <h2 className={styles.h2}>CSS</h2>

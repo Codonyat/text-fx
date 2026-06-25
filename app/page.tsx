@@ -1,6 +1,6 @@
 import { Studio } from "@/components/Studio";
 import { SeoFooter, FAQ } from "@/components/SeoFooter";
-import { serializeJsonLd, faqLd } from "@/lib/jsonld";
+import { serializeJsonLd, graph, faqLd } from "@/lib/jsonld";
 
 export default function Page() {
   return (
@@ -9,7 +9,7 @@ export default function Page() {
       <SeoFooter />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqLd(FAQ)) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(graph(faqLd(FAQ))) }}
       />
     </>
   );

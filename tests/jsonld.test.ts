@@ -55,4 +55,14 @@ describe("jsonld", () => {
       expect(() => JSON.parse(serializeJsonLd(b))).not.toThrow();
     }
   });
+
+  it("faq page is graph-wrapped so it carries @context (home-page regression guard)", () => {
+    const g = graph(faqLd([{ q: "Q", a: "A" }])) as {
+      "@context": string;
+      "@graph": { "@type": string; mainEntity: unknown[] }[];
+    };
+    expect(g["@context"]).toBe("https://schema.org");
+    expect(g["@graph"][0]["@type"]).toBe("FAQPage");
+    expect(g["@graph"][0].mainEntity).toHaveLength(1);
+  });
 });

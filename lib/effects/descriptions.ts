@@ -1,4 +1,4 @@
-import type { EffectDefinition } from "@/lib/engine/types";
+import type { Capability, EffectDefinition } from "@/lib/engine/types";
 
 /** SEO/GEO-grade prose per effect (keyed by id). Keeps effect files focused. */
 export const EFFECT_DESCRIPTIONS: Record<string, string> = {
@@ -223,4 +223,53 @@ export function metaDescription(effect: Pick<EffectDefinition, "id" | "name" | "
   const firstSentence = text.split(/(?<=[.!?])\s/)[0];
   if (firstSentence.length <= 155) return firstSentence;
   return text.slice(0, 154).trimEnd() + "…";
+}
+
+/** Human-readable note for each special capability (pure = no note). */
+const CAP_NOTES: Record<Capability, string> = {
+  pure: "",
+  perLetter:
+    "Each character is wrapped in its own span so it can animate independently — the HTML and JSX exports include that per-letter markup.",
+  svgDefs:
+    "It relies on an inline SVG <defs> block (filters, gradients or clip-paths), which the HTML export carries alongside the CSS.",
+  dataText:
+    "A data-text attribute mirrors the word into ::before/::after layers, so copy that attribute together with the CSS.",
+  property:
+    "It animates a registered CSS @property, which keeps the motion smooth and GPU-friendly.",
+  pointer:
+    "It reacts to the pointer through CSS custom properties updated by a tiny inline script.",
+  scroll: "It is driven by a scroll-linked animation timeline.",
+};
+
+function formatList(items: string[]): string {
+  if (items.length === 1) return items[0];
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
+}
+
+/** A short, accurate "how it works" paragraph derived from the effect's own metadata. */
+export function howItWorks(
+  effect: Pick<EffectDefinition, "name" | "tags" | "caps">,
+  categoryName: string,
+): string {
+  const animated = effect.tags.includes("animated");
+  const base = `${effect.name} is ${animated ? "an animated" : "a static"} ${categoryName.toLowerCase()} text effect rendered entirely in CSS.`;
+  const notes = effect.caps
+    .filter((c) => c !== "pure")
+    .map((c) => CAP_NOTES[c])
+    .filter(Boolean);
+  const markup = notes.length
+    ? " " + notes.join(" ")
+    : " It works on a single element — just add the .text-effect class, with no extra HTML.";
+  return base + markup;
+}
+
+/** A short "controls" paragraph listing the effect's own tunable controls. */
+export function controlsSummary(effect: Pick<EffectDefinition, "name" | "controls">): string {
+  const labels = effect.controls.map((c) => c.label);
+  if (!labels.length) {
+    return `${effect.name} uses the shared type controls — font, weight, letter-spacing and case. Open it in the generator to tune it live, then copy the updated CSS.`;
+  }
+  const noun = labels.length > 1 ? "controls" : "control";
+  return `${effect.name} exposes ${labels.length} dedicated ${noun} — ${formatList(labels)} — on top of the shared type controls (font, weight, letter-spacing and case). Open it in the generator to tune every value live, then copy the updated CSS.`;
 }
