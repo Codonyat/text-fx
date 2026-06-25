@@ -87,6 +87,11 @@ import flipIn3d from "./entrance-kinetic/flip-in-3d";
 import fallingLetters from "./entrance-kinetic/falling-letters";
 import rainbowLetters from "./entrance-kinetic/rainbow-letters";
 import maskWipe from "./entrance-kinetic/mask-wipe";
+import weightWave from "./entrance-kinetic/weight-wave";
+import slantWave from "./entrance-kinetic/slant-wave";
+import weightPulse from "./entrance-kinetic/weight-pulse";
+import casualMorph from "./entrance-kinetic/casual-morph";
+import monoShift from "./entrance-kinetic/mono-shift";
 import highlighter from "./decoration-underline/highlighter";
 import slideUnderline from "./decoration-underline/slide-underline";
 import wavyUnderline from "./decoration-underline/wavy-underline";
@@ -103,6 +108,7 @@ import hoverDepth3d from "./interactive-advanced/hover-depth-3d";
 import liquidWarp from "./interactive-advanced/liquid-warp";
 import cursorFlashlight from "./interactive-advanced/cursor-flashlight";
 import focusLens from "./interactive-advanced/focus-lens";
+import weightRippleHover from "./interactive-advanced/weight-ripple-hover";
 
 /** Every implemented effect (registry generated from lib/effects/<category>/<id>.ts). */
 export const EFFECTS: EffectDefinition[] = [
@@ -193,6 +199,11 @@ export const EFFECTS: EffectDefinition[] = [
   fallingLetters,
   rainbowLetters,
   maskWipe,
+  weightWave,
+  slantWave,
+  weightPulse,
+  casualMorph,
+  monoShift,
   highlighter,
   slideUnderline,
   wavyUnderline,
@@ -209,6 +220,7 @@ export const EFFECTS: EffectDefinition[] = [
   liquidWarp,
   cursorFlashlight,
   focusLens,
+  weightRippleHover,
 ];
 
 export const EFFECTS_BY_ID: Record<string, EffectDefinition> = Object.fromEntries(

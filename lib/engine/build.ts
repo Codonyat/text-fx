@@ -60,7 +60,10 @@ export function visibleControls(
   effect: EffectDefinition,
   values: Record<string, ControlValue>,
 ): Control[] {
-  return allControls(effect).filter((c) => !c.when || c.when(values));
+  return allControls(effect)
+    // A forced font (e.g. a variable font) makes the shared Font control a no-op.
+    .filter((c) => !(effect.font && c.id === "font"))
+    .filter((c) => !c.when || c.when(values));
 }
 
 export function defaultValues(effect: EffectDefinition): Record<string, ControlValue> {
@@ -112,8 +115,12 @@ export function sanitizeValues(
   return out;
 }
 
-function commonCss(scope: string, values: Record<string, ControlValue>): string {
-  const font = (values.font as string) ?? "'Anton', sans-serif";
+function commonCss(
+  scope: string,
+  values: Record<string, ControlValue>,
+  forcedFont?: string,
+): string {
+  const font = forcedFont ?? (values.font as string) ?? "'Anton', sans-serif";
   const weight = (values.weight as number) ?? 700;
   const tracking = (values.tracking as number) ?? 0;
   const tt = (values.case as string) ?? "none";
@@ -151,7 +158,7 @@ export function render(
   const theme = opts.theme ?? "dark";
   const text = textInput.length ? textInput : " ";
   const result = effect.build({ text, values, scope, caps: effect.caps, mode, theme });
-  const common = commonCss(scope, values);
+  const common = commonCss(scope, values, effect.font);
   const styleText = [result.propertyRules, common, result.css, result.keyframes]
     .filter((s): s is string => Boolean(s && s.trim()))
     .join("\n\n");

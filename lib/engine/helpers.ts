@@ -80,6 +80,12 @@ export function turbulenceFilter(
   ].join("\n");
 }
 
+/** `font-variation-settings` from axis→value pairs, e.g. fvs({ wght: 700, slnt: -8 }). */
+export function fvs(axes: Record<string, number>): string {
+  const parts = Object.entries(axes).map(([tag, v]) => `'${tag}' ${round(v, 2)}`);
+  return `font-variation-settings: ${parts.join(", ")};`;
+}
+
 /** Pointer-tracking runtime snippet (sets --mx/--my on the scoped element). */
 export function pointerSnippet(scopeClass: string): string {
   return [

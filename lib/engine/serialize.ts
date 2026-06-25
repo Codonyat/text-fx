@@ -6,8 +6,11 @@ import { googleHrefForFamilies } from "@/lib/fonts";
 
 const EXPORT_SCOPE = "text-effect";
 
-function fontFamiliesUsed(values: Record<string, ControlValue>): string[] {
-  return values.font ? [String(values.font)] : [];
+function fontFamiliesUsed(effect: EffectDefinition, values: Record<string, ControlValue>): string[] {
+  // A forced font (variable-font effects) overrides the shared Font control, so the
+  // export must load that family, not the (ignored) control value.
+  const fam = effect.font ?? (values.font ? String(values.font) : "");
+  return fam ? [fam] : [];
 }
 
 function markupNote(caps: Capability[]): string {
@@ -37,7 +40,7 @@ export function exportCss(
   asFile = false,
 ): string {
   const r = renderExport(effect, values, text, theme);
-  const fonts = fontFamiliesUsed(values).join(", ");
+  const fonts = fontFamiliesUsed(effect, values).join(", ");
   const header = [
     `/* ${effect.name} — generated with TEXT-FX`,
     ` * HTML: ${markupNote(effect.caps)}.`,
@@ -107,7 +110,7 @@ export function exportStandaloneHtml(
   bg = "#0a0a0a",
 ): string {
   const r = renderExport(effect, values, text, theme);
-  const href = googleHrefForFamilies(fontFamiliesUsed(values));
+  const href = googleHrefForFamilies(fontFamiliesUsed(effect, values));
   const fontLinks = href
     ? `  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n  <link href="${href}" rel="stylesheet">\n`
     : "";

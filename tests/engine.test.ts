@@ -4,6 +4,7 @@ import { defaultValues, randomizeValues, render, sanitizeValues } from "@/lib/en
 import { exportCss, exportHtml, exportJsx, exportStandaloneHtml } from "@/lib/engine/serialize";
 import { encodeSpec, decodeSpec } from "@/lib/engine/share";
 import { makeRng } from "@/lib/engine/rng";
+import { FONTS } from "@/lib/fonts";
 import type { EffectSpec } from "@/lib/engine/types";
 
 const SAMPLE = "Glow & <Café> 42";
@@ -133,5 +134,16 @@ describe("share codec", () => {
     expect(clean.hue).toBe(360);
     expect(clean.speed).toBe(1);
     expect("bogus" in clean).toBe(false);
+  });
+});
+
+describe("variable fonts", () => {
+  // Google css2 returns 200 even for a mis-ordered axis tuple (it binds ranges
+  // positionally), so a reorder would silently mis-map axes with green tests.
+  // Pin the canonical segment: lowercase axes (slnt,wght) then uppercase (CASL,MONO),
+  // each alphabetical, with @-ranges in the same order.
+  it("Recursive loads its four axes in canonical css2 order", () => {
+    const rec = FONTS.find((f) => f.name === "Recursive");
+    expect(rec?.google).toBe("Recursive:slnt,wght,CASL,MONO@-15..0,300..1000,0..1,0..1");
   });
 });

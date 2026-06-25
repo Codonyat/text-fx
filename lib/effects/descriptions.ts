@@ -184,6 +184,16 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Each glyph takes a hue stepped by its index while the whole word cycles through the spectrum via hue-rotate. A flowing rainbow (per-letter markup).",
   "mask-wipe":
     "A soft-edged gradient mask sweeps across the word, wiping it into view and back out on a loop. A smooth reveal entrance.",
+  "weight-wave":
+    "Each letter's variable-font weight swells light to heavy and back, offset by index so a wave of boldness rolls across the word (Recursive wght axis).",
+  "slant-wave":
+    "Each letter leans upright to italic and back on the variable font's slant axis — a true type-axis lean rippling through the word, not a skew.",
+  "weight-pulse":
+    "The whole word breathes from thin to heavy on the variable font's weight axis. A smooth, single-element weight throb.",
+  "casual-morph":
+    "The letterforms reshape between a precise sans and a relaxed hand-drawn casual style (Recursive's CASL axis), with a touch of slant. Glyph morphing in pure CSS.",
+  "mono-shift":
+    "The type morphs between a proportional sans and a monospace face on the variable font's MONO axis, the letters widening and squaring off in sync.",
   // decoration-underline
   "slide-underline":
     "A gradient underline bar grows in from the left beneath the text. Clean, modern link and heading emphasis.",
@@ -218,6 +228,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "The word sits dim until your cursor sweeps over it, lighting a bright glowing disc that tracks the pointer. A flashlight reveal driven by a tiny script.",
   "focus-lens":
     "The word is soft and out of focus everywhere except a sharp disc under your cursor, which tracks the pointer like a magnifying lens.",
+  "weight-ripple-hover":
+    "Hovering sends a wave of boldness sweeping through the letters via per-letter variable-font weight transitions — a ripple of weight, no JavaScript.",
 };
 
 /** Full description with a sensible fallback. */

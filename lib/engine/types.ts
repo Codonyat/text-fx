@@ -109,6 +109,10 @@ export interface EffectDefinition {
   split?: "grapheme" | "word" | "line";
   supports?: string;
   fallbackCss?: string;
+  /** Force a specific CSS font-family (e.g. a variable font) instead of the shared
+   *  Font control. The engine applies it in commonCss, exports load it, and the UI
+   *  hides the now-moot Font control. */
+  font?: string;
   pngSupport: PngSupport;
   controls: Control[];
   rand: (R: Rng) => Record<string, ControlValue>;

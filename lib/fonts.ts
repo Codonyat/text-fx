@@ -22,8 +22,9 @@ export const FONTS: FontDef[] = [
   { name: "Bricolage", family: "'Bricolage Grotesque', sans-serif", google: "Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800", license: "OFL" },
   { name: "Space Mono", family: "'Space Mono', monospace", google: "Space+Mono:wght@400;700", license: "OFL" },
   { name: "Space Grotesk", family: "'Space Grotesk', sans-serif", google: "Space+Grotesk:wght@400;500;600;700", license: "OFL" },
-  // Variable font (wght + slnt) for the variable-font / morph effect family.
-  { name: "Recursive", family: "'Recursive', sans-serif", google: "Recursive:slnt,wght@-15..0,300..1000", license: "OFL" },
+  // Variable font for the variable-font / morph effect family. Loads four axes:
+  // slnt (0..-15), wght (300..1000), CASL (0 linear .. 1 casual), MONO (0 sans .. 1 mono).
+  { name: "Recursive", family: "'Recursive', sans-serif", google: "Recursive:slnt,wght,CASL,MONO@-15..0,300..1000,0..1,0..1", license: "OFL" },
 ];
 
 /** Fonts offered in the per-effect Font control (display set). */
