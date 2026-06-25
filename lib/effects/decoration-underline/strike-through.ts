@@ -1,0 +1,73 @@
+import type { EffectDefinition } from "@/lib/engine/types";
+import { el, text } from "@/lib/engine/markup";
+import { hsl, anim } from "@/lib/engine/helpers";
+
+/**
+ * Strike-through draw: a coloured line draws itself across the middle of the text
+ * from the left, holds, then retracts — looping. Mid-line placement and the draw-on
+ * set it apart from the underline family.
+ */
+const strikeThrough: EffectDefinition = {
+  id: "strike-through",
+  name: "Strikethrough",
+  category: "decoration-underline",
+  tags: ["strikethrough", "line", "draw", "decoration", "animated"],
+  caps: ["pure"],
+  pngSupport: "partial",
+  supports: "Animated background-size width on a centred line",
+  controls: [
+    { id: "hue", label: "Line Hue", type: "range", default: 0, min: 0, max: 360, step: 1, unit: "°" },
+    { id: "thickness", label: "Thickness", type: "range", default: 5, min: 2, max: 12, step: 1, unit: "px" },
+    {
+      id: "speed",
+      label: "Speed",
+      type: "range",
+      default: 3,
+      min: 1.5,
+      max: 7,
+      step: 0.1,
+      unit: "s",
+    },
+  ],
+  rand: (R) => ({
+    hue: R.ri(0, 360),
+    thickness: R.ri(3, 9),
+    speed: Number(R.rnd(2, 4.5).toFixed(1)),
+  }),
+  build: (ctx) => {
+    const h = ctx.values.hue as number;
+    const thickness = ctx.values.thickness as number;
+    const speed = ctx.values.speed as number;
+
+    const textColor = ctx.theme === "dark" ? hsl(h, 20, 92) : hsl(h, 30, 18);
+    const line = hsl(h, 90, ctx.theme === "dark" ? 60 : 48);
+    const a = anim(ctx.scope, "strike");
+
+    const css =
+      `.${ctx.scope} {\n` +
+      `  display: inline-block;\n` +
+      `  color: ${textColor};\n` +
+      `  background-image: linear-gradient(${line}, ${line});\n` +
+      `  background-repeat: no-repeat;\n` +
+      `  background-position: left center;\n` +
+      `  background-size: 0% ${thickness}px;\n` +
+      `  animation: ${a} ${speed.toFixed(1)}s ease-in-out infinite;\n` +
+      `}`;
+
+    const keyframes =
+      `@keyframes ${a} {\n` +
+      `  0% { background-size: 0% ${thickness}px; }\n` +
+      `  40%, 65% { background-size: 100% ${thickness}px; }\n` +
+      `  100% { background-size: 0% ${thickness}px; background-position: right center; }\n` +
+      `}`;
+
+    return {
+      root: el("div", { children: [text(ctx.text)] }),
+      css,
+      keyframes,
+      loopMs: speed * 1000,
+    };
+  },
+};
+
+export default strikeThrough;

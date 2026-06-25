@@ -18,23 +18,27 @@ import holographic from "./metallic-holographic/holographic";
 import shineSweep from "./metallic-holographic/shine-sweep";
 import oilSlick from "./metallic-holographic/oil-slick";
 import brushedMetal from "./metallic-holographic/brushed-metal";
+import glassFrost from "./metallic-holographic/glass-frost";
 import extrude3d from "./threed-depth/extrude-3d";
 import isometric3d from "./threed-depth/isometric-3d";
 import longShadow from "./threed-depth/long-shadow";
 import retro3d from "./threed-depth/retro-3d";
 import paperCutout from "./threed-depth/paper-cutout";
 import perspectiveTilt from "./threed-depth/perspective-tilt";
+import floating3d from "./threed-depth/floating-3d";
 import doubleOutline from "./outline-stroke/double-outline";
 import filledOutline from "./outline-stroke/filled-outline";
 import gradientStroke from "./outline-stroke/gradient-stroke";
 import outline from "./outline-stroke/outline";
 import glowOutline from "./outline-stroke/glow-outline";
+import outline3dExtrude from "./outline-stroke/outline-3d-extrude";
 import glitchRgb from "./glitch-distortion/glitch-rgb";
 import scanlineGlitch from "./glitch-distortion/scanline-glitch";
 import shakeGlitch from "./glitch-distortion/shake-glitch";
 import vhs from "./glitch-distortion/vhs";
 import blockGlitch from "./glitch-distortion/block-glitch";
 import colorSplit from "./glitch-distortion/color-split";
+import terminalPhosphor from "./glitch-distortion/terminal-phosphor";
 import candyStripe from "./retro-themed/candy-stripe";
 import pixel8bit from "./retro-themed/pixel-8bit";
 import sticker from "./retro-themed/sticker";
@@ -43,12 +47,17 @@ import comicPop from "./retro-themed/comic-pop";
 import distressStamp from "./retro-themed/distress-stamp";
 import balloonPuff from "./retro-themed/balloon-puff";
 import cartoonBubble from "./retro-themed/cartoon-bubble";
+import westernWood from "./retro-themed/western-wood";
+import graffitiSpray from "./retro-themed/graffiti-spray";
+import chalkboard from "./retro-themed/chalkboard";
+import ransomNote from "./retro-themed/ransom-note";
 import dropShadow from "./shadow-press/drop-shadow";
 import emboss from "./shadow-press/emboss";
 import hardOffset from "./shadow-press/hard-offset";
 import letterpress from "./shadow-press/letterpress";
 import long45 from "./shadow-press/long-45";
 import rainbowStack from "./shadow-press/rainbow-stack";
+import engrave from "./shadow-press/engrave";
 import aurora from "./elemental/aurora";
 import fire from "./elemental/fire";
 import gooey from "./elemental/gooey";
@@ -56,6 +65,8 @@ import ice from "./elemental/ice";
 import waterFill from "./elemental/water-fill";
 import moltenLava from "./elemental/molten-lava";
 import smokeDrift from "./elemental/smoke-drift";
+import lightning from "./elemental/lightning";
+import meltDrip from "./elemental/melt-drip";
 import imageFill from "./fill-texture/image-fill";
 import starfield from "./fill-texture/starfield";
 import stripeFill from "./fill-texture/stripe-fill";
@@ -78,6 +89,7 @@ import wavyUnderline from "./decoration-underline/wavy-underline";
 import gradientUnderline from "./decoration-underline/gradient-underline";
 import marchingUnderline from "./decoration-underline/marching-underline";
 import centerGrowUnderline from "./decoration-underline/center-grow-underline";
+import strikeThrough from "./decoration-underline/strike-through";
 import hoverSpotlight from "./interactive-advanced/hover-spotlight";
 import mirrorReflection from "./interactive-advanced/mirror-reflection";
 import echoTrail from "./interactive-advanced/echo-trail";
@@ -106,23 +118,27 @@ export const EFFECTS: EffectDefinition[] = [
   shineSweep,
   oilSlick,
   brushedMetal,
+  glassFrost,
   extrude3d,
   isometric3d,
   longShadow,
   retro3d,
   paperCutout,
   perspectiveTilt,
+  floating3d,
   doubleOutline,
   filledOutline,
   gradientStroke,
   outline,
   glowOutline,
+  outline3dExtrude,
   glitchRgb,
   scanlineGlitch,
   shakeGlitch,
   vhs,
   blockGlitch,
   colorSplit,
+  terminalPhosphor,
   candyStripe,
   pixel8bit,
   sticker,
@@ -131,12 +147,17 @@ export const EFFECTS: EffectDefinition[] = [
   distressStamp,
   balloonPuff,
   cartoonBubble,
+  westernWood,
+  graffitiSpray,
+  chalkboard,
+  ransomNote,
   dropShadow,
   emboss,
   hardOffset,
   letterpress,
   long45,
   rainbowStack,
+  engrave,
   aurora,
   fire,
   gooey,
@@ -144,6 +165,8 @@ export const EFFECTS: EffectDefinition[] = [
   waterFill,
   moltenLava,
   smokeDrift,
+  lightning,
+  meltDrip,
   imageFill,
   starfield,
   stripeFill,
@@ -166,6 +189,7 @@ export const EFFECTS: EffectDefinition[] = [
   gradientUnderline,
   marchingUnderline,
   centerGrowUnderline,
+  strikeThrough,
   hoverSpotlight,
   mirrorReflection,
   echoTrail,

@@ -41,6 +41,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A dark petrol iridescence — deep blue, violet, green and magenta in a slowly rotating conic sheen clipped to the text. Moodier than holographic foil.",
   "brushed-metal":
     "A tintable vertical metal ramp with fine vertical striations clipped to the glyphs. A matte machined-aluminium finish, distinct from glossy chrome.",
+  "glass-frost":
+    "A translucent glassy fill fading from bright to cool, edged with a thin light stroke and a frosty halo. Cool glassmorphism, theme-aware.",
   // threed-depth
   "extrude-3d":
     "Stacked offset text-shadows build a solid 3D extrusion with depth and direction controls, plus an optional float. The quintessential chunky 3D title.",
@@ -54,6 +56,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Stacked offset layers in graduated paper tones with a soft lifted shadow, for a layered paper-craft cut-out. Tactile depth without a flat extrude.",
   "perspective-tilt":
     "The word leans back into the page on a CSS 3D perspective with a stacked shadow extruding toward you. A solid slab receding in space.",
+  "floating-3d":
+    "The word hovers above the page, casting a large soft shadow far below while it gently bobs — levitation, not a tight drop shadow.",
   // outline-stroke
   outline:
     "Hollow outline text via -webkit-text-stroke, with an optional offset echo shadow. Minimal, editorial and lightweight.",
@@ -65,6 +69,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Transparent letters with a tinted outline plus a gradient glow copy behind, so the stroke reads as colorful. Outline art with depth.",
   "glow-outline":
     "Hollow letters with a bright colored stroke lit by a drop-shadow halo, plus an optional broken-sign flicker. A neon tube outline.",
+  "outline-3d-extrude":
+    "Hollow letters pushed into 3D by a stacked offset shadow in a deeper shade, so the outline itself reads as a chunky block.",
   // glitch-distortion
   "glitch-rgb":
     "The classic RGB-split glitch: cyan/magenta pseudo-element copies tear and shift on clip-path keyframes. Cyberpunk in a single class (needs a data-text attribute).",
@@ -77,6 +83,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A solid word with a colored bar flickering across horizontal bands on stepped clip-path keyframes, plus a tiny positional jump. Blocky data-corruption energy.",
   "color-split":
     "Two offset duotone copies sit either side of a neutral core for a static chromatic-aberration print look. Recolorable; no jitter.",
+  "terminal-phosphor":
+    "Glowing CRT-monitor text with an irregular power-on flicker, like an old phosphor screen warming up and stuttering.",
   // retro-themed
   sticker:
     "A white fill with a bold colored stroke and a hard drop-shadow — the die-cut sticker look. paint-order keeps thick strokes clean.",
@@ -94,6 +102,14 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Glossy inflated balloon lettering — a radial latex highlight clipped to the glyphs with a rounded edge and a gentle inflate-deflate pulse.",
   "cartoon-bubble":
     "A bright fill ringed by an inner white outline and a thick outer ink ring, built from stacked copies. The classic sticker/comic bubble.",
+  "western-wood":
+    "A vertical light-to-dark wood ramp with fine grain lines clipped to the glyphs, plus a carved edge — a saloon-sign plank.",
+  "graffiti-spray":
+    "A vivid multi-color fill wrapped in a soft spray haze and dropped with a hard offset, for bright stencil-tag street lettering.",
+  "chalkboard":
+    "Chalk-dust lettering with edges roughened by an SVG turbulence displacement and a faint dusty halo. White chalk on dark, charcoal on light.",
+  "ransom-note":
+    "Every letter is a cut-out chip with its own typeface, tilt and paper shade — the classic mismatched kidnapper-note collage (per-letter markup).",
   // shadow-press
   "drop-shadow":
     "A simple soft drop shadow under solid text, with blur and distance controls. The dependable, readable depth cue.",
@@ -107,6 +123,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A raised, embossed relief created with opposing light and dark text-shadows that adapt to the theme. A tactile, debossed-paper feel.",
   "rainbow-stack":
     "A flat face over a chain of hard offset shadows whose hue walks each step, building a candy-colored 3D ribbon behind the letters.",
+  "engrave":
+    "Letters carved into the surface — a low-contrast fill with a shadow on top and a highlight below (the inverse of emboss). Debossed and tactile.",
   // elemental
   fire: "Flickering flame text built from layered orange/red/yellow glows that dance on a loop. Hot, animated and attention-grabbing.",
   ice: "Crystalline ice — a cool blue gradient fill with a frosty stroke and a cold shadow. Wintry and clean.",
@@ -120,6 +138,10 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A bright hotspot drifts up and down through a yellow-orange-deep-red gradient clipped to the glyphs, with a warm glow. Molten and slow-flowing.",
   "smoke-drift":
     "Each letter softly blurs, lifts and fades then re-forms, offset per letter so a smoky haze rolls across the word. Stays legible (per-letter markup).",
+  "lightning":
+    "A cold electric-white core with a charged blue glow that crackles — erratic flicker with sudden bright spikes. Snappier than a steady neon.",
+  "melt-drip":
+    "A masked copy of the word oozes downward and fades on a loop, so the letters look like they're slowly melting off the baseline.",
   // fill-texture
   "image-fill":
     "Glyphs filled with a rich multi-gradient that reads like a photographic texture, via background-clip:text. An image-in-text look with zero assets.",
@@ -167,6 +189,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A dashed underline rule that marches steadily beneath the text via an animated background position. The text stays fully legible throughout.",
   "center-grow-underline":
     "A solid underline bar grows outward from the center to full width, holds, then retracts. Origin-from-center sets it apart from slide and dash underlines.",
+  "strike-through":
+    "A colored line draws itself across the middle of the text, holds, then retracts — a looping strikethrough, set apart from the underlines.",
   // interactive-advanced
   "hover-spotlight":
     "A radial spotlight reveals the colored text on hover using a CSS mask — no JavaScript. An interactive flashlight reveal.",
