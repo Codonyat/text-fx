@@ -66,7 +66,7 @@ textarea {
   --code-bg: #000000;
   --code-fg: #fafafa;
   --code-comment: #666666;
-  --grid: rgba(255, 255, 255, 0.05);
+  --grid: rgba(255, 255, 255, 0.1);
 }
 
 .app[data-theme="light"] {
