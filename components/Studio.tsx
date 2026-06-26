@@ -240,6 +240,7 @@ export function Studio() {
             root={live.root}
             defs={live.defs}
             reduceMotion={reduceMotion}
+            selectAllOnFocus={text === DEFAULT_TEXT}
             onTextChange={setText}
           />
           <ActionBar

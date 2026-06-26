@@ -5,6 +5,14 @@ import { toReact, type CreateElementLike } from "@/lib/engine/markup";
 import type { Capability, MarkupNode } from "@/lib/engine/types";
 import styles from "./Stage.module.css";
 
+function selectAllContents(el: HTMLElement) {
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  const sel = window.getSelection();
+  sel?.removeAllRanges();
+  sel?.addRange(range);
+}
+
 export function Stage({
   rootClass,
   text,
@@ -12,6 +20,7 @@ export function Stage({
   root,
   defs,
   reduceMotion,
+  selectAllOnFocus,
   onTextChange,
 }: {
   rootClass: string;
@@ -20,6 +29,7 @@ export function Stage({
   root: MarkupNode;
   defs?: string;
   reduceMotion: boolean;
+  selectAllOnFocus: boolean;
   onTextChange: (t: string) => void;
 }) {
   const perLetter = caps.includes("perLetter");
@@ -72,6 +82,19 @@ export function Stage({
     onTextChange(t);
   };
 
+  // While the text is still the untouched starter, focusing the field selects all
+  // of it so the first keystroke replaces it (instead of leaving the default behind).
+  // Deferred a tick so a mouse click's caret placement doesn't collapse the selection;
+  // re-checked inside so a stale timer can't select after the field has blurred.
+  const handleFocus = () => {
+    if (!selectAllOnFocus) return;
+    const el = editRef.current;
+    if (!el) return;
+    window.setTimeout(() => {
+      if (selectAllOnFocus && document.activeElement === el) selectAllContents(el);
+    }, 0);
+  };
+
   return (
     <div className={`${styles.stage}${reduceMotion ? " fx-reduce-motion" : ""}`}>
       {perLetter ? (
@@ -86,6 +109,7 @@ export function Stage({
             suppressContentEditableWarning
             spellCheck={false}
             onInput={handleInput}
+            onFocus={handleFocus}
             role="textbox"
             aria-label="Effect text"
           />
@@ -99,6 +123,7 @@ export function Stage({
           suppressContentEditableWarning
           spellCheck={false}
           onInput={handleInput}
+          onFocus={handleFocus}
           role="textbox"
           aria-label="Effect text"
         />
