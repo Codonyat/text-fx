@@ -31,14 +31,14 @@ const gooey: EffectDefinition = {
       id: "goo",
       label: "Gooeyness",
       type: "range",
-      default: 7,
-      min: 3,
+      default: 4,
+      min: 2,
       max: 14,
       step: 1,
       unit: "px",
     },
   ],
-  rand: (R) => ({ hue: R.ri(0, 360), goo: R.ri(5, 11) }),
+  rand: (R) => ({ hue: R.ri(0, 360), goo: R.ri(3, 6) }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
     const goo = ctx.values.goo as number;

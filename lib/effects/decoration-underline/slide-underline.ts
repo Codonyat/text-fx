@@ -25,8 +25,7 @@ const slideUnderline: EffectDefinition = {
     const thickness = ctx.values.thickness as number;
     const speed = ctx.values.speed as number;
     const txt = ctx.theme === "dark" ? hsl(h, 25, 96) : hsl(h, 45, 18);
-    const c1 = hsl(h, 90, 58);
-    const c2 = hsl((h + 50) % 360, 90, 60);
+    const c1 = hsl(h, 50, 58);
     const grow = anim(ctx.scope, "grow");
     const gap = Math.max(2, Math.round(thickness * 0.6));
     const css =
@@ -44,9 +43,10 @@ const slideUnderline: EffectDefinition = {
       `  width: 100%;\n` +
       `  height: ${thickness}px;\n` +
       `  border-radius: ${thickness}px;\n` +
-      `  background: linear-gradient(90deg, ${c1}, ${c2});\n` +
+      `  background: ${c1};\n` +
       `  transform-origin: left center;\n` +
-      `  animation: ${grow} ${speed.toFixed(1)}s ease-in-out infinite alternate;\n` +
+      `  transform: scaleX(0);\n` +
+      `  animation: ${grow} ${speed.toFixed(1)}s ease-in-out forwards;\n` +
       `}`;
     const keyframes =
       `@keyframes ${grow} {\n` +
@@ -57,8 +57,8 @@ const slideUnderline: EffectDefinition = {
       root: el("div", { children: [text(ctx.text)] }),
       css,
       keyframes,
-      // alternate means a full visual loop is two passes (grow then shrink)
-      loopMs: Math.round(speed * 2000),
+      // runs once forward (grow), so a single pass is the full visual
+      loopMs: Math.round(speed * 1000),
     };
   },
 };

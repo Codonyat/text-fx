@@ -4,8 +4,8 @@ import { hsl, clipText } from "@/lib/engine/helpers";
 
 /**
  * Crystalline ice: glyphs filled with a cool light-blue vertical gradient
- * (background-clip:text), edged with a thin frosty stroke and lit by a cold
- * cyan drop-shadow glow. Gradient/transparent fill -> glow MUST be a
+ * (background-clip:text), edged with a thin frosty stroke and lit by a single
+ * restrained cold drop-shadow glow. Gradient/transparent fill -> glow MUST be a
  * filter: drop-shadow(), never text-shadow (it would be invisible). Static.
  */
 const ice: EffectDefinition = {
@@ -38,15 +38,11 @@ const ice: EffectDefinition = {
     const bottom = hsl(h, 85, 60);
 
     const stroke = ctx.theme === "dark" ? hsl(h, 40, 100, 0.55) : hsl(h, 55, 100, 0.85);
-    const glow = hsl(h, 90, 70, 0.6);
-    const haze = hsl(h, 95, 78, 0.35);
+    const glow = hsl(h, 90, 70, 0.35);
 
-    // Cold glow built directly so we can layer the wider frosty haze. On
-    // gradient/clipped text only filter: drop-shadow() is visible.
-    const coldGlow =
-      `filter: drop-shadow(0 0 4px ${glow}) ` +
-      `drop-shadow(0 0 14px ${glow}) ` +
-      `drop-shadow(0 0 28px ${haze});`;
+    // Single restrained cold glow. On gradient/clipped text only
+    // filter: drop-shadow() is visible (text-shadow would be invisible).
+    const coldGlow = `filter: drop-shadow(0 0 6px ${glow});`;
 
     const css =
       `.${ctx.scope} {\n` +

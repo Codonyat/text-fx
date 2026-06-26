@@ -18,14 +18,14 @@ const glowOutline: EffectDefinition = {
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 190, min: 0, max: 360, step: 1, unit: "°" },
     { id: "stroke", label: "Stroke", type: "range", default: 2, min: 1, max: 5, step: 0.5, unit: "px" },
-    { id: "glow", label: "Glow", type: "range", default: 16, min: 4, max: 34, step: 1, unit: "px" },
-    { id: "flicker", label: "Flicker", type: "toggle", default: true, onLabel: "On", offLabel: "Off" },
+    { id: "glow", label: "Glow", type: "range", default: 10, min: 4, max: 34, step: 1, unit: "px" },
+    { id: "flicker", label: "Flicker", type: "toggle", default: false, onLabel: "On", offLabel: "Off" },
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
     stroke: R.pick([1.5, 2, 2.5, 3]),
-    glow: R.ri(10, 26),
-    flicker: R.chance(0.6),
+    glow: R.ri(8, 14),
+    flicker: R.chance(0.2),
   }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
@@ -34,7 +34,7 @@ const glowOutline: EffectDefinition = {
     const flicker = Boolean(ctx.values.flicker);
 
     const tube = hsl(h, 95, 62);
-    const glow = hsl(h, 100, 60, 0.95);
+    const glow = hsl(h, 60, 60, 0.95);
     const a = anim(ctx.scope, "flicker");
     const animDecl = flicker ? `\n  animation: ${a} 3.5s steps(1, end) infinite;` : "";
 
@@ -42,7 +42,7 @@ const glowOutline: EffectDefinition = {
       `.${ctx.scope} {\n` +
       `  color: transparent;\n` +
       `  -webkit-text-stroke: ${strokeW}px ${tube};\n` +
-      `  ${dropGlow(glow, [g * 0.5, g, g * 1.9])}` +
+      `  ${dropGlow(glow, [g])}` +
       `${animDecl}\n` +
       `}`;
 

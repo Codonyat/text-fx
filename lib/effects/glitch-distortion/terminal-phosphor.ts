@@ -17,7 +17,7 @@ const terminalPhosphor: EffectDefinition = {
   supports: "text-shadow glow + irregular opacity/brightness flicker",
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 130, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "glow", label: "Glow", type: "range", default: 10, min: 4, max: 24, step: 1, unit: "px" },
+    { id: "glow", label: "Glow", type: "range", default: 5, min: 2, max: 16, step: 1, unit: "px" },
     {
       id: "speed",
       label: "Flicker",
@@ -31,7 +31,7 @@ const terminalPhosphor: EffectDefinition = {
   ],
   rand: (R) => ({
     hue: R.pick([130, 130, 95, 35, 190]),
-    glow: R.ri(7, 18),
+    glow: R.ri(3, 9),
     speed: Number(R.rnd(3, 6).toFixed(1)),
   }),
   build: (ctx) => {
@@ -39,27 +39,27 @@ const terminalPhosphor: EffectDefinition = {
     const g = ctx.values.glow as number;
     const speed = ctx.values.speed as number;
 
-    const phosphor = hsl(h, 95, 60);
-    const core = hsl(h, 80, 88);
+    const phosphor = hsl(h, 55, 60);
+    const core = hsl(h, 45, 88);
     const a = anim(ctx.scope, "phosphor");
 
     const css =
       `.${ctx.scope} {\n` +
       `  color: ${phosphor};\n` +
-      `  ${glowShadow(phosphor, [g * 0.4, g], core)}\n` +
+      `  ${glowShadow(phosphor, [g * 0.5, g], core)}\n` +
       `  animation: ${a} ${speed.toFixed(1)}s steps(1, end) infinite;\n` +
       `}`;
 
-    // Mostly steady with brief brightness dips/stutters — a warming CRT.
+    // Steady phosphor with the faintest shimmer — barely-there brightness dips.
     const keyframes =
       `@keyframes ${a} {\n` +
       `  0%, 100% { opacity: 1; }\n` +
-      `  6% { opacity: 0.4; }\n` +
+      `  6% { opacity: 0.94; }\n` +
       `  8% { opacity: 1; }\n` +
-      `  9% { opacity: 0.7; }\n` +
+      `  9% { opacity: 0.97; }\n` +
       `  11% { opacity: 1; }\n` +
       `  52% { opacity: 1; }\n` +
-      `  53% { opacity: 0.55; }\n` +
+      `  53% { opacity: 0.96; }\n` +
       `  55% { opacity: 1; }\n` +
       `}`;
 

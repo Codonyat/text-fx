@@ -4,7 +4,7 @@ import { hsl, anim } from "@/lib/engine/helpers";
 
 /**
  * Center-grow underline: a solid underline bar grows outward from the centre to full
- * width, holds, then retracts — looping. Origin-from-centre sets it apart from the
+ * width once on entrance, then holds. Origin-from-centre sets it apart from the
  * left-anchored slide, the dashed march and the wavy underlines.
  */
 const centerGrowUnderline: EffectDefinition = {
@@ -43,7 +43,7 @@ const centerGrowUnderline: EffectDefinition = {
     const speed = ctx.values.speed as number;
 
     const textColor = ctx.theme === "dark" ? hsl(h, 25, 92) : hsl(h, 35, 18);
-    const rule = hsl(h, 90, ctx.theme === "dark" ? 62 : 48);
+    const rule = hsl(h, 50, ctx.theme === "dark" ? 62 : 48);
     const a = anim(ctx.scope, "grow");
 
     const css =
@@ -55,14 +55,13 @@ const centerGrowUnderline: EffectDefinition = {
       `  background-repeat: no-repeat;\n` +
       `  background-position: center 100%;\n` +
       `  background-size: 0% ${thickness}px;\n` +
-      `  animation: ${a} ${speed.toFixed(1)}s ease-in-out infinite;\n` +
+      `  animation: ${a} ${speed.toFixed(1)}s ease-out both;\n` +
       `}`;
 
     const keyframes =
       `@keyframes ${a} {\n` +
       `  0% { background-size: 0% ${thickness}px; }\n` +
-      `  40%, 60% { background-size: 100% ${thickness}px; }\n` +
-      `  100% { background-size: 0% ${thickness}px; }\n` +
+      `  100% { background-size: 100% ${thickness}px; }\n` +
       `}`;
 
     return {

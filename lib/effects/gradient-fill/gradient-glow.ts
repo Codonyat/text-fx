@@ -17,7 +17,7 @@ const gradientGlow: EffectDefinition = {
   supports: "background-clip:text + drop-shadow glow",
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 300, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "glow", label: "Glow", type: "range", default: 14, min: 4, max: 30, step: 1, unit: "px" },
+    { id: "glow", label: "Glow", type: "range", default: 9, min: 4, max: 30, step: 1, unit: "px" },
     {
       id: "speed",
       label: "Speed",
@@ -31,7 +31,7 @@ const gradientGlow: EffectDefinition = {
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    glow: R.ri(8, 24),
+    glow: R.ri(6, 14),
     speed: Number(R.rnd(4, 10).toFixed(1)),
   }),
   build: (ctx) => {
@@ -39,17 +39,17 @@ const gradientGlow: EffectDefinition = {
     const g = ctx.values.glow as number;
     const speed = ctx.values.speed as number;
 
-    const c1 = hsl(h, 95, 64);
-    const c2 = hsl((h + 50) % 360, 95, 60);
-    const c3 = hsl((h + 120) % 360, 95, 64);
-    const glow = hsl((h + 50) % 360, 100, 60, 0.55);
+    const c1 = hsl(h, 55, 64);
+    const c2 = hsl((h + 20) % 360, 55, 60);
+    const c3 = hsl((h + 45) % 360, 55, 64);
+    const glow = hsl((h + 20) % 360, 55, 60, 0.28);
     const a = anim(ctx.scope, "glowflow");
 
     const css =
       `.${ctx.scope} {\n` +
       `  ${clipText(`linear-gradient(90deg, ${c1}, ${c2}, ${c3}, ${c1})`)}\n` +
       `  background-size: 220% 100%;\n` +
-      `  ${dropGlow(glow, [g * 0.6, g * 1.6])}\n` +
+      `  ${dropGlow(glow, [g * 0.4, g * 1.0])}\n` +
       `  animation: ${a} ${speed.toFixed(1)}s linear infinite;\n` +
       `}`;
 

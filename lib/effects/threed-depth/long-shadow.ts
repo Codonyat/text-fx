@@ -11,7 +11,7 @@ const longShadow: EffectDefinition = {
   pngSupport: "good",
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 38, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "length", label: "Length", type: "range", default: 40, min: 10, max: 80, step: 1 },
+    { id: "length", label: "Length", type: "range", default: 34, min: 10, max: 80, step: 1 },
     { id: "angle", label: "Angle", type: "angle", default: 45, min: 0, max: 360, step: 1, unit: "°" },
   ],
   rand: (R) => ({
@@ -26,7 +26,7 @@ const longShadow: EffectDefinition = {
 
     // Face is the saturated brand color; the trailing shadow is a darker,
     // desaturated tint of the same hue so the long shadow reads as cast depth.
-    const face = ctx.theme === "dark" ? hsl(h, 85, 62) : hsl(h, 80, 48);
+    const face = ctx.theme === "dark" ? hsl(h, 55, 62) : hsl(h, 55, 48);
     const shadow = ctx.theme === "dark" ? hsl(h, 40, 22) : hsl(h, 35, 70);
 
     // Unit step along the chosen angle (1px-ish per layer for a smooth flat trail).

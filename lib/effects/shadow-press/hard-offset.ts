@@ -10,7 +10,7 @@ const hardOffset: EffectDefinition = {
   caps: ["pure"],
   pngSupport: "good",
   controls: [
-    { id: "hue", label: "Shadow Hue", type: "range", default: 350, min: 0, max: 360, step: 1, unit: "°" },
+    { id: "hue", label: "Shadow Hue", type: "range", default: 220, min: 0, max: 360, step: 1, unit: "°" },
     { id: "offset", label: "Offset", type: "range", default: 6, min: 2, max: 20, step: 1, unit: "px" },
     {
       id: "dir",
@@ -22,7 +22,7 @@ const hardOffset: EffectDefinition = {
     },
   ],
   rand: (R) => ({
-    hue: R.ri(0, 360),
+    hue: R.ri(200, 260),
     offset: R.ri(4, 12),
     dir: R.chance(0.5),
   }),
@@ -31,8 +31,8 @@ const hardOffset: EffectDefinition = {
     const o = ctx.values.offset as number;
     const dx = ctx.values.dir ? o : -o;
     // Crisp solid text with a flat, fully-opaque hard-edged shadow (blur 0).
-    const txt = ctx.theme === "dark" ? hsl(h, 20, 97) : hsl(h, 30, 14);
-    const shadow = hsl(h, 80, ctx.theme === "dark" ? 52 : 58);
+    const txt = ctx.theme === "dark" ? hsl(h, 12, 96) : hsl(h, 16, 12);
+    const shadow = hsl(h, 50, ctx.theme === "dark" ? 30 : 22);
     const css =
       `.${ctx.scope} {\n` +
       `  color: ${txt};\n` +

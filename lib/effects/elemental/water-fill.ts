@@ -16,7 +16,7 @@ const waterFill: EffectDefinition = {
   pngSupport: "partial",
   supports: "background-clip:text + animated @property <percentage> waterline",
   controls: [
-    { id: "hue", label: "Water Hue", type: "range", default: 200, min: 140, max: 260, step: 1, unit: "°" },
+    { id: "hue", label: "Water Hue", type: "range", default: 185, min: 140, max: 260, step: 1, unit: "°" },
     { id: "low", label: "Low Tide", type: "range", default: 25, min: 0, max: 50, step: 1, unit: "%" },
     { id: "high", label: "High Tide", type: "range", default: 85, min: 55, max: 100, step: 1, unit: "%" },
     {
@@ -31,7 +31,7 @@ const waterFill: EffectDefinition = {
     },
   ],
   rand: (R) => ({
-    hue: R.ri(170, 230),
+    hue: R.ri(170, 200),
     low: R.ri(10, 35),
     high: R.ri(70, 95),
     speed: Number(R.rnd(3, 7).toFixed(1)),
@@ -42,10 +42,10 @@ const waterFill: EffectDefinition = {
     const high = ctx.values.high as number;
     const speed = ctx.values.speed as number;
 
-    const w1 = hsl(h, 90, ctx.theme === "dark" ? 40 : 38); // deep
-    const w2 = hsl((h + 14) % 360, 95, ctx.theme === "dark" ? 62 : 56); // surface
+    const w1 = hsl(h, 55, ctx.theme === "dark" ? 40 : 38); // deep
+    const w2 = hsl((h + 14) % 360, 58, ctx.theme === "dark" ? 62 : 56); // surface
     const outline = ctx.theme === "dark" ? hsl(h, 40, 70, 0.85) : hsl(h, 45, 38, 0.85);
-    const glow = hsl(h, 90, 60, 0.4);
+    const glow = hsl(h, 55, 60, 0.4);
 
     const levelVar = prop(ctx.scope, "level");
     const a = anim(ctx.scope, "tide");

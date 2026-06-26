@@ -45,21 +45,21 @@ const gradientUnderline: EffectDefinition = {
 
     const gradient =
       `linear-gradient(90deg,` +
-      ` hsl(var(${hueVar}) 90% 60%),` +
-      ` hsl(calc(var(${hueVar}) + 70) 90% 58%),` +
-      ` hsl(calc(var(${hueVar}) + 160) 90% 60%),` +
-      ` hsl(calc(var(${hueVar}) + 250) 90% 58%))`;
+      ` hsl(var(${hueVar}) 50% 56%),` +
+      ` hsl(calc(var(${hueVar}) + 12) 50% 54%),` +
+      ` hsl(calc(var(${hueVar}) + 24) 50% 56%),` +
+      ` hsl(calc(var(${hueVar}) + 36) 50% 54%))`;
 
     const propertyRules =
       `@property ${hueVar} {\n` +
       `  syntax: "<number>";\n` +
       `  inherits: false;\n` +
-      `  initial-value: 0;\n` +
+      `  initial-value: 210;\n` +
       `}`;
 
     const css =
       `.${ctx.scope} {\n` +
-      `  ${hueVar}: 0;\n` +
+      `  ${hueVar}: 210;\n` +
       `  color: ${textColor};\n` +
       `  display: inline-block;\n` +
       `  padding-bottom: ${gap}px;\n` +
@@ -70,7 +70,7 @@ const gradientUnderline: EffectDefinition = {
       `  animation: ${a} ${speed.toFixed(1)}s linear infinite;\n` +
       `}`;
 
-    const keyframes = `@keyframes ${a} {\n  to { ${hueVar}: 360; }\n}`;
+    const keyframes = `@keyframes ${a} {\n  to { ${hueVar}: 210; }\n}`;
 
     return {
       root: el("div", { children: [text(ctx.text)] }),

@@ -24,8 +24,8 @@ const highlighter: EffectDefinition = {
     const h = ctx.values.hue as number;
     const band = ctx.values.band as number;
     const speed = ctx.values.speed as number;
-    // Marker ink reads on either theme; text stays high-contrast against it.
-    const ink = hsl(h, 95, ctx.theme === "dark" ? 60 : 72, 0.85);
+    // Muted marker ink reads on either theme; text stays high-contrast against it.
+    const ink = hsl(h, 45, ctx.theme === "dark" ? 72 : 84, 0.4);
     const txt = ctx.theme === "dark" ? hsl(h, 30, 8) : hsl(h, 60, 14);
     const wipe = anim(ctx.scope, "wipe");
     const top = (100 - band).toFixed(0);
@@ -41,19 +41,19 @@ const highlighter: EffectDefinition = {
       `  background-size: 0% ${band}%;\n` +
       `  box-decoration-break: clone;\n` +
       `  -webkit-box-decoration-break: clone;\n` +
-      `  animation: ${wipe} ${speed.toFixed(1)}s ease-out infinite alternate;\n` +
+      `  animation: ${wipe} ${speed.toFixed(1)}s ease-out 1 forwards;\n` +
       `}`;
     const keyframes =
       `@keyframes ${wipe} {\n` +
       `  0% { background-size: 0% ${band}%; }\n` +
-      `  60%, 100% { background-size: 100% ${band}%; }\n` +
+      `  100% { background-size: 100% ${band}%; }\n` +
       `}`;
     return {
       root: el("div", { children: [text(ctx.text)] }),
       css,
       keyframes,
-      // alternate: full visual cycle is wipe-in then wipe-out.
-      loopMs: Math.round(speed * 2000),
+      // single wipe-in that holds at full width (forwards).
+      loopMs: Math.round(speed * 1000),
     };
   },
 };

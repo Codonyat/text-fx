@@ -16,32 +16,33 @@ const conicSpin: EffectDefinition = {
       id: "speed",
       label: "Speed",
       type: "range",
-      default: 6,
-      min: 2,
-      max: 14,
+      default: 18,
+      min: 12,
+      max: 24,
       step: 0.1,
       unit: "s",
     },
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    speed: Number(R.rnd(4, 10).toFixed(1)),
+    speed: Number(R.rnd(16, 20).toFixed(1)),
   }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
     const speed = ctx.values.speed as number;
 
-    // A full-spectrum conic wheel anchored on the chosen hue so the rotation
-    // sweeps every part of the gradient through the glyphs.
-    const c0 = hsl(h, 95, 60);
-    const c1 = hsl((h + 72) % 360, 95, 58);
-    const c2 = hsl((h + 144) % 360, 95, 62);
-    const c3 = hsl((h + 216) % 360, 95, 58);
-    const c4 = hsl((h + 288) % 360, 95, 60);
+    // A tight analogous conic wheel (~+/-40deg around the chosen hue) at muted
+    // saturation, so the slow rotation sweeps a restrained band of related hues
+    // through the glyphs instead of the full spectrum.
+    const c0 = hsl(h, 55, 60);
+    const c1 = hsl((h + 20) % 360, 55, 58);
+    const c2 = hsl((h + 40) % 360, 55, 62);
+    const c3 = hsl((h + 360 - 20) % 360, 55, 58);
+    const c4 = hsl((h + 360 - 40) % 360, 55, 60);
 
     const angleVar = prop(ctx.scope, "angle");
     const a = anim(ctx.scope, "spin");
-    const glow = ctx.theme === "dark" ? hsl(h, 90, 55, 0.45) : hsl(h, 80, 45, 0.3);
+    const glow = ctx.theme === "dark" ? hsl(h, 55, 55, 0.22) : hsl(h, 50, 45, 0.14);
 
     const gradient =
       `conic-gradient(from var(${angleVar}), ` +
@@ -58,7 +59,7 @@ const conicSpin: EffectDefinition = {
       `.${ctx.scope} {\n` +
       `  ${angleVar}: 0deg;\n` +
       `  ${clipText(gradient)}\n` +
-      `  ${dropGlow(glow, [12])}\n` +
+      `  ${dropGlow(glow, [6])}\n` +
       `  animation: ${a} ${speed.toFixed(1)}s linear infinite;\n` +
       `}`;
 

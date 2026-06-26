@@ -30,7 +30,7 @@ const mirrorReflection: EffectDefinition = {
       id: "strength",
       label: "Reflection",
       type: "range",
-      default: 45,
+      default: 28,
       min: 10,
       max: 80,
       step: 1,
@@ -40,7 +40,7 @@ const mirrorReflection: EffectDefinition = {
   rand: (R) => ({
     hue: R.ri(0, 360),
     gap: R.ri(2, 14),
-    strength: R.ri(25, 65),
+    strength: R.ri(18, 38),
   }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
@@ -48,9 +48,9 @@ const mirrorReflection: EffectDefinition = {
     const strength = ctx.values.strength as number;
 
     // Bright top -> deeper bottom for a polished, light-from-above look.
-    const top = hsl(h, 90, ctx.theme === "dark" ? 78 : 58);
-    const bottom = hsl(h, 95, ctx.theme === "dark" ? 52 : 40);
-    const glow = hsl(h, 100, 60);
+    const top = hsl(h, 52, ctx.theme === "dark" ? 78 : 58);
+    const bottom = hsl(h, 55, ctx.theme === "dark" ? 52 : 40);
+    const glow = hsl(h, 50, 60);
 
     // The reflection fades in starting partway down; `strength`/100 sets how
     // opaque the brightest part of the mirrored copy gets.
@@ -60,7 +60,7 @@ const mirrorReflection: EffectDefinition = {
     const css =
       `.${ctx.scope} {\n` +
       `  ${clipText(`linear-gradient(180deg, ${top}, ${bottom})`)}\n` +
-      `  ${dropGlow(glow, [10, 26])}\n` +
+      `  ${dropGlow(glow, [6])}\n` +
       `  -webkit-box-reflect: below ${gap}px ${reflectMask};\n` +
       `}`;
 

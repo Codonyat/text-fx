@@ -10,22 +10,22 @@ const long45: EffectDefinition = {
   caps: ["pure"],
   pngSupport: "good",
   controls: [
-    { id: "hue", label: "Shadow Hue", type: "range", default: 265, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "length", label: "Length", type: "range", default: 40, min: 12, max: 80, step: 1 },
+    { id: "hue", label: "Shadow Hue", type: "range", default: 220, min: 0, max: 360, step: 1, unit: "°" },
+    { id: "length", label: "Length", type: "range", default: 24, min: 12, max: 80, step: 1 },
   ],
   rand: (R) => ({
-    hue: R.ri(0, 360),
-    length: R.ri(24, 60),
+    hue: R.ri(200, 240),
+    length: R.ri(16, 36),
   }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
     const len = Math.round(ctx.values.length as number);
-    const txt = ctx.theme === "dark" ? hsl(h, 30, 95) : hsl(h, 55, 30);
+    const txt = ctx.theme === "dark" ? hsl(h, 25, 95) : hsl(h, 30, 30);
     // A 45deg long cast that fades out along its length toward transparent.
     // Distinct from a 3D extrude: each step gets progressively lighter/dimmer,
     // simulating a dramatic cast shadow rather than a solid extruded side.
     const baseL = ctx.theme === "dark" ? 10 : 42;
-    const baseS = ctx.theme === "dark" ? 60 : 50;
+    const baseS = ctx.theme === "dark" ? 30 : 28;
     const layers: string[] = [];
     for (let i = 1; i <= len; i++) {
       const t = i / len; // 0 -> 1 along the cast

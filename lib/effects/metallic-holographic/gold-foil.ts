@@ -12,9 +12,9 @@ const goldFoil: EffectDefinition = {
   supports: "background-clip:text (all modern, -webkit- prefixed)",
   controls: [
     { id: "hue", label: "Tint", type: "range", default: 45, min: 30, max: 60, step: 1, unit: "°" },
-    { id: "shine", label: "Shine", type: "range", default: 70, min: 0, max: 100, step: 1, unit: "%" },
+    { id: "shine", label: "Shine", type: "range", default: 45, min: 0, max: 100, step: 1, unit: "%" },
   ],
-  rand: (R) => ({ hue: R.ri(38, 52), shine: R.ri(45, 90) }),
+  rand: (R) => ({ hue: R.ri(38, 52), shine: R.ri(30, 60) }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
     const shine = ctx.values.shine as number;
@@ -25,15 +25,15 @@ const goldFoil: EffectDefinition = {
     // A vertical foil gradient: bright top, dark waist, glint near the bottom.
     const gradient =
       `linear-gradient(180deg,\n` +
-      `    ${hsl(h + 6, 70, hiL)} 0%,\n` +
-      `    ${hsl(h, 90, 64)} 26%,\n` +
-      `    ${hsl(h - 4, 95, midL)} 50%,\n` +
-      `    ${hsl(h, 92, 58)} 64%,\n` +
-      `    ${hsl(h + 8, 80, hiL)} 80%,\n` +
-      `    ${hsl(h, 88, 50)} 100%)`;
+      `    ${hsl(h + 6, 52, hiL)} 0%,\n` +
+      `    ${hsl(h, 54, 64)} 26%,\n` +
+      `    ${hsl(h - 4, 55, midL)} 50%,\n` +
+      `    ${hsl(h, 54, 58)} 64%,\n` +
+      `    ${hsl(h + 8, 52, hiL)} 80%,\n` +
+      `    ${hsl(h, 53, 50)} 100%)`;
     // Warm halo + a tight dark grounding edge. text-shadow is invisible on
     // transparent-fill text, so both come from the drop-shadow filter stack.
-    const halo = hsl(h, 95, 60, 0.55);
+    const halo = hsl(h, 52, 60, 0.35);
     const css =
       `.${ctx.scope} {\n` +
       `  ${clipText(gradient)}\n` +

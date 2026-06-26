@@ -23,7 +23,7 @@ const marchingUnderline: EffectDefinition = {
       id: "speed",
       label: "Speed",
       type: "range",
-      default: 4,
+      default: 7,
       min: 1.5,
       max: 10,
       step: 0.1,
@@ -34,7 +34,7 @@ const marchingUnderline: EffectDefinition = {
     hue: R.ri(0, 360),
     dash: R.ri(5, 14),
     thickness: R.ri(2, 7),
-    speed: Number(R.rnd(2.5, 7).toFixed(1)),
+    speed: Number(R.rnd(5.5, 8.5).toFixed(1)),
   }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
@@ -43,7 +43,8 @@ const marchingUnderline: EffectDefinition = {
     const speed = ctx.values.speed as number;
 
     const textColor = ctx.theme === "dark" ? hsl(h, 25, 92) : hsl(h, 35, 18);
-    const rule = hsl(h, 90, ctx.theme === "dark" ? 62 : 46);
+    const rule = hsl(h, 45, ctx.theme === "dark" ? 62 : 46);
+    const gap = hsl(h, 45, ctx.theme === "dark" ? 28 : 80);
     const period = dash * 2;
     const a = anim(ctx.scope, "march");
 
@@ -52,7 +53,7 @@ const marchingUnderline: EffectDefinition = {
       `  display: inline-block;\n` +
       `  color: ${textColor};\n` +
       `  padding-bottom: ${thickness + 4}px;\n` +
-      `  background-image: repeating-linear-gradient(90deg, ${rule} 0 ${dash}px, transparent ${dash}px ${period}px);\n` +
+      `  background-image: repeating-linear-gradient(90deg, ${rule} 0 ${dash}px, ${gap} ${dash}px ${period}px);\n` +
       `  background-size: ${period}px ${thickness}px;\n` +
       `  background-position: 0 100%;\n` +
       `  background-repeat: repeat-x;\n` +

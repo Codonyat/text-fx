@@ -17,7 +17,7 @@ const liquidWarp: EffectDefinition = {
   supports: "SVG feTurbulence + feDisplacementMap (SMIL-animated) via filter:url(#…)",
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 195, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "amount", label: "Warp", type: "range", default: 14, min: 4, max: 30, step: 1, unit: "px" },
+    { id: "amount", label: "Warp", type: "range", default: 6, min: 4, max: 30, step: 1, unit: "px" },
     {
       id: "speed",
       label: "Speed",
@@ -31,7 +31,7 @@ const liquidWarp: EffectDefinition = {
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    amount: R.ri(8, 22),
+    amount: R.ri(4, 9),
     speed: Number(R.rnd(4, 10).toFixed(1)),
   }),
   build: (ctx) => {
@@ -39,7 +39,7 @@ const liquidWarp: EffectDefinition = {
     const amount = ctx.values.amount as number;
     const speed = ctx.values.speed as number;
 
-    const fill = ctx.theme === "dark" ? hsl(h, 85, 64) : hsl(h, 80, 46);
+    const fill = ctx.theme === "dark" ? hsl(h, 52, 64) : hsl(h, 50, 46);
     const fid = svgId(ctx.scope, "warp");
 
     const defs =

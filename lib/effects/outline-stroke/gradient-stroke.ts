@@ -24,16 +24,16 @@ const gradientStroke: EffectDefinition = {
     const h = ctx.values.hue as number;
     const angle = ctx.values.angle as number;
     const w = ctx.values.width as number;
-    const c1 = hsl(h, 95, 62);
-    const c2 = hsl((h + 55) % 360, 95, 60);
-    const c3 = hsl((h + 130) % 360, 92, 64);
+    const c1 = hsl(h, 55, 62);
+    const c2 = hsl((h + 12) % 360, 55, 60);
+    const c3 = hsl((h + 26) % 360, 52, 64);
     const gradient = `linear-gradient(${angle}deg, ${c1}, ${c2}, ${c3})`;
     // The stroke colour itself cannot be a gradient, so the gradient is clipped
     // into a ::before copy that sits *behind* the glyphs; the root is a
     // transparent-fill outline whose stroke is tinted to read as part of the
     // same gradient. Result: a hollow letterform with a glowing gradient core
     // peeking through a crisp coloured edge.
-    const strokeColor = hsl((h + 92) % 360, 96, ctx.theme === "dark" ? 66 : 46);
+    const strokeColor = hsl((h + 18) % 360, 56, ctx.theme === "dark" ? 66 : 46);
     const css =
       `.${ctx.scope} {\n` +
       `  position: relative;\n` +

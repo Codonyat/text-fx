@@ -25,7 +25,7 @@ const scanlineGlitch: EffectDefinition = {
       id: "speed",
       label: "Speed",
       type: "range",
-      default: 4,
+      default: 7,
       min: 1,
       max: 10,
       step: 0.1,
@@ -34,15 +34,15 @@ const scanlineGlitch: EffectDefinition = {
   ],
   rand: (R) => ({
     hue: R.pick([145, 190, 95, 50, 320]),
-    speed: Number(R.rnd(2.5, 7).toFixed(1)),
+    speed: Number(R.rnd(6, 8.5).toFixed(1)),
   }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
     const speed = ctx.values.speed as number;
     // Phosphor-bright on dark, deeper/saturated on light so glyphs stay legible.
-    const lit = ctx.theme === "dark" ? hsl(h, 95, 66) : hsl(h, 90, 42);
-    const dim = ctx.theme === "dark" ? hsl(h, 90, 30) : hsl(h, 80, 70);
-    const glow = hsl(h, 100, 60);
+    const lit = ctx.theme === "dark" ? hsl(h, 55, 66) : hsl(h, 55, 42);
+    const dim = ctx.theme === "dark" ? hsl(h, 55, 30) : hsl(h, 50, 70);
+    const glow = hsl(h, 55, 60);
 
     const scroll = anim(ctx.scope, "scan");
     const flick = anim(ctx.scope, "flick");
@@ -56,10 +56,10 @@ const scanlineGlitch: EffectDefinition = {
       `.${ctx.scope} {\n` +
       `  ${clipText(scanGradient)}\n` +
       `  background-size: 100% 8px;\n` +
-      `  ${dropGlow(glow, [4, 10])}\n` +
+      `  ${dropGlow(glow, [1, 4])}\n` +
       `  animation:\n` +
       `    ${scroll} ${speed.toFixed(1)}s linear infinite,\n` +
-      `    ${flick} ${(speed / 6).toFixed(2)}s steps(1, end) infinite;\n` +
+      `    ${flick} ${(speed / 3).toFixed(2)}s steps(1, end) infinite;\n` +
       `}`;
 
     const keyframes =
@@ -69,9 +69,9 @@ const scanlineGlitch: EffectDefinition = {
       `}\n` +
       `@keyframes ${flick} {\n` +
       `  0%, 88%, 100% { opacity: 1; }\n` +
-      `  90%           { opacity: 0.82; }\n` +
-      `  94%           { opacity: 0.96; }\n` +
-      `  97%           { opacity: 0.7; }\n` +
+      `  90%           { opacity: 0.95; }\n` +
+      `  94%           { opacity: 0.99; }\n` +
+      `  97%           { opacity: 0.92; }\n` +
       `}`;
 
     return {

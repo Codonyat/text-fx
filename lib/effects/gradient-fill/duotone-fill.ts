@@ -34,12 +34,12 @@ const duotoneFill: EffectDefinition = {
     const angle = ctx.values.angle as number;
     const spread = ctx.values.spread as number;
 
-    // Two complementary tones; nudge lightness so both read on the theme.
-    const h2 = (h + 165) % 360;
+    // Two analogous tones; nudge lightness so both read on the theme.
+    const h2 = (h + 35) % 360;
     const l1 = ctx.theme === "dark" ? 66 : 52;
     const l2 = ctx.theme === "dark" ? 58 : 46;
-    const c1 = hsl(h, 90, l1);
-    const c2 = hsl(h2, 90, l2);
+    const c1 = hsl(h, 60, l1);
+    const c2 = hsl(h2, 60, l2);
 
     // Hard stop: both colors meet at the same position for a crisp split.
     const gradient =

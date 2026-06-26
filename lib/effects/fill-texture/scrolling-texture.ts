@@ -22,9 +22,9 @@ const scrollingTexture: EffectDefinition = {
       id: "speed",
       label: "Speed",
       type: "range",
-      default: 4,
+      default: 18,
       min: 1.5,
-      max: 10,
+      max: 18,
       step: 0.1,
       unit: "s",
     },
@@ -32,16 +32,16 @@ const scrollingTexture: EffectDefinition = {
   rand: (R) => ({
     hue: R.ri(0, 360),
     scale: R.ri(6, 14),
-    speed: Number(R.rnd(2.5, 7).toFixed(1)),
+    speed: Number(R.rnd(12, 18).toFixed(1)),
   }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
     const s = ctx.values.scale as number;
     const speed = ctx.values.speed as number;
 
-    const c1 = ctx.theme === "dark" ? hsl(h, 80, 60) : hsl(h, 75, 45);
-    const c2 = ctx.theme === "dark" ? hsl((h + 24) % 360, 75, 40) : hsl((h + 24) % 360, 70, 62);
-    const c3 = hsl((h + 200) % 360, 85, ctx.theme === "dark" ? 70 : 50, 0.5);
+    const c1 = ctx.theme === "dark" ? hsl(h, 50, 58) : hsl(h, 48, 48);
+    const c2 = ctx.theme === "dark" ? hsl((h + 24) % 360, 48, 48) : hsl((h + 24) % 360, 45, 58);
+    const c3 = hsl((h + 200) % 360, 52, ctx.theme === "dark" ? 64 : 54, 0.28);
     const a = anim(ctx.scope, "weave");
 
     const warp = `repeating-linear-gradient(45deg, ${c1} 0 ${s}px, ${c2} ${s}px ${s * 2}px)`;

@@ -17,12 +17,12 @@ const jellyWobble: EffectDefinition = {
   pngSupport: "good",
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 300, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "bounce", label: "Bounce", type: "range", default: 22, min: 8, max: 40, step: 1, unit: "%" },
+    { id: "bounce", label: "Bounce", type: "range", default: 12, min: 8, max: 40, step: 1, unit: "%" },
     {
       id: "speed",
       label: "Speed",
       type: "range",
-      default: 1.8,
+      default: 2.8,
       min: 0.8,
       max: 4,
       step: 0.1,
@@ -31,15 +31,15 @@ const jellyWobble: EffectDefinition = {
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    bounce: R.ri(14, 34),
-    speed: Number(R.rnd(1.2, 3).toFixed(1)),
+    bounce: R.ri(8, 18),
+    speed: Number(R.rnd(2.2, 3.6).toFixed(1)),
   }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
     const amt = (ctx.values.bounce as number) / 100;
     const speed = ctx.values.speed as number;
 
-    const base = ctx.theme === "dark" ? hsl(h, 85, 70) : hsl(h, 80, 48);
+    const base = ctx.theme === "dark" ? hsl(h, 50, 70) : hsl(h, 50, 48);
     const a = anim(ctx.scope, "jelly");
 
     // Squash wide -> stretch tall -> settle, anchored to the baseline.

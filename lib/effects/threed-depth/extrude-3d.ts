@@ -11,7 +11,7 @@ const extrude3d: EffectDefinition = {
   pngSupport: "good",
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 210, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "depth", label: "Depth", type: "range", default: 10, min: 3, max: 22, step: 1 },
+    { id: "depth", label: "Depth", type: "range", default: 6, min: 3, max: 22, step: 1 },
     { id: "dir", label: "Direction", type: "toggle", default: false, onLabel: "RIGHT", offLabel: "LEFT" },
     { id: "float", label: "Float", type: "toggle", default: false },
     {
@@ -28,16 +28,16 @@ const extrude3d: EffectDefinition = {
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    depth: R.ri(6, 13),
+    depth: R.ri(4, 7),
     dir: R.chance(0.5),
-    float: R.chance(0.4),
+    float: false,
     speed: Number(R.rnd(2, 4).toFixed(1)),
   }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
     const n = Math.round(ctx.values.depth as number);
     const dx = ctx.values.dir ? 1 : -1;
-    const face = ctx.theme === "dark" ? hsl(h, 82, 72) : hsl(h, 75, 55);
+    const face = ctx.theme === "dark" ? hsl(h, 50, 72) : hsl(h, 48, 55);
     const dk = ctx.theme === "dark" ? hsl(h, 55, 26) : hsl(h, 48, 38);
     const layers: string[] = [];
     for (let i = 1; i <= n; i++) layers.push(`${i * dx}px ${i}px 0 ${dk}`);

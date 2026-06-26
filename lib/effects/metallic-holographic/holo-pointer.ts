@@ -26,14 +26,14 @@ const holoPointer: EffectDefinition = {
   build: (ctx) => {
     const h = ctx.values.hue as number;
     const range = ctx.values.range as number;
-    const l = ctx.theme === "dark" ? 64 : 54;
+    const l = ctx.theme === "dark" ? 60 : 56;
 
-    const c0 = hsl(h, 95, l);
-    const c1 = hsl((h + 55) % 360, 95, l + 4);
-    const c2 = hsl((h + 130) % 360, 95, l);
-    const c3 = hsl((h + 210) % 360, 95, l + 2);
-    const c4 = hsl((h + 300) % 360, 95, l);
-    const glow = hsl((h + 130) % 360, 90, 60, 0.4);
+    const c0 = hsl(h, 60, l);
+    const c1 = hsl((h + 55) % 360, 60, l + 4);
+    const c2 = hsl((h + 130) % 360, 60, l);
+    const c3 = hsl((h + 210) % 360, 60, l + 2);
+    const c4 = hsl((h + 300) % 360, 60, l);
+    const glow = hsl((h + 130) % 360, 60, 62, 0.4);
 
     const foil = `linear-gradient(115deg, ${c0}, ${c1}, ${c2}, ${c3}, ${c4}, ${c0})`;
     // A pointer-tracked specular glint over the panning foil makes even the still

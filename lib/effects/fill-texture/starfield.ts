@@ -19,10 +19,11 @@ const starfield: EffectDefinition = {
   build: (ctx) => {
     const h = ctx.values.hue as number;
 
-    // Deep tinted sky base (kept dark so bright stars pop).
-    const skyTop = hsl(h, 70, 14);
-    const skyMid = hsl((h + 18) % 360, 65, 9);
-    const skyBottom = hsl((h + 40) % 360, 60, 5);
+    // Deep tinted sky base — kept rich but light enough that the glyphs read on a
+    // dark stage (too dark and the text vanishes against the background).
+    const skyTop = hsl(h, 60, 40);
+    const skyMid = hsl((h + 18) % 360, 58, 30);
+    const skyBottom = hsl((h + 40) % 360, 55, 21);
 
     // Star colors: bright cores with a faint nebula tint.
     const star = "#ffffff";
@@ -48,7 +49,7 @@ const starfield: EffectDefinition = {
       `.${ctx.scope} {\n` +
       `  ${clipText(fill)}\n` +
       `  background-size: 100% 100%;\n` +
-      `  ${dropGlow(hsl(h, 80, 60, 0.5), [12])}\n` +
+      `  ${dropGlow(hsl(h, 70, 62, 0.38), [10])}\n` +
       `}`;
 
     return { root: el("div", { children: [text(ctx.text)] }), css };

@@ -17,7 +17,7 @@ const meshGradient: EffectDefinition = {
   supports: "background-clip:text + layered radial-gradient mesh",
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 250, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "spread", label: "Spread", type: "range", default: 70, min: 20, max: 140, step: 1, unit: "°" },
+    { id: "spread", label: "Spread", type: "range", default: 22, min: 20, max: 140, step: 1, unit: "°" },
     { id: "animate", label: "Drift", type: "toggle", default: true, onLabel: "On", offLabel: "Off" },
     {
       id: "speed",
@@ -33,7 +33,7 @@ const meshGradient: EffectDefinition = {
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    spread: R.ri(40, 120),
+    spread: R.ri(20, 34),
     animate: R.chance(0.7),
     speed: Number(R.rnd(6, 15).toFixed(1)),
   }),
@@ -44,11 +44,11 @@ const meshGradient: EffectDefinition = {
     const speed = ctx.values.speed as number;
     const l = ctx.theme === "dark" ? 62 : 52;
 
-    const c1 = hsl(h, 92, l);
-    const c2 = hsl((h + spread) % 360, 92, l + 3);
-    const c3 = hsl((h + spread * 2) % 360, 90, l + 1);
-    const c4 = hsl((h + spread * 3) % 360, 92, l - 2);
-    const base = hsl((h + spread * 1.5) % 360, 80, l);
+    const c1 = hsl(h, 58, l);
+    const c2 = hsl((h + spread) % 360, 58, l + 3);
+    const c3 = hsl((h + spread * 2) % 360, 56, l + 1);
+    const c4 = hsl((h + spread * 3) % 360, 58, l - 2);
+    const base = hsl((h + spread * 1.5) % 360, 50, l);
 
     const a = anim(ctx.scope, "mesh");
     const animDecl = animate ? `\n  animation: ${a} ${speed.toFixed(1)}s ease-in-out infinite;` : "";

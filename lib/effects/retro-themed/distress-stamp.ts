@@ -17,22 +17,22 @@ const distressStamp: EffectDefinition = {
   pngSupport: "partial",
   supports: "SVG feTurbulence/feDisplacementMap + feComposite via filter:url(#…)",
   controls: [
-    { id: "hue", label: "Ink Hue", type: "range", default: 0, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "rough", label: "Rough Edges", type: "range", default: 2, min: 0, max: 5, step: 0.5, unit: "px" },
-    { id: "grit", label: "Grit", type: "range", default: 55, min: 10, max: 90, step: 1, unit: "%" },
+    { id: "hue", label: "Ink Hue", type: "range", default: 220, min: 0, max: 360, step: 1, unit: "°" },
+    { id: "rough", label: "Rough Edges", type: "range", default: 1.5, min: 0, max: 5, step: 0.5, unit: "px" },
+    { id: "grit", label: "Grit", type: "range", default: 35, min: 10, max: 90, step: 1, unit: "%" },
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    rough: R.pick([1, 1.5, 2, 2.5, 3]),
-    grit: R.ri(30, 75),
+    rough: R.pick([1, 1.5, 2]),
+    grit: R.ri(25, 50),
   }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
     const rough = ctx.values.rough as number;
     const grit = ctx.values.grit as number;
 
-    // Ink reads on either theme; the hue tints it.
-    const ink = ctx.theme === "dark" ? hsl(h, 55, 72) : hsl(h, 60, 32);
+    // Ink reads on either theme; the hue lightly tints a desaturated near-black.
+    const ink = ctx.theme === "dark" ? hsl(h, 12, 80) : hsl(h, 14, 16);
     const fid = svgId(ctx.scope, "distress");
 
     // grit -> alpha bias of the speckle: higher = more holes punched out.

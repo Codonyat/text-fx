@@ -17,11 +17,11 @@ const parallaxLayers: EffectDefinition = {
   supports: "Stacked data-text copies translating at different pointer-driven rates.",
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 285, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "depth", label: "Depth", type: "range", default: 40, min: 15, max: 80, step: 1, unit: "%" },
+    { id: "depth", label: "Depth", type: "range", default: 22, min: 15, max: 80, step: 1, unit: "%" },
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    depth: R.ri(25, 65),
+    depth: R.ri(18, 40),
   }),
   build: (ctx) => {
     const hue = ctx.values.hue as number;
@@ -30,7 +30,7 @@ const parallaxLayers: EffectDefinition = {
     const k2 = (d * 1.2).toFixed(2);
     const dark = ctx.theme === "dark";
 
-    const face = dark ? hsl(hue, 80, 78) : hsl(hue, 75, 44);
+    const face = dark ? hsl(hue, 50, 78) : hsl(hue, 50, 44);
     const mid = dark ? hsl(hue, 60, 50) : hsl(hue, 55, 62);
     const deep = dark ? hsl(hue, 45, 32) : hsl(hue, 40, 76);
 

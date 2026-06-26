@@ -17,7 +17,7 @@ const strikeThrough: EffectDefinition = {
   supports: "Animated background-size width on a centred line",
   controls: [
     { id: "hue", label: "Line Hue", type: "range", default: 0, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "thickness", label: "Thickness", type: "range", default: 5, min: 2, max: 12, step: 1, unit: "px" },
+    { id: "thickness", label: "Thickness", type: "range", default: 3, min: 2, max: 12, step: 1, unit: "px" },
     {
       id: "speed",
       label: "Speed",
@@ -31,7 +31,7 @@ const strikeThrough: EffectDefinition = {
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    thickness: R.ri(3, 9),
+    thickness: R.ri(2, 5),
     speed: Number(R.rnd(2, 4.5).toFixed(1)),
   }),
   build: (ctx) => {
@@ -40,7 +40,7 @@ const strikeThrough: EffectDefinition = {
     const speed = ctx.values.speed as number;
 
     const textColor = ctx.theme === "dark" ? hsl(h, 20, 92) : hsl(h, 30, 18);
-    const line = hsl(h, 90, ctx.theme === "dark" ? 60 : 48);
+    const line = hsl(h, 30, ctx.theme === "dark" ? 60 : 38);
     const a = anim(ctx.scope, "strike");
 
     const css =
@@ -51,14 +51,13 @@ const strikeThrough: EffectDefinition = {
       `  background-repeat: no-repeat;\n` +
       `  background-position: left center;\n` +
       `  background-size: 0% ${thickness}px;\n` +
-      `  animation: ${a} ${speed.toFixed(1)}s ease-in-out infinite;\n` +
+      `  animation: ${a} ${speed.toFixed(1)}s ease-in-out forwards;\n` +
       `}`;
 
     const keyframes =
       `@keyframes ${a} {\n` +
       `  0% { background-size: 0% ${thickness}px; }\n` +
-      `  40%, 65% { background-size: 100% ${thickness}px; }\n` +
-      `  100% { background-size: 0% ${thickness}px; background-position: right center; }\n` +
+      `  100% { background-size: 100% ${thickness}px; }\n` +
       `}`;
 
     return {

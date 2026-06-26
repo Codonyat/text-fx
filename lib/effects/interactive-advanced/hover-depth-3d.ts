@@ -17,7 +17,7 @@ const hoverDepth3d: EffectDefinition = {
   supports: "Extrudes on :hover via a stacked offset shadow — static preview is flat.",
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 265, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "depth", label: "Depth", type: "range", default: 8, min: 3, max: 16, step: 1, unit: "px" },
+    { id: "depth", label: "Depth", type: "range", default: 5, min: 3, max: 16, step: 1, unit: "px" },
     {
       id: "speed",
       label: "Speed",
@@ -31,7 +31,7 @@ const hoverDepth3d: EffectDefinition = {
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    depth: R.ri(5, 13),
+    depth: R.ri(4, 8),
     speed: Number(R.rnd(0.15, 0.4).toFixed(2)),
   }),
   build: (ctx) => {
@@ -40,7 +40,7 @@ const hoverDepth3d: EffectDefinition = {
     const speed = ctx.values.speed as number;
 
     const face = ctx.theme === "dark" ? hsl(h, 80, 70) : hsl(h, 75, 48);
-    const side = ctx.theme === "dark" ? hsl(h, 55, 28) : hsl(h, 50, 60);
+    const side = ctx.theme === "dark" ? hsl(h, 35, 28) : hsl(h, 32, 60);
     const lift = Math.round(depth * 0.6);
 
     const css =

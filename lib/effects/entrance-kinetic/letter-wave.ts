@@ -15,7 +15,7 @@ const letterWave: EffectDefinition = {
       id: "amplitude",
       label: "Amplitude",
       type: "range",
-      default: 14,
+      default: 8,
       min: 2,
       max: 40,
       step: 1,
@@ -25,7 +25,7 @@ const letterWave: EffectDefinition = {
       id: "speed",
       label: "Speed",
       type: "range",
-      default: 1.6,
+      default: 2.6,
       min: 0.6,
       max: 4,
       step: 0.1,
@@ -51,8 +51,8 @@ const letterWave: EffectDefinition = {
     },
   ],
   rand: (R) => ({
-    amplitude: R.ri(8, 26),
-    speed: Number(R.rnd(1, 3).toFixed(1)),
+    amplitude: R.ri(5, 12),
+    speed: Number(R.rnd(2.2, 3).toFixed(1)),
     hue: R.ri(0, 360),
     tintWave: R.chance(0.4),
   }),
@@ -61,7 +61,7 @@ const letterWave: EffectDefinition = {
     const speed = ctx.values.speed as number;
     const h = ctx.values.hue as number;
     const tintWave = Boolean(ctx.values.tintWave);
-    const base = ctx.theme === "dark" ? hsl(h, 70, 72) : hsl(h, 65, 45);
+    const base = ctx.theme === "dark" ? hsl(h, 45, 72) : hsl(h, 45, 45);
     const aWave = anim(ctx.scope, "wave");
     const aTint = anim(ctx.scope, "tint");
 
@@ -76,8 +76,8 @@ const letterWave: EffectDefinition = {
       ? `\n  animation-delay: calc(var(--i) * -${phaseStep}s), calc(var(--i) * -${(phaseStep * 2).toFixed(2)}s);`
       : `\n  animation-delay: calc(var(--i) * -${phaseStep}s);`;
 
-    const c2 = hsl((h + 120) % 360, ctx.theme === "dark" ? 75 : 65, ctx.theme === "dark" ? 72 : 45);
-    const c3 = hsl((h + 240) % 360, ctx.theme === "dark" ? 75 : 65, ctx.theme === "dark" ? 72 : 45);
+    const c2 = hsl((h + 120) % 360, 45, ctx.theme === "dark" ? 72 : 45);
+    const c3 = hsl((h + 240) % 360, 45, ctx.theme === "dark" ? 72 : 45);
 
     const css =
       `.${ctx.scope} {\n` +

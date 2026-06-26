@@ -30,8 +30,8 @@ const cursorFlashlight: EffectDefinition = {
 
     // Dim base stays faintly legible outside the beam (lifted on dark themes).
     const dim = ctx.theme === "dark" ? hsl(h, 20, 40) : hsl(h, 24, 70);
-    const lit = ctx.theme === "dark" ? hsl(h, 95, 64) : hsl(h, 90, 46);
-    const halo = hsl(h, 100, 60);
+    const lit = ctx.theme === "dark" ? hsl(h, 58, 64) : hsl(h, 55, 46);
+    const halo = hsl(h, 60, 60);
     const mask = `radial-gradient(circle at var(--mx) var(--my), #000 0%, #000 ${r}%, transparent ${r2}%)`;
 
     const css =
@@ -46,7 +46,7 @@ const cursorFlashlight: EffectDefinition = {
       `  position: absolute;\n` +
       `  inset: 0;\n` +
       `  color: ${lit};\n` +
-      `  text-shadow: 0 0 8px ${halo}, 0 0 22px ${halo};\n` +
+      `  text-shadow: 0 0 8px ${halo};\n` +
       `  -webkit-mask-image: ${mask};\n` +
       `  mask-image: ${mask};\n` +
       `  pointer-events: none;\n` +

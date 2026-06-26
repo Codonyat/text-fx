@@ -19,13 +19,13 @@ const weightWave: EffectDefinition = {
   supports: "Variable-font wght axis (Recursive) animated per letter.",
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 200, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "light", label: "Light", type: "range", default: 400, min: 300, max: 520, step: 10 },
-    { id: "heavy", label: "Heavy", type: "range", default: 880, min: 640, max: 1000, step: 10 },
+    { id: "light", label: "Light", type: "range", default: 440, min: 300, max: 520, step: 10 },
+    { id: "heavy", label: "Heavy", type: "range", default: 720, min: 640, max: 1000, step: 10 },
     {
       id: "speed",
       label: "Speed",
       type: "range",
-      default: 2.4,
+      default: 3.4,
       min: 1,
       max: 5,
       step: 0.1,
@@ -34,9 +34,9 @@ const weightWave: EffectDefinition = {
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    light: R.ri(360, 460),
-    heavy: R.ri(760, 1000),
-    speed: Number(R.rnd(1.6, 3.4).toFixed(1)),
+    light: R.ri(400, 480),
+    heavy: R.ri(640, 800),
+    speed: Number(R.rnd(2.8, 4).toFixed(1)),
   }),
   build: (ctx) => {
     const h = ctx.values.hue as number;

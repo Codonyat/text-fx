@@ -38,7 +38,7 @@ const casualMorph: EffectDefinition = {
     const speed = ctx.values.speed as number;
     const wght = Math.max(300, Math.min(1000, (ctx.values.weight as number) ?? 700));
 
-    const base = ctx.theme === "dark" ? hsl(h, 70, 74) : hsl(h, 70, 44);
+    const base = ctx.theme === "dark" ? hsl(h, 45, 74) : hsl(h, 45, 44);
     const a = anim(ctx.scope, "casual");
 
     const css =
@@ -51,7 +51,7 @@ const casualMorph: EffectDefinition = {
     const keyframes =
       `@keyframes ${a} {\n` +
       `  0%, 100% { ${fvs({ wght, CASL: 0, slnt: 0 })} }\n` +
-      `  50% { ${fvs({ wght, CASL: 1, slnt: -8 })} }\n` +
+      `  50% { ${fvs({ wght, CASL: 0.7, slnt: -6 })} }\n` +
       `}`;
 
     return {

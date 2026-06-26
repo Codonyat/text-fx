@@ -19,7 +19,7 @@ const hoverRipple: EffectDefinition = {
   supports: "Ripples on :hover via per-letter transition-delay — resting twinkle in preview.",
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 160, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "lift", label: "Lift", type: "range", default: 16, min: 4, max: 36, step: 1, unit: "px" },
+    { id: "lift", label: "Lift", type: "range", default: 10, min: 4, max: 36, step: 1, unit: "px" },
     {
       id: "speed",
       label: "Twinkle",
@@ -33,7 +33,7 @@ const hoverRipple: EffectDefinition = {
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    lift: R.ri(10, 28),
+    lift: R.ri(7, 14),
     speed: Number(R.rnd(2, 4.5).toFixed(1)),
   }),
   build: (ctx) => {
@@ -42,7 +42,7 @@ const hoverRipple: EffectDefinition = {
     const speed = ctx.values.speed as number;
 
     const base = ctx.theme === "dark" ? hsl(h, 45, 78) : hsl(h, 50, 38);
-    const accent = ctx.theme === "dark" ? hsl(h, 95, 64) : hsl(h, 90, 46);
+    const accent = ctx.theme === "dark" ? hsl(h, 55, 64) : hsl(h, 55, 46);
     const idle = anim(ctx.scope, "twinkle");
 
     const css =
@@ -59,13 +59,13 @@ const hoverRipple: EffectDefinition = {
       `  animation-delay: calc(var(--i) * -0.15s);\n` +
       `}\n` +
       `.${ctx.scope}:hover .fx-ch {\n` +
-      `  transform: translateY(-${lift}px) scale(1.08);\n` +
+      `  transform: translateY(-${lift}px);\n` +
       `  color: ${accent};\n` +
       `}`;
 
     const keyframes =
       `@keyframes ${idle} {\n` +
-      `  0%, 100% { opacity: 0.72; }\n` +
+      `  0%, 100% { opacity: 0.9; }\n` +
       `  50% { opacity: 1; }\n` +
       `}`;
 

@@ -39,7 +39,7 @@ const fallingLetters: EffectDefinition = {
     const speed = ctx.values.speed as number;
     const stagger = ctx.values.stagger as number;
 
-    const base = ctx.theme === "dark" ? hsl(h, 75, 72) : hsl(h, 70, 46);
+    const base = ctx.theme === "dark" ? hsl(h, 48, 72) : hsl(h, 45, 46);
     const a = anim(ctx.scope, "fall");
 
     const css =
@@ -59,8 +59,8 @@ const fallingLetters: EffectDefinition = {
       `  0% { transform: translateY(-120%); opacity: 0; }\n` +
       `  55% { opacity: 1; }\n` +
       `  70% { transform: translateY(0); }\n` +
-      `  82% { transform: translateY(0) scale(1.12, 0.82); }\n` +
-      `  92% { transform: translateY(0) scale(0.96, 1.05); }\n` +
+      `  82% { transform: translateY(0) scale(1.05, 0.93); }\n` +
+      `  92% { transform: translateY(0) scale(0.98, 1.02); }\n` +
       `  100% { transform: translateY(0) scale(1, 1); }\n` +
       `}`;
 

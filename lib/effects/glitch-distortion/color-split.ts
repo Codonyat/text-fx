@@ -17,19 +17,19 @@ const colorSplit: EffectDefinition = {
   supports: "Two screen-blended data-text copies offset either side",
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 190, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "offset", label: "Offset", type: "range", default: 4, min: 1, max: 10, step: 1, unit: "px" },
+    { id: "offset", label: "Offset", type: "range", default: 2, min: 1, max: 10, step: 1, unit: "px" },
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    offset: R.ri(2, 7),
+    offset: R.ri(1, 3),
   }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
     const o = ctx.values.offset as number;
 
     const base = ctx.theme === "dark" ? hsl(h, 10, 90) : hsl(h, 14, 16);
-    const c1 = hsl(h, 95, ctx.theme === "dark" ? 60 : 52);
-    const c2 = hsl((h + 180) % 360, 95, ctx.theme === "dark" ? 62 : 54);
+    const c1 = hsl(h, 55, ctx.theme === "dark" ? 60 : 52);
+    const c2 = hsl((h + 180) % 360, 55, ctx.theme === "dark" ? 62 : 54);
 
     const css =
       `.${ctx.scope} {\n` +

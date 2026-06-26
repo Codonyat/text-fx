@@ -16,12 +16,12 @@ const holographic: EffectDefinition = {
     "-webkit-background-clip:text;background-clip:text;" +
     "-webkit-text-fill-color:transparent;color:transparent;",
   controls: [
-    { id: "speed", label: "Speed", type: "range", default: 6, min: 2, max: 14, step: 0.1, unit: "s" },
-    { id: "saturation", label: "Saturation", type: "range", default: 85, min: 40, max: 100, step: 1, unit: "%" },
+    { id: "speed", label: "Speed", type: "range", default: 12, min: 2, max: 14, step: 0.1, unit: "s" },
+    { id: "saturation", label: "Saturation", type: "range", default: 50, min: 40, max: 100, step: 1, unit: "%" },
   ],
   rand: (R) => ({
-    speed: Number(R.rnd(4, 10).toFixed(1)),
-    saturation: R.ri(60, 100),
+    speed: Number(R.rnd(10, 14).toFixed(1)),
+    saturation: R.ri(40, 60),
   }),
   build: (ctx) => {
     const speed = ctx.values.speed as number;

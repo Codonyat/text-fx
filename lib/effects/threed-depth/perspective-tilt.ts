@@ -16,15 +16,15 @@ const perspectiveTilt: EffectDefinition = {
   pngSupport: "good",
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 210, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "tiltX", label: "Tilt X", type: "range", default: 28, min: -45, max: 45, step: 1, unit: "°" },
-    { id: "tiltY", label: "Tilt Y", type: "range", default: -22, min: -45, max: 45, step: 1, unit: "°" },
-    { id: "depth", label: "Depth", type: "range", default: 8, min: 2, max: 16, step: 1, unit: "px" },
+    { id: "tiltX", label: "Tilt X", type: "range", default: 12, min: -45, max: 45, step: 1, unit: "°" },
+    { id: "tiltY", label: "Tilt Y", type: "range", default: -8, min: -45, max: 45, step: 1, unit: "°" },
+    { id: "depth", label: "Depth", type: "range", default: 5, min: 2, max: 16, step: 1, unit: "px" },
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    tiltX: R.ri(10, 38),
-    tiltY: R.ri(-35, 35),
-    depth: R.ri(5, 13),
+    tiltX: R.ri(6, 18),
+    tiltY: R.ri(-14, 4),
+    depth: R.ri(3, 7),
   }),
   build: (ctx) => {
     const h = ctx.values.hue as number;

@@ -10,8 +10,8 @@ const neonGlow: EffectDefinition = {
   caps: ["pure"],
   pngSupport: "good",
   controls: [
-    { id: "hue", label: "Hue", type: "range", default: 320, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "flicker", label: "Flicker", type: "toggle", default: true },
+    { id: "hue", label: "Hue", type: "range", default: 200, min: 0, max: 360, step: 1, unit: "°" },
+    { id: "flicker", label: "Flicker", type: "toggle", default: false },
     {
       id: "speed",
       label: "Speed",
@@ -24,12 +24,12 @@ const neonGlow: EffectDefinition = {
       when: (v) => Boolean(v.flicker),
     },
   ],
-  rand: (R) => ({ hue: R.ri(0, 360), flicker: R.chance(0.5), speed: Number(R.rnd(2, 5).toFixed(1)) }),
+  rand: (R) => ({ hue: R.ri(180, 260), flicker: R.chance(0.25), speed: Number(R.rnd(2, 5).toFixed(1)) }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
     const txt = ctx.theme === "dark" ? hsl(h, 30, 97) : hsl(h, 90, 52);
-    const g1 = hsl(h, 100, 60);
-    const g2 = hsl((h + 22) % 360, 100, 55);
+    const g1 = hsl(h, 55, 60);
+    const g2 = hsl((h + 22) % 360, 55, 55);
     const flicker = Boolean(ctx.values.flicker);
     const speed = ctx.values.speed as number;
     const a = anim(ctx.scope, "flicker");
@@ -37,7 +37,7 @@ const neonGlow: EffectDefinition = {
     const css =
       `.${ctx.scope} {\n` +
       `  color: ${txt};\n` +
-      `  text-shadow:\n    0 0 5px ${g1},\n    0 0 12px ${g1},\n    0 0 28px ${g2},\n    0 0 56px ${g2};` +
+      `  text-shadow:\n    0 0 5px ${g1},\n    0 0 12px ${g1},\n    0 0 18px ${g2},\n    0 0 32px ${g2};` +
       `${animDecl}\n}`;
     const keyframes = flicker
       ? `@keyframes ${a} {\n  0%, 92%, 100% { opacity: 1; }\n  93% { opacity: .55; }\n  95% { opacity: 1; }\n  97% { opacity: .72; }\n}`

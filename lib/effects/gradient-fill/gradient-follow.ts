@@ -17,22 +17,22 @@ const gradientFollow: EffectDefinition = {
   supports: "background-clip:text radial gradient centred on the pointer (--mx/--my).",
   controls: [
     { id: "hue", label: "Hue", type: "range", default: 270, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "spread", label: "Spread", type: "range", default: 60, min: 20, max: 140, step: 1, unit: "°" },
+    { id: "spread", label: "Spread", type: "range", default: 22, min: 10, max: 60, step: 1, unit: "°" },
   ],
   rand: (R) => ({
     hue: R.ri(0, 360),
-    spread: R.ri(40, 120),
+    spread: R.ri(14, 36),
   }),
   build: (ctx) => {
     const h = ctx.values.hue as number;
     const spread = ctx.values.spread as number;
     const l = ctx.theme === "dark" ? 62 : 52;
 
-    const c1 = hsl(h, 95, l + 4);
-    const c2 = hsl((h + spread) % 360, 95, l);
-    const c3 = hsl((h + spread * 2) % 360, 92, l);
-    const edge = hsl((h + spread * 3) % 360, 85, l - 4);
-    const glow = hsl(h, 90, 58, 0.4);
+    const c1 = hsl(h, 58, l + 4);
+    const c2 = hsl((h + spread) % 360, 58, l);
+    const c3 = hsl((h + spread * 2) % 360, 56, l);
+    const edge = hsl((h + spread * 3) % 360, 52, l - 4);
+    const glow = hsl(h, 55, 58, 0.22);
 
     const grad =
       `radial-gradient(circle at var(--mx) var(--my),` +
@@ -43,7 +43,7 @@ const gradientFollow: EffectDefinition = {
       `  --mx: 50%;\n` +
       `  --my: 50%;\n` +
       `  ${clipText(grad)}\n` +
-      `  ${dropGlow(glow, [12])}\n` +
+      `  ${dropGlow(glow, [7])}\n` +
       `}`;
 
     return {
