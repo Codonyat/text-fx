@@ -115,15 +115,26 @@ export function sanitizeValues(
   return out;
 }
 
+/** The shared font/weight/tracking/case metrics every effect's text uses (the single
+ *  source for both `commonCss` and the per-letter editable ghost's inline style). */
+export function textMetrics(
+  values: Record<string, ControlValue>,
+  forcedFont?: string,
+): { font: string; weight: number; tracking: number; tt: string } {
+  return {
+    font: forcedFont ?? (values.font as string) ?? "'Anton', sans-serif",
+    weight: (values.weight as number) ?? 700,
+    tracking: (values.tracking as number) ?? 0,
+    tt: (values.case as string) ?? "none",
+  };
+}
+
 function commonCss(
   scope: string,
   values: Record<string, ControlValue>,
   forcedFont?: string,
 ): string {
-  const font = forcedFont ?? (values.font as string) ?? "'Anton', sans-serif";
-  const weight = (values.weight as number) ?? 700;
-  const tracking = (values.tracking as number) ?? 0;
-  const tt = (values.case as string) ?? "none";
+  const { font, weight, tracking, tt } = textMetrics(values, forcedFont);
   return [
     `.${scope} {`,
     `  font-family: ${font};`,

@@ -1,6 +1,13 @@
 "use client";
 
-import { createElement, useEffect, useRef, type ReactNode } from "react";
+import {
+  createElement,
+  useEffect,
+  useRef,
+  type CSSProperties,
+  type MouseEvent as ReactMouseEvent,
+  type ReactNode,
+} from "react";
 import { toReact, type CreateElementLike } from "@/lib/engine/markup";
 import type { Capability, MarkupNode } from "@/lib/engine/types";
 import styles from "./Stage.module.css";
@@ -8,6 +15,15 @@ import styles from "./Stage.module.css";
 function selectAllContents(el: HTMLElement) {
   const range = document.createRange();
   range.selectNodeContents(el);
+  const sel = window.getSelection();
+  sel?.removeAllRanges();
+  sel?.addRange(range);
+}
+
+function placeCaretAtEdge(el: HTMLElement, atEnd: boolean) {
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  range.collapse(!atEnd); // collapse(true) → start, collapse(false) → end
   const sel = window.getSelection();
   sel?.removeAllRanges();
   sel?.addRange(range);
@@ -21,6 +37,7 @@ export function Stage({
   defs,
   reduceMotion,
   selectAllOnFocus,
+  ghostStyle,
   onTextChange,
 }: {
   rootClass: string;
@@ -30,6 +47,7 @@ export function Stage({
   defs?: string;
   reduceMotion: boolean;
   selectAllOnFocus: boolean;
+  ghostStyle?: CSSProperties;
   onTextChange: (t: string) => void;
 }) {
   const perLetter = caps.includes("perLetter");
@@ -84,19 +102,37 @@ export function Stage({
 
   // While the text is still the untouched starter, focusing the field selects all
   // of it so the first keystroke replaces it (instead of leaving the default behind).
-  // Deferred a tick so a mouse click's caret placement doesn't collapse the selection;
-  // re-checked inside so a stale timer can't select after the field has blurred.
+  // Deferred a tick so a mouse click's caret placement doesn't collapse the selection.
+  // Re-checked inside: bail if the field blurred or if anything was typed in the meantime
+  // (the timer must never re-select mid-typing and eat the just-typed character).
   const handleFocus = () => {
     if (!selectAllOnFocus) return;
     const el = editRef.current;
     if (!el) return;
+    const initial = el.textContent;
     window.setTimeout(() => {
-      if (selectAllOnFocus && document.activeElement === el) selectAllContents(el);
+      if (document.activeElement === el && el.textContent === initial) selectAllContents(el);
     }, 0);
   };
 
+  // Clicking the empty stage (not the glyphs) still focuses the text and drops the caret
+  // at the nearest edge — left half → before the first character, right half → after the
+  // last — so you don't have to land exactly on a letter to start typing.
+  const handleStageMouseDown = (e: ReactMouseEvent) => {
+    if (e.button !== 0) return; // primary button only; leave right-click/context menu alone
+    const el = editRef.current;
+    if (!el || el.contains(e.target as Node)) return; // clicked on the text → let the browser place the caret
+    e.preventDefault(); // we manage focus + caret ourselves (keeps the selection)
+    el.focus();
+    const rect = el.getBoundingClientRect();
+    placeCaretAtEdge(el, e.clientX >= rect.left + rect.width / 2);
+  };
+
   return (
-    <div className={`${styles.stage}${reduceMotion ? " fx-reduce-motion" : ""}`}>
+    <div
+      className={`${styles.stage}${reduceMotion ? " fx-reduce-motion" : ""}`}
+      onMouseDown={handleStageMouseDown}
+    >
       {perLetter ? (
         <div className={styles.layers}>
           <div className={`${styles.text} ${styles.preview}`} aria-hidden="true">
@@ -105,6 +141,7 @@ export function Stage({
           <div
             ref={editRef}
             className={`${styles.text} ${styles.ghost}`}
+            style={ghostStyle}
             contentEditable
             suppressContentEditableWarning
             spellCheck={false}

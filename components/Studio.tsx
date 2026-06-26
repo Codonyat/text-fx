@@ -1,9 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import type { ControlValue, EffectSpec, Theme } from "@/lib/engine/types";
 import { EFFECTS, getEffect } from "@/lib/effects/registry";
-import { randomizeValues, render, sanitizeValues } from "@/lib/engine/build";
+import { randomizeValues, render, sanitizeValues, textMetrics } from "@/lib/engine/build";
 import { makeRng, randomSeed } from "@/lib/engine/rng";
 import { decodeSpec, encodeSpec } from "@/lib/engine/share";
 import {
@@ -68,6 +68,20 @@ export function Studio() {
   );
   const cssDisplay = editedCss ?? display;
   const liveCss = editedCss ? editedCss.split("text-effect").join("fx-live") : live.styleText;
+
+  // The per-letter editable ghost is transparent; give it the same text metrics as the
+  // styled preview so the (invisible) text lays out identically and the caret lines up
+  // with the glyphs you see.
+  const ghostStyle: CSSProperties = useMemo(() => {
+    const m = textMetrics(values, effect.font);
+    return {
+      fontFamily: m.font,
+      fontWeight: m.weight,
+      letterSpacing: `${m.tracking}px`,
+      textTransform: m.tt as CSSProperties["textTransform"],
+      whiteSpace: "pre",
+    };
+  }, [values, effect.font]);
 
   const favItems: SavedItem[] = useMemo(() => {
     return favorites
@@ -241,6 +255,7 @@ export function Studio() {
             defs={live.defs}
             reduceMotion={reduceMotion}
             selectAllOnFocus={text === DEFAULT_TEXT}
+            ghostStyle={ghostStyle}
             onTextChange={setText}
           />
           <ActionBar
