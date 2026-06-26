@@ -13,9 +13,12 @@ test("studio renders, shuffles and browses without runtime/hydration errors", as
 
   await page.screenshot({ path: "tests/e2e/__screens__/01-studio.png", fullPage: true });
 
-  // type into the stage
-  const stage = page.locator(".fx-live").first();
-  await stage.click();
+  // type into the stage — target the editable textbox directly. The random first-visit
+  // effect may be per-letter (where .fx-live is the pointer-events:none preview with the
+  // ghost on top) or a transform-animating single-element effect (never "stable" for a
+  // plain click), so click the role=textbox with force to stay mode-agnostic.
+  const editor = page.getByRole("textbox", { name: /effect text/i });
+  await editor.click({ force: true });
   await page.keyboard.press("Control+A");
   await page.keyboard.type("Vibe");
   await page.waitForTimeout(200);
@@ -57,6 +60,46 @@ test("per-letter effect is editable via the ghost layer", async ({ page }) => {
   // preview should be rebuilt as per-letter spans reflecting the typed text
   const spans = await page.locator(".fx-live .fx-ch").count();
   expect(spans).toBeGreaterThanOrEqual(4);
+});
+
+test("switching single-element -> per-letter leaves no stray plain-text row", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForSelector(".fx-live");
+
+  // Start on a single-element effect and type custom text (set imperatively into the
+  // in-place editable node).
+  await page.getByRole("button", { name: /browse/i }).click();
+  await page.getByRole("button", { name: "Neon Glow" }).click();
+  await page.waitForTimeout(400);
+
+  const box = page.getByRole("textbox", { name: /effect text/i });
+  await box.click();
+  await page.keyboard.press("Control+A");
+  await page.keyboard.type("Boundary");
+  await page.waitForTimeout(200);
+
+  // Switch to a per-letter effect (the editable becomes a separate ghost layer).
+  await page.getByRole("button", { name: /browse/i }).click();
+  await page.getByRole("button", { name: "Slant Wave" }).click();
+  await page.waitForTimeout(500);
+
+  // The ghost must hold the carried-over text (not be left empty by the remount)...
+  const ghost = page.getByRole("textbox", { name: /effect text/i });
+  expect((await ghost.textContent())?.trim()).toBe("Boundary");
+
+  // ...and its parent `.layers` must have NO direct text-node child — the regression
+  // was an orphaned plain-text node (the old in-place text) leaking under the effect.
+  const strayText = await ghost.evaluate((el) => {
+    const parent = el.parentElement;
+    if (!parent) return "NO_PARENT";
+    return Array.from(parent.childNodes)
+      .filter((n) => n.nodeType === Node.TEXT_NODE && (n.textContent ?? "").trim().length > 0)
+      .map((n) => n.textContent)
+      .join("|");
+  });
+  expect(strayText, "stray plain-text node leaked into .layers").toBe("");
+
+  await page.screenshot({ path: "tests/e2e/__screens__/06-mode-switch.png", fullPage: true });
 });
 
 test("per-effect SEO page renders content, canonical and JSON-LD", async ({ page }) => {

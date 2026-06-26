@@ -62,7 +62,10 @@ export function Stage({
     if (!el) return;
     if ((el.textContent ?? "") !== text) el.textContent = text;
     if (dataText) el.dataset.text = text;
-  }, [text, dataText]);
+    // perLetter is a dep so this re-runs when the editable node remounts on a
+    // single-element <-> per-letter mode switch (the distinct branch keys force a
+    // fresh node) — otherwise the new node stays empty when `text` is unchanged.
+  }, [text, dataText, perLetter]);
 
   // Pointer-reactive effects: feed the cursor position into --mx/--my (percent
   // within the scoped element) so CSS can position masks/gradients at the cursor.
@@ -133,8 +136,11 @@ export function Stage({
       className={`${styles.stage}${reduceMotion ? " fx-reduce-motion" : ""}`}
       onMouseDown={handleStageMouseDown}
     >
+      {/* Distinct keys on the two branch roots: without them React reuses the same
+          <div> across a mode switch (same tag + position) and orphans the
+          imperatively-set text node inside the repurposed element. */}
       {perLetter ? (
-        <div className={styles.layers}>
+        <div key="pl" className={styles.layers}>
           <div className={`${styles.text} ${styles.preview}`} aria-hidden="true">
             {toReact(root, createElement as unknown as CreateElementLike) as ReactNode}
           </div>
@@ -153,6 +159,7 @@ export function Stage({
         </div>
       ) : (
         <div
+          key="se"
           ref={editRef}
           className={`${styles.text} ${rootClass}`}
           {...(dataText ? { "data-text": text } : {})}

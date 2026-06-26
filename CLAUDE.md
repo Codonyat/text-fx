@@ -4,7 +4,7 @@
 
 A client-side Next.js (App Router) tool: type text, **SHUFFLE** a randomized pure-CSS text
 effect, tune it with live knobs, hand-edit the CSS, save favorites, and export (CSS / HTML /
-JSX / standalone `.html` / PNG / share-link). 109 effects across 13 categories; no backend.
+JSX / standalone `.html` / PNG / share-link). 116 effects across 13 categories; no backend.
 
 ## Commands
 - `pnpm dev` — dev server (do NOT background it; stop any you start).
@@ -30,13 +30,13 @@ parity + scope-lint tests in `tests/engine.test.ts`.
 - `lib/engine/split.ts` — grapheme/word/line splitting (Intl.Segmenter).
 - `lib/engine/serialize.ts` — exporters (export scope = `text-effect`). `lib/engine/share.ts` — lz-string spec codec with safety limits. `lib/export/{png,download}.ts`.
 - `lib/effects/<category>/<id>.ts` — one effect each (default export). `registry.ts` is **hand-maintained** (imports all + `EFFECTS` array → `MANIFEST`); add the import + array entry when adding/removing an effect file. `taxonomy.ts` = the 13 categories. `catalog.json` = the 280-effect research catalog (implementation backlog, not bundled).
-- `components/` — `Studio.tsx` (orchestrator/state) · two-layer `Stage.tsx` (single-element effects edit in place; per-letter effects use an editable ghost layer over a preview layer — never mutate the editable node into spans) · `StyleHost.tsx` (owns all `<style>` tags) · `EffectPreview.tsx` (server-side SSR preview for SEO pages) · Header/ActionBar/AdjustPanel/CssPanel/ExportMenu/SavedStrip/Gallery/SeoFooter + `controls/Control.tsx`.
+- `components/` — `Studio.tsx` (orchestrator/state) · two-layer `Stage.tsx` (single-element effects edit in place; per-letter effects use an editable ghost layer over a preview layer — never mutate the editable node into spans; the two render branches carry distinct `key`s + the text-sync effect deps on `perLetter`, so a single↔per-letter switch remounts the editable instead of reusing the div and orphaning its imperatively-set text node) · `StyleHost.tsx` (owns all `<style>` tags) · `EffectPreview.tsx` (server-side SSR preview for SEO pages) · Header/ActionBar/AdjustPanel/CssPanel/ExportMenu/SavedStrip/Gallery/SeoFooter + `controls/Control.tsx`.
 
 ### SEO / GEO
 - `lib/site.ts` (constants + `SITE_URL`), `lib/jsonld.ts` (`serializeJsonLd` + schema builders), `lib/effects/descriptions.ts` (per-effect SEO prose).
 - Icons/OG: `app/icon.svg` (geometric neon "Fx") + generated `favicon.ico`/`apple-icon.png`/`icon-{192,512}.png`; `app/{opengraph,twitter}-image.tsx` + `app/effects/opengraph-image.tsx` (index) + per-effect `app/effects/[id]/opengraph-image.tsx` (ImageResponse, Satori-safe, Space Mono from `lib/og/`).
 - Metadata in `app/layout.tsx` (+ `metadataBase`, viewport); `app/robots.ts` (allows AI retrieval+training bots), `app/sitemap.ts`, `app/manifest.ts`, `app/llms.txt/route.ts`.
-- JSON-LD (server-only): home = WebApplication/WebSite/FAQPage; `/effects` = CollectionPage; `/effects/[id]` = SoftwareSourceCode + BreadcrumbList. Crawlable SSR pages: `/effects` (static, grouped) + `/effects/[id]` (109 SSG, full CSS + live preview) are the GEO payload. `next.config.ts` `outputFileTracingIncludes` bundles the OG font.
+- JSON-LD (server-only): home = WebApplication/WebSite/FAQPage; `/effects` = CollectionPage; `/effects/[id]` = SoftwareSourceCode + BreadcrumbList. Crawlable SSR pages: `/effects` (static, grouped) + `/effects/[id]` (116 SSG, full CSS + live preview) are the GEO payload. `next.config.ts` `outputFileTracingIncludes` bundles the OG font.
 
 ### Conventions / gotchas
 - **Scoping is mandatory**: every selector starts with `.${scope}`; every keyframe/@property/SVG id is salted. Two instances (preview + many thumbnails) share a page — unsalted globals collide.

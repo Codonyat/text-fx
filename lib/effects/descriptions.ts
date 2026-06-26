@@ -13,6 +13,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A subtle ambient halo from a few low-blur text-shadow layers in a single hue, with no hot white core. Great for a soft, premium glow on headings.",
   "neon-sign-frame":
     "Glowing text inside a glowing rounded border box — outer and inset halos that breathe on a loop. A complete neon storefront sign.",
+  halation:
+    "The warm photographic bloom film type picks up — a soft red-orange halation fringe haloing the letters from layered text-shadows. Cinematic, not neon, and stays still.",
   // gradient-fill
   "gradient-flow":
     "A multi-stop gradient clipped to the text that slowly flows by animating its background position. The go-to lively gradient headline.",
@@ -104,6 +106,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A solid ink run through an SVG filter that roughens the edges and punches noise holes, for a worn rubber-stamp look. Grungy and tunable.",
   "chalkboard":
     "Chalk-dust lettering with edges roughened by an SVG turbulence displacement and a faint dusty halo. White chalk on dark, charcoal on light.",
+  "riso-misregister":
+    "Risograph print drift: the word in two spot inks that don't quite align, the offset copy blended over the base so the misregistered fringes and a third overlap tone show. Static.",
   // shadow-press
   "drop-shadow":
     "A simple soft drop shadow under solid text, with blur and distance controls. The dependable, readable depth cue.",
@@ -134,6 +138,10 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A cold electric-white core with a charged blue glow that crackles — erratic flicker with sudden bright spikes. Snappier than a steady neon.",
   "melt-drip":
     "A masked copy of the word oozes downward and fades on a loop, so the letters look like they're slowly melting off the baseline.",
+  "heat-haze":
+    "The word seen through rising hot air — a fast, fine SVG turbulence shimmers the glyph edges like a desert mirage. Finer and quicker than Liquid Warp's underwater wobble.",
+  "ink-bleed":
+    "Solid ink soaked a little into paper: an feMorphology dilate fattens the glyphs and a turbulence displacement frays the edges into capillary fingers, with a faint soak halo. Letters stay separate. Static.",
   // fill-texture
   "image-fill":
     "Glyphs filled with a rich multi-gradient that reads like a photographic texture, via background-clip:text. An image-in-text look with zero assets.",
@@ -192,6 +200,10 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Alternate letters sit high and low with matching tilts — a jagged sawtooth ribbon that snaps into place on load.",
   "bulge-text":
     "A fish-eye on the word: the center letters scale up and the ends taper via cos(), like a lens. Pops in on load.",
+  "kerning-drift":
+    "The letters breathe sideways, each sliding a hair left and right on a shared rhythm but phase-offset by index, so the spacing gently opens and closes. Transform-only, subtle, looping.",
+  "decode-reveal":
+    "Each letter resolves out of a blurred, skewed, jittering state into crisp type, staggered so a decode sweep runs across the word. A pure-CSS staged glitch entrance (not a random-glyph scramble).",
   // decoration-underline
   "slide-underline":
     "A gradient underline bar grows in from the left beneath the text. Clean, modern link and heading emphasis.",
@@ -207,6 +219,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A solid underline bar grows outward from the center to full width, holds, then retracts. Origin-from-center sets it apart from slide and dash underlines.",
   "strike-through":
     "A colored line draws itself across the middle of the text, holds, then retracts — a looping strikethrough, set apart from the underlines.",
+  "scribble-underline":
+    "A hand-drawn rough rule that sketches itself on under the word — a flat bar warped by an SVG displacement filter into a wobbly ink squiggle, drawn left-to-right. Looser than the tidy wavy underline.",
   // interactive-advanced
   "hover-spotlight":
     "A radial spotlight reveals the colored text on hover using a CSS mask — no JavaScript. An interactive flashlight reveal.",

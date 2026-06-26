@@ -5,6 +5,7 @@ import neonGlow from "./neon-glow/neon-glow";
 import pulseGlow from "./neon-glow/pulse-glow";
 import softGlow from "./neon-glow/soft-glow";
 import neonSignFrame from "./neon-glow/neon-sign-frame";
+import halation from "./neon-glow/halation";
 import conicSpin from "./gradient-fill/conic-spin";
 import duotoneFill from "./gradient-fill/duotone-fill";
 import gradientFlow from "./gradient-fill/gradient-flow";
@@ -48,6 +49,7 @@ import terminalPhosphor from "./glitch-distortion/terminal-phosphor";
 import vaporwave from "./retro-themed/vaporwave";
 import distressStamp from "./retro-themed/distress-stamp";
 import chalkboard from "./retro-themed/chalkboard";
+import risoMisregister from "./retro-themed/riso-misregister";
 import dropShadow from "./shadow-press/drop-shadow";
 import emboss from "./shadow-press/emboss";
 import hardOffset from "./shadow-press/hard-offset";
@@ -63,6 +65,8 @@ import moltenLava from "./elemental/molten-lava";
 import smokeDrift from "./elemental/smoke-drift";
 import lightning from "./elemental/lightning";
 import meltDrip from "./elemental/melt-drip";
+import heatHaze from "./elemental/heat-haze";
+import inkBleed from "./elemental/ink-bleed";
 import imageFill from "./fill-texture/image-fill";
 import starfield from "./fill-texture/starfield";
 import stripeFill from "./fill-texture/stripe-fill";
@@ -91,6 +95,8 @@ import fanText from "./entrance-kinetic/fan-text";
 import slopeText from "./entrance-kinetic/slope-text";
 import zigzagText from "./entrance-kinetic/zigzag-text";
 import bulgeText from "./entrance-kinetic/bulge-text";
+import kerningDrift from "./entrance-kinetic/kerning-drift";
+import decodeReveal from "./entrance-kinetic/decode-reveal";
 import highlighter from "./decoration-underline/highlighter";
 import slideUnderline from "./decoration-underline/slide-underline";
 import wavyUnderline from "./decoration-underline/wavy-underline";
@@ -98,6 +104,7 @@ import gradientUnderline from "./decoration-underline/gradient-underline";
 import marchingUnderline from "./decoration-underline/marching-underline";
 import centerGrowUnderline from "./decoration-underline/center-grow-underline";
 import strikeThrough from "./decoration-underline/strike-through";
+import scribbleUnderline from "./decoration-underline/scribble-underline";
 import hoverSpotlight from "./interactive-advanced/hover-spotlight";
 import mirrorReflection from "./interactive-advanced/mirror-reflection";
 import echoTrail from "./interactive-advanced/echo-trail";
@@ -117,6 +124,7 @@ export const EFFECTS: EffectDefinition[] = [
   pulseGlow,
   softGlow,
   neonSignFrame,
+  halation,
   conicSpin,
   duotoneFill,
   gradientFlow,
@@ -160,6 +168,7 @@ export const EFFECTS: EffectDefinition[] = [
   vaporwave,
   distressStamp,
   chalkboard,
+  risoMisregister,
   dropShadow,
   emboss,
   hardOffset,
@@ -175,6 +184,8 @@ export const EFFECTS: EffectDefinition[] = [
   smokeDrift,
   lightning,
   meltDrip,
+  heatHaze,
+  inkBleed,
   imageFill,
   starfield,
   stripeFill,
@@ -203,6 +214,8 @@ export const EFFECTS: EffectDefinition[] = [
   slopeText,
   zigzagText,
   bulgeText,
+  kerningDrift,
+  decodeReveal,
   highlighter,
   slideUnderline,
   wavyUnderline,
@@ -210,6 +223,7 @@ export const EFFECTS: EffectDefinition[] = [
   marchingUnderline,
   centerGrowUnderline,
   strikeThrough,
+  scribbleUnderline,
   hoverSpotlight,
   mirrorReflection,
   echoTrail,
