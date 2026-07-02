@@ -5,21 +5,26 @@ import { hsl, anim, svgId } from "@/lib/engine/helpers";
 /**
  * Circle-spin badge: the word rides a FULL circle via SVG <textPath> and the whole
  * ring rotates forever — the eternal spinning-sticker / rubber-stamp composition. The
- * text is repeated (each copy separated by a dot / star / dash) until the circumference
- * is comfortably filled, so short words still wrap the ring; every copy comes from
- * ctx.text. An optional static center dot + framing ring sit outside the rotating band.
+ * text is repeated (each copy separated by a dot / star / dash) until the ring is
+ * filled; every copy comes from ctx.text. An optional static center dot + framing
+ * ring sit around the rotating band.
  *
- * Geometry lives in a 0..100 viewBox (center 50,50); the text baseline rides radius R=32
- * so the svg is ~1.4x the ring and glyphs + glow stay fully in view. The whole <svg> is
- * the rotating element (transform-origin defaults to its center), and the emblem circles
- * are rotationally symmetric, so they read as static even though the box spins. Base
- * (non-animated) frame = rotation 0 = a readable badge, so posters / reduced-motion rest
- * on a presentable ring. Divergence from arc-text (a static shallow arch) and the static
- * spiral coil: this is a CLOSED ring in continuous rotation.
+ * Placement is estimation-FREE: each copy is its own <textPath> anchored at an
+ * explicit startOffset (i/N of the path) and force-fit to its arc slot with
+ * textLength + lengthAdjust="spacingAndGlyphs", so distribution stays even for every
+ * font. The per-family advance table only picks the copy count N and gently auto-fits
+ * the font-size toward a natural slot fill (so engines that ignore textLength on
+ * textPath still fill each slot instead of clumping). Inherited tracking is
+ * neutralized on the SVG text: CSS px letter-spacing maps to viewBox user units here
+ * (huge at font-size ~9/100) and would pile or scatter the ring glyphs.
  *
- * Fill is estimated from a per-family glyph-advance table (Anton is very condensed, the
- * Bungee/Unbounded display faces very wide) and floored, so the ring never overflows
- * into a clipped seam — a small gap just rotates away.
+ * Geometry lives in a 0..100 viewBox (center 50,50); the text baseline rides radius
+ * R=32 so the svg is ~1.4x the ring and glyphs + glow stay fully in view. The whole
+ * <svg> is the rotating element (transform-origin defaults to its center) and the
+ * emblem circles are rotationally symmetric, so they read as static even though the
+ * box spins. Base frame = rotation 0 = a readable badge for posters/reduced-motion.
+ * Divergence from arc-text (static shallow arch) and the static spiral coil: this is
+ * a CLOSED ring in continuous rotation.
  */
 const ADVANCE: Record<string, number> = {
   "'Anton', sans-serif": 0.36,
@@ -33,10 +38,11 @@ const ADVANCE: Record<string, number> = {
   "'Space Grotesk', sans-serif": 0.52,
 };
 
+// NBSP padding survives SVG whitespace trimming (plain spaces at chunk edges do not).
 const SEPARATORS: Record<string, string> = {
-  dot: " • ",
-  star: " ★ ",
-  dash: " — ",
+  dot: " • ",
+  star: " ★ ",
+  dash: " — ",
 };
 
 const circleSpin: EffectDefinition = {
@@ -101,18 +107,19 @@ const circleSpin: EffectDefinition = {
     const guide = dark ? hsl(h, 55, 60, 0.45) : hsl(h, 45, 45, 0.38);
     const glow = dark ? hsl(h, 95, 65, 0.55) : hsl(h, 80, 50, 0.3);
 
-    // Repeat ctx.text (with a trailing separator per copy so the wrap-seam has one too)
-    // until it comfortably fills the ring. Per-font advance + tracking keep the floored
-    // count from overflowing, so there is never a mid-glyph clip — only a small gap.
+    // Copy count from a rough per-font advance estimate. The estimate never PLACES
+    // glyphs (explicit startOffset + textLength do) — it only sizes the repetition
+    // and nudges the font-size so each copy naturally fills its slot.
     const font = (ctx.values.font as string) ?? "'Anton', sans-serif";
-    const adv = ADVANCE[font] ?? 0.55;
-    const tracking = (ctx.values.tracking as number) ?? 0;
-    const perGlyph = adv * fs + Math.max(0, tracking);
-    const cc = Array.from(ctx.text).length || 1;
+    const upper = ((ctx.values.case as string) ?? "none") === "uppercase";
+    const adv = (ADVANCE[font] ?? 0.55) * (upper ? 1.1 : 1);
+    const glyphs = (Array.from(ctx.text).length || 1) + 3; // + padded separator
     const circ = 2 * Math.PI * R;
-    const perCopy = (cc + sep.length) * perGlyph;
-    const repeats = Math.max(1, Math.min(10, Math.floor(circ / perCopy)));
-    const ringText = Array.from({ length: repeats }, () => ctx.text + sep).join("");
+    const natural = glyphs * adv * fs;
+    const repeats = Math.max(1, Math.min(12, Math.round(circ / natural)));
+    const slot = circ / repeats;
+    const ideal = slot / (glyphs * adv);
+    const fsEff = Math.max(3, Math.min(fs * 1.2, Math.max(fs * 0.6, ideal)));
 
     const pathId = svgId(scope, "ring");
     // Closed circle path starting at the TOP, sweeping clockwise: top glyphs read
@@ -135,6 +142,9 @@ const circleSpin: EffectDefinition = {
       `.${scope} text {\n` +
       `  fill: ${ink};\n` +
       `  dominant-baseline: central;\n` +
+      // px letter-spacing = viewBox user units on SVG text: the shared Tracking knob
+      // would pile/scatter the ring glyphs, so it is neutralized inside the badge.
+      `  letter-spacing: normal;\n` +
       `}\n` +
       `.${scope} .guide {\n` +
       `  fill: none;\n` +
@@ -147,18 +157,23 @@ const circleSpin: EffectDefinition = {
 
     const keyframes = `@keyframes ${spin} {\n  to { transform: rotate(360deg); }\n}`;
 
+    const round3 = (n: number) => Math.round(n * 1000) / 1000;
+    const copies = Array.from({ length: repeats }, (_, i) =>
+      el("textPath", {
+        attrs: {
+          href: `#${pathId}`,
+          startOffset: `${round3((i / repeats) * 100)}%`,
+          textLength: round3(slot),
+          lengthAdjust: "spacingAndGlyphs",
+        },
+        children: [text(ctx.text + sep)],
+      }),
+    );
+
     const children = [
       el("defs", { children: [el("path", { attrs: { id: pathId, d: path } })] }),
       ...(emblem ? [el("circle", { attrs: { class: "guide", cx, cy: cx, r: 41 } })] : []),
-      el("text", {
-        attrs: { "font-size": fs },
-        children: [
-          el("textPath", {
-            attrs: { href: `#${pathId}`, startOffset: "0%" },
-            children: [text(ringText)],
-          }),
-        ],
-      }),
+      el("text", { attrs: { "font-size": round3(fsEff) }, children: copies }),
       ...(emblem ? [el("circle", { attrs: { class: "hub", cx, cy: cx, r: 3.2 } })] : []),
     ];
 

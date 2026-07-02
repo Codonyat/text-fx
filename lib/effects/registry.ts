@@ -23,6 +23,7 @@ import candyGloss from "./gradient-fill/candy-gloss";
 import dropCap from "./gradient-fill/drop-cap";
 import radarSweep from "./gradient-fill/radar-sweep";
 import plasmaEnergy from "./gradient-fill/plasma-energy";
+import scrollReveal from "./gradient-fill/scroll-reveal";
 import chrome from "./metallic-holographic/chrome";
 import goldFoil from "./metallic-holographic/gold-foil";
 import holographic from "./metallic-holographic/holographic";
@@ -48,6 +49,9 @@ import balloonPuff from "./threed-depth/balloon-puff";
 import synthwaveGrid from "./threed-depth/synthwave-grid";
 import pointerTilt from "./threed-depth/pointer-tilt";
 import cubeSpin from "./threed-depth/cube-spin";
+import scrollParallax from "./threed-depth/scroll-parallax";
+import scrollFlip from "./threed-depth/scroll-flip";
+import bungeeLayers from "./threed-depth/bungee-layers";
 import doubleOutline from "./outline-stroke/double-outline";
 import filledOutline from "./outline-stroke/filled-outline";
 import gradientStroke from "./outline-stroke/gradient-stroke";
@@ -69,6 +73,7 @@ import crtCollapse from "./glitch-distortion/crt-collapse";
 import prismFringe from "./glitch-distortion/prism-fringe";
 import datamoshSmear from "./glitch-distortion/datamosh-smear";
 import tvStatic from "./glitch-distortion/tv-static";
+import scrollGlitch from "./glitch-distortion/scroll-glitch";
 import vaporwave from "./retro-themed/vaporwave";
 import distressStamp from "./retro-themed/distress-stamp";
 import chalkboard from "./retro-themed/chalkboard";
@@ -82,6 +87,7 @@ import artDeco from "./retro-themed/art-deco";
 import graffitiSpray from "./retro-themed/graffiti-spray";
 import ransomNote from "./retro-themed/ransom-note";
 import tornPaper from "./retro-themed/torn-paper";
+import honkShine from "./retro-themed/honk-shine";
 import dropShadow from "./shadow-press/drop-shadow";
 import emboss from "./shadow-press/emboss";
 import hardOffset from "./shadow-press/hard-offset";
@@ -158,6 +164,10 @@ import splitFlap from "./entrance-kinetic/split-flap";
 import swooshIn from "./entrance-kinetic/swoosh-in";
 import circleSpin from "./entrance-kinetic/circle-spin";
 import spiralText from "./entrance-kinetic/spiral-text";
+import scrollMorph from "./entrance-kinetic/scroll-morph";
+import scrollSpread from "./entrance-kinetic/scroll-spread";
+import scrollLetters from "./entrance-kinetic/scroll-letters";
+import folditFold from "./entrance-kinetic/foldit-fold";
 import highlighter from "./decoration-underline/highlighter";
 import slideUnderline from "./decoration-underline/slide-underline";
 import wavyUnderline from "./decoration-underline/wavy-underline";
@@ -185,6 +195,7 @@ import dockMagnify from "./interactive-advanced/dock-magnify";
 import swashBloom from "./interactive-advanced/swash-bloom";
 import weightScrub from "./interactive-advanced/weight-scrub";
 import cursorRepel from "./interactive-advanced/cursor-repel";
+import scrollFill from "./interactive-advanced/scroll-fill";
 
 /** Every implemented effect (hand-maintained: import + array entry per file). */
 export const EFFECTS: EffectDefinition[] = [
@@ -211,6 +222,7 @@ export const EFFECTS: EffectDefinition[] = [
   dropCap,
   radarSweep,
   plasmaEnergy,
+  scrollReveal,
   chrome,
   goldFoil,
   holographic,
@@ -236,6 +248,9 @@ export const EFFECTS: EffectDefinition[] = [
   synthwaveGrid,
   pointerTilt,
   cubeSpin,
+  scrollParallax,
+  scrollFlip,
+  bungeeLayers,
   doubleOutline,
   filledOutline,
   gradientStroke,
@@ -257,6 +272,7 @@ export const EFFECTS: EffectDefinition[] = [
   prismFringe,
   datamoshSmear,
   tvStatic,
+  scrollGlitch,
   vaporwave,
   distressStamp,
   chalkboard,
@@ -270,6 +286,7 @@ export const EFFECTS: EffectDefinition[] = [
   graffitiSpray,
   ransomNote,
   tornPaper,
+  honkShine,
   dropShadow,
   emboss,
   hardOffset,
@@ -346,6 +363,10 @@ export const EFFECTS: EffectDefinition[] = [
   swooshIn,
   circleSpin,
   spiralText,
+  scrollMorph,
+  scrollSpread,
+  scrollLetters,
+  folditFold,
   highlighter,
   slideUnderline,
   wavyUnderline,
@@ -373,6 +394,7 @@ export const EFFECTS: EffectDefinition[] = [
   swashBloom,
   weightScrub,
   cursorRepel,
+  scrollFill,
 ];
 
 export const EFFECTS_BY_ID: Record<string, EffectDefinition> = Object.fromEntries(

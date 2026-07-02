@@ -2,16 +2,30 @@ import type { Capability, ControlValue, EffectDefinition, Theme } from "./types"
 import { render } from "./build";
 import { renderHtml, renderJsx, escapeHtml } from "./markup";
 import { indent } from "./helpers";
-import { googleHrefForFamilies } from "@/lib/fonts";
+import { ALL_FONTS, googleHrefForFamilies } from "@/lib/fonts";
 import { SITE_URL } from "@/lib/site";
 
 const EXPORT_SCOPE = "text-effect";
 
-function fontFamiliesUsed(effect: EffectDefinition, values: Record<string, ControlValue>): string[] {
+function fontFamiliesUsed(
+  effect: EffectDefinition,
+  values: Record<string, ControlValue>,
+  css?: string,
+): string[] {
   // A forced font (variable-font effects) overrides the shared Font control, so the
   // export must load that family, not the (ignored) control value.
   const fam = effect.font ?? (values.font ? String(values.font) : "");
-  return fam ? [fam] : [];
+  const used = new Set(fam ? [fam] : []);
+  // Layer-font effects (e.g. Bungee Inline/Shade) reference additional registered
+  // families directly in their generated CSS — scan for them so the standalone
+  // export's font link ships every face the effect actually renders with.
+  if (css) {
+    for (const f of ALL_FONTS) {
+      const quoted = f.family.split(",")[0].trim();
+      if (quoted && css.includes(quoted)) used.add(f.family);
+    }
+  }
+  return [...used];
 }
 
 function markupNote(caps: Capability[]): string {
@@ -41,7 +55,7 @@ export function exportCss(
   cssOverride?: string | null,
 ): string {
   const css = cssOverride ?? renderExport(effect, values, text, theme).styleText;
-  const fonts = fontFamiliesUsed(effect, values).join(", ");
+  const fonts = fontFamiliesUsed(effect, values, css).join(", ");
   const header = [
     `/* ${effect.name} — made with TEXT-FX · ${SITE_URL}`,
     ` * HTML: ${markupNote(effect.caps)}.`,
@@ -122,7 +136,7 @@ export function exportStandaloneHtml(
 ): string {
   const r = renderExport(effect, values, text, theme);
   const css = cssOverride ?? r.styleText;
-  const href = googleHrefForFamilies(fontFamiliesUsed(effect, values));
+  const href = googleHrefForFamilies(fontFamiliesUsed(effect, values, css));
   const fontLinks = href
     ? `  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n  <link href="${href}" rel="stylesheet">\n`
     : "";

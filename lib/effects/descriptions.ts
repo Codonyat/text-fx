@@ -50,6 +50,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A dim, still-legible word sits behind a single bright conic beam that spins around its centre using an animated @property angle, lighting each letter as the sweep passes and leaving a decaying afterglow trail. Radar-green by default with amber and blue phosphor variants plus optional faint concentric scope rings — a sonar scanner clipped to your text.",
   "plasma-energy":
     "The word as contained ball-lightning: a conic gradient clipped to the glyphs spins on an animated @property angle while a second @property cycles every hue at once, so the swirl never settles into a tidy colour wheel. A white-hot core and a breathing magenta-to-cyan drop-shadow glow make it read as humming, ionised energy.",
+  "scroll-reveal":
+    "A dim monochrome ghost of your text that a vivid multi-stop gradient wipes into as you scroll, clipped to the glyphs and flooding in from the reveal edge until it completes near viewport centre, then holds full. The wipe direction, where it finishes and the width of the hue sweep are all tunable — and it renders as the finished gradient wherever scroll-driven animation isn't supported.",
   // metallic-holographic
   chrome:
     "A vertical metallic gradient clipped to the text with a soft drop-shadow for that shiny chrome bevel. Tint it warm or cool with a single control.",
@@ -102,6 +104,12 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A rigid, glossy slab that tilts in real 3D toward your cursor: rotateX and rotateY are derived live from the pointer under a perspective, while a diagonal specular sheen slides across the letters tracking the horizontal cursor position. A floating counter-shadow swings opposite the tilt, so the headline reads as a card hovering off the page.",
   "cube-spin":
     "Every letter becomes a solid 3D cube that tumbles forward on its horizontal axis, dwelling on each face long enough to read before clunking to the next, staggered so the whole word ripples through space. Four faces share the same glyph and side faces pick up a colored tint as they turn away, selling honest depth (per-letter markup).",
+  "scroll-parallax":
+    "Two shaded data-text clones sit behind the face in graduated depth shades, each scrubbing its own vertical travel from an anonymous view() timeline so the deeper layer drifts nearly twice as far per scroll unit. The extrusion shears apart low in the viewport and pulls into a tight, aligned stack by the time it reaches centre — a pure-CSS depth breath tied to the scrollbar.",
+  "scroll-flip":
+    "A slab of text hinged through its centre that the reader flips by scrolling: it enters tipped toward you, stands dead upright and legible at mid-viewport, then tips away as it leaves the top. Brightness dims and a soft ground shadow swells and blurs at the extreme angles for real depth — scroll-scrubbed pure CSS, static wherever view() timelines aren't supported.",
+  "bungee-layers":
+    "Three copies of your word overprinted in Bungee's purpose-built layer fonts — Bungee Shade drafts a real 3D block behind, Bungee Regular carries the bright face, and Bungee Inline cuts crisp highlight grooves on top. A grid stack aligns all three pixel-for-pixel, producing authentic multi-color dimensional signage no CSS text-shadow can fake.",
   // outline-stroke
   outline:
     "Hollow outline text via -webkit-text-stroke, with an optional offset echo shadow. Minimal, editorial and lightweight.",
@@ -145,6 +153,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "An SVG displacement filter fed by anisotropic noise drags whole horizontal strips of the glyphs sideways like broken video macroblocks, with a hue-skewed tinted ghost surfacing on top. Stepped SMIL timing detonates a violent compression-artifact burst early in every loop, then snaps clean for a long pristine stretch before a late micro-burst hits.",
   "tv-static":
     "An SVG feTurbulence noise, hard-thresholded to pure black-and-white speckle and composited only inside the letters, so the word reads like a dead channel wearing its own silhouette. A stepped seed animation crawls the snow frame-to-frame, with an optional rolling sync bar, a faint cool tint and a subtle brightness flicker.",
+  "scroll-glitch":
+    "Two data-text ghosts — one cyan, one magenta — whose translate offset, vertical shudder and clip-path slices scale with the element's distance from the middle of the viewport, driven by a pure-CSS view() timeline. The text shreds into an RGB tear as it enters and leaves the scrollport, then self-heals to clean, legible type as it crosses the centre.",
   // retro-themed
   vaporwave:
     "A pink-to-cyan gradient title with a soft, dreamy glow. The signature 80s/synthwave aesthetic in pure CSS.",
@@ -172,6 +182,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Each letter is a paper scrap cut from a different magazine — its own typeface, paper color and ink, tacked down at a slight angle with a hard rim and a little drop shadow. Deterministic per-letter buckets mix the fonts and a rotating paper palette (classic newsprint, neon zine, or kidnapper chic) so no two neighbors match.",
   "torn-paper":
     "The word ripped in half like a paper scrap: two paper-white copies are clipped to the top and bottom of a single irregular, deterministically-jagged tear seam, then nudged a few pixels apart and rotated in opposite directions. A brighter fiber backing peeks through the rip to catch light while a soft shadow underneath adds depth, with a warm, adjustable paper tint.",
+  "honk-shine":
+    "Ek Type's Honk color font runs its own show: a baked-in specular shine washes back and forth through ornate Indian-truck-art letterforms while the decoration slowly breathes from restrained to baroque via the font's own MORF and SHLN axes. Pick one of eight built-in truck-art palettes and dial the shimmer — every glyph carries its own multi-color paint, so nothing is filled in CSS.",
   // shadow-press
   "drop-shadow":
     "A simple soft drop shadow under solid text, with blur and distance controls. The dependable, readable depth cue.",
@@ -326,6 +338,14 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "The eternal spinning sticker: your text is laid around a full circle with an SVG textPath, repeated with dot, star or dash separators until the ring is filled, and the whole badge rotates forever. A static center dot and framing ring finish the rubber-stamp look; tune spin speed, direction and text size.",
   "spiral-text":
     "An inline SVG binds your words to a hand-sampled Archimedean spiral, so the letters wind inward along the coil, rotating to follow every turn from the outer edge toward the centre. A faint gradient guide-wire and a gentle opacity fade toward the middle give it real depth — a static composition with an optional slow Spin.",
+  "scroll-morph":
+    "The Recursive variable font morphs under your scroll: as the words travel the viewport their weight and casual axes ramp from a feather-light hand-drawn thin up to a massive linear black, scrubbed frame by frame by scroll position. A synced warm-to-cool colour-temperature shift rides along so the growing mass reads as a drop in temperature — pure CSS, no JavaScript.",
+  "scroll-spread":
+    "Typography that breathes with the scroll: as the headline travels the viewport its letter-spacing scrubs from tight-overlapped and faintly blurred, open to a comfortably wide, crisp center, then back to tight as it leaves, driven by a pure-CSS view() timeline. A bidirectional kinetic tracking spread with a subtle opacity and blur ease at the extremes.",
+  "scroll-letters":
+    "The word assembles letter-by-letter under your scroll: every glyph rides the same view() timeline but with its own staggered animation-range window, so letters rise, fade and untilt into place left-to-right as you scroll down, and come apart right-to-left as you scroll back up. A fully reversible, reader-scrubbed entrance in pure CSS with no JavaScript.",
+  "foldit-fold":
+    "Foldit's paper-strip glyphs fold and unfold on a slow origami breathe, driven by the color font's own weight axis — thin, near-flat ribbons at the low end that fold up into dense, dimensional letterforms at the peak. An optional single-hue palette recolor deepens the baked crease shading exactly as each letter folds, tinting the whole word to your chosen paper hue.",
   // decoration-underline
   "slide-underline":
     "A gradient underline bar grows in from the left beneath the text. Clean, modern link and heading emphasis.",
@@ -381,6 +401,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "The cursor becomes a weight dial: sweep left-to-right to scrub Recursive's variable weight from feather-light to massive, while up-and-down leans the slant axis, all tracking the pointer live and smooth. Driven by @property-registered numbers fed a percentage-to-number calc off the pointer vars, with a short transition for buttery two-axis motion.",
   "cursor-repel":
     "Each letter measures its own distance from the cursor and slides, lifts and leans away, so the whole word fans open around the pointer while the nearest letters bloom in colour. A purely spatial, pointer-tracked repel built entirely from per-letter calc against live custom properties — no JS animation, just transitions that glide.",
+  "scroll-fill":
+    "Hollow stroked glyphs flood with color as you scroll — the headline doubles as a reading-progress meter, its fill level rising 0% to 100% in lock-step with the page via an anonymous scroll(nearest) timeline. A soft glow rides the moving waterline; static previews and non-supporting browsers show the finished, fully-flooded frame.",
 
 };
 
