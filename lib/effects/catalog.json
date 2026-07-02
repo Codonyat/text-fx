@@ -1,6 +1,6 @@
 {
   "source": "css-text-fx-research workflow (18 agents)",
-  "totalEffects": 280,
+  "totalEffects": 322,
   "taxonomy": [
     {
       "id": "neon-glow",
@@ -306,7 +306,7 @@
       "Polka-dot / grid pattern fill",
       "Starfield / galaxy fill",
       "Animated gradient shimmer fill",
-      "Shine sweep shimmer (Shine)",
+      "Shimmer light-sweep across text",
       "Animated gradient flow text",
       "Color-split half/half (hard-stop gradient)",
       "Diagonal slide color-split on hover"
@@ -403,7 +403,7 @@
       "Kinetic scramble reveal",
       "Typewriter letter cascade",
       "Grow-to-fill highlight underline (slide-to-top)",
-      "Wavy underline (rolling squiggle)",
+      "Animated wavy underline (rolling squiggle)",
       "Pen / felt-tip highlight (uneven hand-drawn marker)",
       "Box / border highlight draw-around",
       "Background highlight reveal (scroll/hover wipe behind text)",
@@ -484,6 +484,50 @@
       "Cursor-repel / scatter letters on hover",
       "Magnetic / gravity attract letters on hover",
       "Hover ripple / wave-through letters"
+    ],
+    "v2Candidates": [
+      "Scroll-scrubbed 3D flip",
+      "Scroll parallax depth stack",
+      "Scroll progress fill rise",
+      "Scroll glitch intensity",
+      "Scroll tracking spread",
+      "Scroll neon charge-up",
+      "Woven knockout mesh",
+      "Swoosh-in motion-path entrance",
+      "Motion-path conveyor orbit",
+      "Die-cut corner chips",
+      "Bokeh light fill",
+      "Clean sliced type",
+      "Shatter shards entrance",
+      "CRT power collapse",
+      "Sparkle glints overlay",
+      "Prismatic dispersion fringe",
+      "Radar sweep reveal",
+      "Cinema marquee bulb-chase frame",
+      "Blueprint technical schematic",
+      "Nabla isometric palette cycle",
+      "Foldit origami fold morph",
+      "Honk truck-art shine morph",
+      "Rocher chromatic bevel",
+      "Bungee chromatic layer stack",
+      "Emphasis mark pop",
+      "Vertical stacked type",
+      "Swash flourish bloom",
+      "Illuminated drop cap",
+      "Art deco gold-line lettering",
+      "Embroidery cross-stitch thread",
+      "Varsity chenille letterman patch",
+      "Windows-95 system bevel chrome",
+      "Cyberpunk HUD targeting readout",
+      "Cassette futurism control panel label",
+      "Military crate safety stencil",
+      "Airbrush pinstripe chrome badge",
+      "Neon selection styling",
+      "Dock fisheye magnify",
+      "Marquee ticker scroll",
+      "Spiral text path",
+      "Crop-mark frame",
+      "Follow underline glide"
     ]
   },
   "effects": [
@@ -7100,6 +7144,908 @@
       "browserSupport": "All modern browsers.",
       "wow": 7,
       "difficulty": 3
+    },
+    {
+      "name": "Scroll-scrubbed 3D flip",
+      "category": "Scroll-driven typography",
+      "technique": "Wrap the word (or each letter) in a perspective container and define @keyframes that rotate rotateX(-82deg) -> 0deg -> rotateX(82deg); bind them with animation-timeline: view(block) and animation-range cover 0%..100% so the slab tips up through upright exactly at mid-viewport and tips away past it. Scrolling scrubs the tilt both ways - the reader drives the rotation, no time loop.",
+      "cssFeatures": [
+        "animation-timeline: view()",
+        "animation-range",
+        "transform: rotateX / perspective"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element (perspective wrapper); optional one span per letter for a staggered flip",
+      "animated": true,
+      "controls": [
+        "axis",
+        "angle",
+        "perspective"
+      ],
+      "browserSupport": "Chromium+Safari (Firefox flagged)",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Scroll parallax depth stack",
+      "category": "Scroll-driven typography",
+      "technique": "Emit several stacked data-text clones of the glyphs in graduated shades behind the face. Give each clone its own @keyframes translateY and bind them to animation-timeline: scroll(root block) so deeper clones travel further per unit of scroll than shallow ones. The extrusion visibly opens and closes as the page scrolls - 3D depth that lives on the scrollbar rather than the cursor.",
+      "cssFeatures": [
+        "animation-timeline: scroll()",
+        "data-text pseudo clones",
+        "differential transform rates"
+      ],
+      "needsMarkup": true,
+      "markupNote": "data-text attribute (multiple ::before/::after + attr() copies)",
+      "animated": true,
+      "controls": [
+        "depth",
+        "layers",
+        "hue"
+      ],
+      "browserSupport": "Chromium+Safari (Firefox flagged)",
+      "wow": 4,
+      "difficulty": 4
+    },
+    {
+      "name": "Scroll progress fill rise",
+      "category": "Scroll-driven typography",
+      "technique": "Render hollow stroked glyphs (transparent fill + -webkit-text-stroke) over a background-clip:text colored layer masked by a bottom-up gradient/inset clip. Animate the fill level 0%..100% with animation-timeline: scroll(root block) so the color rises through the letters exactly in step with page-scroll progress - the headline doubles as a reading-progress meter.",
+      "cssFeatures": [
+        "animation-timeline: scroll()",
+        "background-clip: text",
+        "clip-path / mask level",
+        "@property"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element (fill layer behind a stroked copy)",
+      "animated": true,
+      "controls": [
+        "hue",
+        "stroke",
+        "direction"
+      ],
+      "browserSupport": "Chromium+Safari (Firefox flagged)",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Scroll glitch intensity",
+      "category": "Scroll-driven typography",
+      "technique": "Two data-text pseudo copies (cyan/magenta) whose translate offset and clip-path slice amplitude scale from 0 to max via @keyframes bound to animation-timeline: view(block). The text is clean and legible when the heading is centred in the viewport and shreds into RGB chromatic tears as it approaches the top/bottom edges - glitch magnitude mapped to scroll.",
+      "cssFeatures": [
+        "animation-timeline: view()",
+        "animation-range",
+        "clip-path slices",
+        "data-text copies"
+      ],
+      "needsMarkup": true,
+      "markupNote": "data-text attribute (attr() pseudo copies)",
+      "animated": true,
+      "controls": [
+        "intensity",
+        "hue",
+        "slices"
+      ],
+      "browserSupport": "Chromium+Safari (Firefox flagged)",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Scroll tracking spread",
+      "category": "Scroll-driven typography",
+      "technique": "Bind @keyframes that animate letter-spacing from tight to wide (with a slight opacity/blur ease) to animation-timeline: view(block) cover 0%..100%. As the headline scrolls through the viewport its tracking breathes wide open then draws back shut - a scroll-scrubbed kinetic spread on a single element, no per-letter markup required.",
+      "cssFeatures": [
+        "animation-timeline: view()",
+        "letter-spacing keyframes",
+        "animation-range"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element",
+      "animated": true,
+      "controls": [
+        "spread",
+        "blur",
+        "range"
+      ],
+      "browserSupport": "Chromium+Safari (Firefox flagged)",
+      "wow": 4,
+      "difficulty": 2
+    },
+    {
+      "name": "Scroll neon charge-up",
+      "category": "Scroll-driven typography",
+      "technique": "Layered text-shadow glow whose blur radii and a hot-white core (a second stroked layer's opacity) ramp from an unlit, near-dead tube to a fully-lit buzzing sign via @keyframes bound to animation-timeline: scroll(root block). The neon powers on as the reader scrolls the page in and dims back out on scroll-up.",
+      "cssFeatures": [
+        "animation-timeline: scroll()",
+        "layered text-shadow",
+        "opacity ramp"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element",
+      "animated": true,
+      "controls": [
+        "hue",
+        "glow",
+        "range"
+      ],
+      "browserSupport": "Chromium+Safari (Firefox flagged)",
+      "wow": 4,
+      "difficulty": 2
+    },
+    {
+      "name": "Woven knockout mesh",
+      "category": "Mask compositing",
+      "technique": "Fill the glyphs with background-clip:text (solid or gradient), then apply two -webkit-mask layers - a horizontal and a vertical repeating-linear-gradient of hard opaque/transparent bands - combined with mask-composite: intersect. The intersection punches a perforated mesh of transparent slots out of the letters so the page background shows through a woven grid. Optional slow mask-position drift makes the weave crawl.",
+      "cssFeatures": [
+        "mask-composite: intersect",
+        "repeating-linear-gradient masks",
+        "background-clip: text"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element",
+      "animated": false,
+      "controls": [
+        "gap",
+        "angle",
+        "hue"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Swoosh-in motion-path entrance",
+      "category": "Motion-path kinetics",
+      "technique": "Give each letter span offset-path: path('<a curved bezier swoosh>') and offset-rotate: auto, then animate offset-distance 100% -> 0 with a fade, staggered per index. Letters fly in banking along the curve and settle at 0% - a curved flight trajectory instead of a straight drop.",
+      "cssFeatures": [
+        "offset-path: path()",
+        "offset-distance",
+        "offset-rotate: auto"
+      ],
+      "needsMarkup": true,
+      "markupNote": "one span per letter",
+      "animated": true,
+      "controls": [
+        "curve",
+        "speed",
+        "spread"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 4
+    },
+    {
+      "name": "Motion-path conveyor orbit",
+      "category": "Motion-path kinetics",
+      "technique": "All letter spans share one looping offset-path (a horizontal sine ribbon or figure-8), each parked at a staggered offset-distance and animating +100% continuously with offset-rotate: auto so the glyphs bank as they round the curve. Letters flow endlessly around the ribbon like a conveyor belt - arbitrary path shape, no SVG textPath.",
+      "cssFeatures": [
+        "offset-path (ribbon/figure-8)",
+        "offset-distance loop",
+        "offset-rotate: auto"
+      ],
+      "needsMarkup": true,
+      "markupNote": "one span per letter",
+      "animated": true,
+      "controls": [
+        "path",
+        "speed",
+        "hue"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 4
+    },
+    {
+      "name": "Die-cut corner chips",
+      "category": "Corner-shape treatment",
+      "technique": "Set each letter (or the whole word) on a solid background chip and shape the chip with corner-shape: notch / scoop / bevel alongside border-radius, carving die-cut ticket-stub, scalloped, or chamfered corners that border-radius alone cannot make. Because unknown corner-shape parses away, it degrades cleanly to plain rounded chips off Chromium.",
+      "cssFeatures": [
+        "corner-shape: notch/scoop/bevel/superellipse()",
+        "border-radius",
+        "background chip"
+      ],
+      "needsMarkup": true,
+      "markupNote": "one span per letter (chip per glyph) | or single element chip",
+      "animated": false,
+      "controls": [
+        "shape",
+        "radius",
+        "hue"
+      ],
+      "browserSupport": "Chromium-only (2026)",
+      "wow": 3,
+      "difficulty": 2
+    },
+    {
+      "name": "Bokeh light fill",
+      "category": "Defocused light fill",
+      "technique": "Fill the glyphs via background-clip:text with a stack of large, soft radial-gradients (each a blurry colored disc at low alpha) over a dark base, so the letters read as out-of-focus lens bokeh. Drift the discs with an animated background-position and pulse a couple of them via opacity keyframes for a gentle twinkle. On light themes swap to warm defocused orbs on a tinted base.",
+      "cssFeatures": [
+        "background-clip:text",
+        "radial-gradient",
+        "background-position animation",
+        "opacity keyframes"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element",
+      "animated": true,
+      "controls": [
+        "hue",
+        "speed",
+        "density"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Clean sliced type",
+      "category": "Design slice cut",
+      "technique": "Layer a data-text pseudo-copy exactly over the word; clip the base to the top half and the copy to the bottom half with two complementary clip-path polygons at a tunable slice angle. On entrance (and hover replay) shear the halves apart along the cut axis by a few pixels, hold, and settle back, leaving a crisp diagonal gap line. No RGB channels, no jitter - a designed ninja cut.",
+      "cssFeatures": [
+        "clip-path polygon",
+        "data-text pseudo",
+        "transform translate",
+        "one-shot keyframes"
+      ],
+      "needsMarkup": true,
+      "markupNote": "data-text attribute copy",
+      "animated": true,
+      "controls": [
+        "angle",
+        "gap",
+        "speed"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Shatter shards entrance",
+      "category": "Break-and-reassemble entrance",
+      "technique": "Stack 6-8 absolutely-positioned copies of the word, each clip-path'd to a different triangular polygon shard that together tile the whole glyph run. On entrance every shard flies out and spins in 3D (translate + rotate3d on a shared perspective, staggered) then snaps back into perfect registration, so the headline visibly shatters and reassembles. Replays on hover.",
+      "cssFeatures": [
+        "clip-path polygon",
+        "perspective + rotate3d",
+        "staggered keyframes"
+      ],
+      "needsMarkup": true,
+      "markupNote": "6-8 stacked word copies, each clip-path'd to a shard",
+      "animated": true,
+      "controls": [
+        "shards",
+        "speed",
+        "spread"
+      ],
+      "browserSupport": "all modern",
+      "wow": 5,
+      "difficulty": 5
+    },
+    {
+      "name": "CRT power collapse",
+      "category": "Retro screen power-on/off",
+      "technique": "Emulate an old tube switching on: keyframe the word from a single bright horizontal line (scaleY~0 + high brightness filter) that flashes, then expands vertically into full type, with a fast scaleX overshoot; a thin bright pseudo-element bar flashes at the collapse line. Run it as a one-shot power-on entrance so the resting state stays fully legible; replay on hover.",
+      "cssFeatures": [
+        "transform scaleX/scaleY",
+        "filter brightness",
+        "pseudo-element flash bar",
+        "one-shot keyframes"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element",
+      "animated": true,
+      "controls": [
+        "hue",
+        "speed"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Sparkle glints overlay",
+      "category": "Magical twinkle overlay",
+      "technique": "Overlay a handful of four-point star glints on the glyphs, each built from crossed linear-gradient rays plus a radial core, placed via multiple background layers or salted pseudo/box-shadow points. Animate each glint's scale and opacity on staggered delays so sparkles wink on and off at different spots, like diamond twinkle, while the text stays fully readable underneath.",
+      "cssFeatures": [
+        "radial + linear gradients",
+        "transform scale",
+        "staggered opacity keyframes",
+        "mix-blend-mode:screen"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element",
+      "animated": true,
+      "controls": [
+        "hue",
+        "count",
+        "speed"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Prismatic dispersion fringe",
+      "category": "Spectral edge fringe",
+      "technique": "Build a continuous rainbow edge dispersion from many hue-stepped text-shadow layers, each offset a hair further along one axis (red->orange->...->violet), so the glyph edges bleed into a full-spectrum smear like light through a prism. A slow shimmer breathes the offset amount, sliding the spectrum in and out. Single element, no clones - purely layered shadows.",
+      "cssFeatures": [
+        "layered text-shadow",
+        "hsl hue stepping",
+        "offset keyframes"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element",
+      "animated": true,
+      "controls": [
+        "spread",
+        "angle"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 2
+    },
+    {
+      "name": "Radar sweep reveal",
+      "category": "Scanning beam reveal",
+      "technique": "Set the word dim, then reveal/brighten it under a rotating radar beam: a conic-gradient (one bright wedge fading to transparent along a decaying trail) used as a mask or overlay, its angle animated via a registered @property so it spins smoothly. Each letter lights as the beam passes and fades behind the trailing edge, like a sonar scanner sweeping the headline.",
+      "cssFeatures": [
+        "conic-gradient",
+        "@property angle",
+        "mask / mix-blend",
+        "rotation keyframes"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element",
+      "animated": true,
+      "controls": [
+        "hue",
+        "speed"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 4
+    },
+    {
+      "name": "Cinema marquee bulb-chase frame",
+      "category": "cinema marquee",
+      "technique": "A padded rectangular frame around bold gold-gradient marquee lettering gets a background of evenly spaced repeating-radial-gradient warm bulb dots (each with its own soft glow ring), with background-position animated via steps() so every-other bulb lights in sequence - the classic theater chase. The word itself is a warm gold linear-gradient fill with a light bevel shadow.",
+      "cssFeatures": [
+        "repeating-radial-gradient bulb strip",
+        "steps() background-position chase",
+        "layered bulb glow",
+        "linear-gradient gold fill"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element with frame padding; optional ::before/::after strips for a fully closed rectangle of bulbs",
+      "animated": true,
+      "controls": [
+        "bulb hue",
+        "chase speed",
+        "frame on/off"
+      ],
+      "browserSupport": "all modern",
+      "wow": 5,
+      "difficulty": 3
+    },
+    {
+      "name": "Blueprint technical schematic",
+      "category": "blueprint / technical drawing",
+      "technique": "Deep cyanotype-blue background panel behind hollow white-stroked letters (-webkit-text-stroke, transparent fill) so the glyphs read as line-art. Two repeating-linear-gradient layers (horizontal + vertical hairlines) form a faint graph-paper grid behind the text. ::before/::after draw short border segments as corner registration crosshairs, and a dashed border-bottom with small clip-path triangle arrowheads forms an annotated dimension line beneath the baseline. On light themes invert to navy ink on pale paper.",
+      "cssFeatures": [
+        "dual repeating-linear-gradient grid",
+        "-webkit-text-stroke hollow line-art",
+        "::before/::after crosshair ticks",
+        "clip-path arrowheads",
+        "dashed dimension line"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element; pseudo-elements draw the grid/crosshairs/dimension line",
+      "animated": false,
+      "controls": [
+        "line hue",
+        "grid density",
+        "show dimension line"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Nabla isometric palette cycle",
+      "category": "Color font / palette (COLRv1)",
+      "technique": "Load Google Fonts' Nabla, a COLRv1 vector color font whose glyphs are isometric 3D blocks with built-in gradient shading. Declare two salted @font-palette-values (--pa/--pb) with override-colors, set font-palette on the scope, and animate/transition font-palette between them (Chromium interpolates gradient stops smoothly; other engines flip discretely). No background-clip - every color and the extrusion come from the font's own paint layers.",
+      "cssFeatures": [
+        "@font-palette-values",
+        "font-palette",
+        "override-colors",
+        "COLRv1 font"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element; requires loading font 'Nabla' (COLRv1 color font)",
+      "animated": true,
+      "controls": [
+        "palette hue A",
+        "palette hue B",
+        "cycle speed"
+      ],
+      "browserSupport": "all modern (static render); palette animation Chromium-only",
+      "wow": 5,
+      "difficulty": 3
+    },
+    {
+      "name": "Foldit origami fold morph",
+      "category": "Color font / variable axis (COLRv1)",
+      "technique": "Load Foldit, a COLRv1 + variable color font shaped like folded paper strips (Thin-Condensed to Extrabold-Expanded, with gradient shading that reads as dimensional creases). Set the family on the EffectDefinition and animate font-variation-settings 'wght'/'wdth' via @keyframes so the strips fold thin-to-bold and unfold, the font's embedded gradients selling the fold depth as it morphs.",
+      "cssFeatures": [
+        "font-variation-settings",
+        "COLRv1 font",
+        "@keyframes"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element; requires loading font 'Foldit' (COLRv1 variable color font)",
+      "animated": true,
+      "controls": [
+        "fold depth (weight)",
+        "width",
+        "speed"
+      ],
+      "browserSupport": "all modern",
+      "wow": 5,
+      "difficulty": 3
+    },
+    {
+      "name": "Honk truck-art shine morph",
+      "category": "Color font / variable axis (COLRv1)",
+      "technique": "Load Honk (Ek Type's COLRv1 variable color font based on Indian truck lettering) with its MORF and SHLN axes and 8 built-in palettes. Animate font-variation-settings 'MORF' (ornament morph, simple-to-ornate) and 'SHLN' (shine line) via @keyframes so a bright shine sweeps through the glyphs while the decoration oscillates, and select a scheme via font-palette. Entirely font-native color and motion.",
+      "cssFeatures": [
+        "font-variation-settings (MORF/SHLN)",
+        "font-palette",
+        "COLRv1 font"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element; requires loading font 'Honk' (COLRv1 variable color font)",
+      "animated": true,
+      "controls": [
+        "morph amount (MORF)",
+        "shine (SHLN)",
+        "palette"
+      ],
+      "browserSupport": "all modern",
+      "wow": 5,
+      "difficulty": 3
+    },
+    {
+      "name": "Rocher chromatic bevel",
+      "category": "Color font / palette (COLRv1)",
+      "technique": "Load Rocher Color, a COLRv1 display font whose glyphs carry a glossy chromatic bevel built from four palette slots (ships 11 presets). Pick a base-palette and use @font-palette-values override-colors to retint the four slots to theme-appropriate hues. One static element renders a candy multi-color 3D-bevel wordmark with no CSS shadows at all.",
+      "cssFeatures": [
+        "@font-palette-values",
+        "override-colors",
+        "font-palette",
+        "COLRv1 font"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element; requires loading font 'Rocher Color' (COLRv1 color font, self-hosted - not on Google Fonts)",
+      "animated": false,
+      "controls": [
+        "palette preset",
+        "highlight hue",
+        "shadow hue"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 2
+    },
+    {
+      "name": "Bungee chromatic layer stack",
+      "category": "Layered chromatic font (multi-file overprint)",
+      "technique": "Load the Bungee family's purpose-built overprint layers - Bungee Regular + Bungee Inline + Bungee Shade. Stack three absolutely-positioned copies of the same word at identical size, each set to a different layer font and color: Shade behind as the cast block, Regular as the face, Inline as the light-groove highlight, producing dimensional multi-color signage. Optionally animate the Shade offset for a parallax lift.",
+      "cssFeatures": [
+        "multiple @font-face layer fonts",
+        "position:absolute stacking",
+        "z-index paint order"
+      ],
+      "needsMarkup": true,
+      "markupNote": "stacked layer copies (3 absolutely-positioned spans of the same text); requires loading Bungee Regular + Inline + Shade",
+      "animated": false,
+      "controls": [
+        "face color",
+        "inline (highlight) color",
+        "shade color/offset"
+      ],
+      "browserSupport": "all modern",
+      "wow": 5,
+      "difficulty": 3
+    },
+    {
+      "name": "Emphasis mark pop",
+      "category": "Text-emphasis marks",
+      "technique": "Wrap one span per letter and apply text-emphasis (filled dot / sesame / triangle) with text-emphasis-position over, so a native mark sits above every glyph. Stagger each span's entrance (translateY + opacity) by index so letters and their marks pop up in sequence, and cycle text-emphasis-color through an animated @property hue. The dots are rendered by the emphasis engine, not extra DOM.",
+      "cssFeatures": [
+        "text-emphasis",
+        "text-emphasis-position",
+        "@property (hue)",
+        "per-letter stagger"
+      ],
+      "needsMarkup": true,
+      "markupNote": "one span per letter",
+      "animated": true,
+      "controls": [
+        "mark style",
+        "mark hue",
+        "stagger speed"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 2
+    },
+    {
+      "name": "Vertical stacked type",
+      "category": "Writing-mode / orientation",
+      "technique": "Set writing-mode:vertical-rl with text-orientation:upright on the scope so glyphs stack in an upright vertical column, a poster-spine headline; center the resulting tall box. Reveal via a clip-path/opacity wipe travelling down the column (or per-letter staggered drop-in). A genuine change of writing axis, not a transform rotating a horizontal line, so kerning and box flow stay correct.",
+      "cssFeatures": [
+        "writing-mode",
+        "text-orientation",
+        "clip-path reveal"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element (optional one span per letter for staggered drop-in)",
+      "animated": true,
+      "controls": [
+        "column reveal speed",
+        "letter gap",
+        "orientation"
+      ],
+      "browserSupport": "all modern",
+      "wow": 3,
+      "difficulty": 2
+    },
+    {
+      "name": "Swash flourish bloom",
+      "category": "OpenType features (swsh / stylistic sets)",
+      "technique": "Load a face rich in OpenType swashes/stylistic sets (a swash serif or script). Resting state uses default glyphs; on :hover set font-feature-settings:'swsh' 1,'ss01' 1 (or font-variant-alternates:swash) so letters sprout ornamental tails and flourishes. Because glyph substitution is discrete, stack two copies (plain underneath, swash on top) and crossfade opacity on hover for a smooth bloom.",
+      "cssFeatures": [
+        "font-feature-settings (swsh/ssXX)",
+        "font-variant-alternates",
+        "hover crossfade"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element, optional 2 stacked copies for the crossfade; requires loading a swash OpenType font",
+      "animated": true,
+      "controls": [
+        "swash/stylistic set",
+        "bloom speed"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Illuminated drop cap",
+      "category": "::first-letter drop cap / versal",
+      "technique": "Style the scope's ::first-letter as an oversized illuminated capital: initial-letter:3 on Chromium/Safari (float + large font-size + line-height as the fallback), a gradient/ornamented fill via linear-gradient + -webkit-background-clip:text on ::first-letter, a thin contrast stroke and small soft drop-shadow, optional padding+box tint - while the rest of the word stays plain. A single-element manuscript versal; theme-aware accent, optional slow gradient shimmer on the cap only.",
+      "cssFeatures": [
+        "::first-letter",
+        "initial-letter",
+        "background-clip:text (on first letter)",
+        "-webkit-text-stroke"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element (uses the ::first-letter pseudo)",
+      "animated": false,
+      "controls": [
+        "cap scale",
+        "cap gradient hue",
+        "frame on/off"
+      ],
+      "browserSupport": "all modern (initial-letter Chromium+Safari; float fallback elsewhere)",
+      "wow": 4,
+      "difficulty": 2
+    },
+    {
+      "name": "Art deco gold-line lettering",
+      "category": "art deco",
+      "technique": "Multi-stop gold linear-gradient clipped to the glyphs via background-clip:text. ::before/::after pseudo-elements draw a pair of thin flanking rules (border-top/border-bottom) capped with small rotated-square diamond ornaments, plus a low-opacity conic-gradient 'sunburst' of rays positioned behind the word. Wide letter-spacing + small-caps complete the poster-header geometry.",
+      "cssFeatures": [
+        "linear-gradient background-clip:text",
+        "conic-gradient sunburst",
+        "::before/::after ornament rules",
+        "letter-spacing + small-caps"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element; ::before/::after draw flanking rules and sunburst",
+      "animated": false,
+      "controls": [
+        "hue",
+        "tracking",
+        "rule width"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Embroidery cross-stitch thread",
+      "category": "embroidery",
+      "technique": "Base glyph fill uses a tight repeating-linear-gradient at ~50deg with 2px light/dark stripes (background-clip:text) to simulate satin-stitch thread ridges. A second text layer is trimmed to a thin ring around each glyph via mask-composite:exclude (outer stroke mask minus inner), filled with a perpendicular dashed repeating-linear-gradient to render a running-stitch border. A faint repeating-conic-gradient checker sits behind at low opacity as fabric weave.",
+      "cssFeatures": [
+        "repeating-linear-gradient thread ridges",
+        "mask-composite: exclude stitch-ring",
+        "dashed stitch gradient",
+        "repeating-conic-gradient fabric weave"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element; one pseudo-layer for the running-stitch outline ring",
+      "animated": false,
+      "controls": [
+        "thread hue",
+        "stitch density",
+        "fabric tone"
+      ],
+      "browserSupport": "all modern (mask-composite needs a recent Firefox)",
+      "wow": 4,
+      "difficulty": 4
+    },
+    {
+      "name": "Varsity chenille letterman patch",
+      "category": "varsity/collegiate",
+      "technique": "Bold rounded block letters filled with two overlaid fine repeating-radial-gradient dot layers at different angles/scales to fake a fuzzy chenille fiber texture, clipped to the text. Three nested rings (white, team-hue, black) are built from multi-directional hard text-shadow offsets at increasing radii to mimic a sewn patch border. A soft directional drop-shadow underneath sells the applique relief; an optional per-letter arc reuses the arc-text rotation pattern.",
+      "cssFeatures": [
+        "layered repeating-radial-gradient fiber texture",
+        "stacked hard text-shadow rings",
+        "drop-shadow patch relief"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element for the flat version; per-letter spans only if the arc toggle is enabled",
+      "animated": false,
+      "controls": [
+        "team hue",
+        "ring count",
+        "arc amount"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Windows-95 system bevel chrome",
+      "category": "system UI chrome",
+      "technique": "Flat mid-gray text fill topped with two stacked hard (0-blur) 1px text-shadows - light top-left, dark gray bottom-right - for a pixel-hard bevel. The scope element itself is padded and framed with the classic Win95 outset box-shadow trick (inset light edges top/left, inset dark edges bottom/right, plus a 1px solid outer border) so the whole word reads as an OS UI button/label chip. Monospace/system-font fallback, zero letter-spacing.",
+      "cssFeatures": [
+        "hard 0-blur text-shadow bevel pair",
+        "box-shadow outset bevel chip",
+        "flat gray chip"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element; box-shadow on the element itself forms the button chip",
+      "animated": false,
+      "controls": [
+        "chip on/off",
+        "bevel direction",
+        "accent hue"
+      ],
+      "browserSupport": "all modern",
+      "wow": 3,
+      "difficulty": 2
+    },
+    {
+      "name": "Cyberpunk HUD targeting readout",
+      "category": "cyberpunk HUD",
+      "technique": "Monospace cyan/green text with a modest text-shadow glow. ::before/::after each build an L-shaped corner bracket from two short border segments, positioned outside the text bounds on all four corners to form a targeting-reticle frame. A 1px bright gradient bar masked over the text and animated via background-position sweeps top-to-bottom like a radar scan. A row of variable-width repeating-linear-gradient dashes sits below the baseline as a data-readout tick strip.",
+      "cssFeatures": [
+        "corner-bracket pseudo-elements",
+        "animated scan-line via mask + background-position",
+        "repeating-linear-gradient tick readout",
+        "text-shadow glow"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element; ::before/::after form the corner brackets, one extra mask layer drives the scan sweep",
+      "animated": true,
+      "controls": [
+        "hue",
+        "bracket size",
+        "scan speed"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Cassette futurism control panel label",
+      "category": "cassette futurism",
+      "technique": "A rounded 'label tape' chip in safety-orange or putty gets an inset box-shadow groove border to suggest recessed plastic, with four small radial-gradient corner dots standing in for rivets. The text itself is debossed via a light-above/dark-below text-shadow pair on a slightly darker fill, set in a wide-tracked monospace face, evoking a 1970s spacecraft control-panel placard.",
+      "cssFeatures": [
+        "box-shadow inset groove chip",
+        "corner rivet radial-gradient dots",
+        "debossed text-shadow pair",
+        "monospace wide tracking"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element; pseudo-elements or extra background layers place the four corner rivets",
+      "animated": false,
+      "controls": [
+        "panel hue",
+        "rivets on/off",
+        "deboss depth"
+      ],
+      "browserSupport": "all modern",
+      "wow": 3,
+      "difficulty": 3
+    },
+    {
+      "name": "Military crate safety stencil",
+      "category": "safety stencil",
+      "technique": "Bold condensed lettering (Recursive pushed toward the MONO axis) filled flat in olive/black/safety-yellow. A mask-image built from two thin horizontal transparent bands across the whole text bounding box cuts literal stencil 'bridge gaps' through every glyph, mimicking a real cut stencil. The word sits inside a hazard rectangle built from a repeating-linear-gradient 45-degree yellow/black stripe border. Deliberately crisp and geometric rather than grungy.",
+      "cssFeatures": [
+        "mask-image horizontal bridge-gap bands",
+        "repeating-linear-gradient hazard-stripe frame",
+        "flat solid fill"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element; mask-image cuts the bridge gaps, background/border draws the hazard-stripe frame",
+      "animated": false,
+      "controls": [
+        "stencil color",
+        "bridge gap count",
+        "frame on/off"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Airbrush pinstripe chrome badge",
+      "category": "airbrush badge",
+      "technique": "Bold italic slanted lettering filled with a chrome-red gradient whose edges are softened via filter:blur on a masked duplicate layer, simulating airbrush overspray feathering rather than a crisp gradient edge, topped with a bright specular chrome band. A second duplicate text layer offset a few px with a hard 0-blur text-shadow traces a second-color pinstripe line behind the slanted word, like a vinyl pinstripe decal, plus a soft ground shadow.",
+      "cssFeatures": [
+        "masked filter:blur airbrush fill",
+        "hard offset text-shadow pinstripe",
+        "italic skew transform",
+        "specular gradient band"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element; ::before duplicates the text offset for the pinstripe line",
+      "animated": false,
+      "controls": [
+        "hue",
+        "slant angle",
+        "pinstripe offset"
+      ],
+      "browserSupport": "all modern",
+      "wow": 3,
+      "difficulty": 3
+    },
+    {
+      "name": "Neon selection styling",
+      "category": "Selection styling",
+      "technique": "Style the scoped ::selection pseudo-element so dragging over the headline inverts it: color swaps to a bright hue, background-color flips to the text's resting color, and a layered text-shadow fires a neon bloom (text-shadow renders inside ::selection in Chromium/Safari). Resting state is a clean two-tone heading; the wow lands the instant the user selects the text.",
+      "cssFeatures": [
+        "::selection",
+        "text-shadow",
+        "color-swap"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element",
+      "animated": false,
+      "controls": [
+        "hue",
+        "glow",
+        "invertColor"
+      ],
+      "browserSupport": "Chromium+Safari",
+      "wow": 4,
+      "difficulty": 2
+    },
+    {
+      "name": "Dock fisheye magnify",
+      "category": "Selector interaction (:has proximity)",
+      "technique": "Per-letter spans; the letter under the cursor and its neighbors scale up by falloff exactly like the macOS dock, using text-length-independent combinators: .l:hover{scale:1.6}, .l:hover + .l and .l:has(+ .l:hover){scale:1.35}, plus distance-2 rules at scale:1.15. transform-origin bottom keeps the baseline; a transition on scale gives the elastic magnify. No JS, no pointer vars.",
+      "cssFeatures": [
+        ":has()",
+        "sibling-combinator",
+        "scale",
+        "transition"
+      ],
+      "needsMarkup": true,
+      "markupNote": "one span per letter",
+      "animated": false,
+      "controls": [
+        "magnify",
+        "spread",
+        "lift"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Marquee ticker scroll",
+      "category": "Modern CSS marquee",
+      "technique": "The headline is duplicated into two inline copies inside a width:max-content track set on an overflow:hidden scoped box; @keyframes translateX(-50%) loops the track seamlessly and infinitely. A mask-image linear-gradient fades both edges so glyphs dissolve in/out. Pauses on hover via animation-play-state for legibility.",
+      "cssFeatures": [
+        "overflow:hidden",
+        "translateX keyframes",
+        "mask-image edge fade",
+        "max-content track"
+      ],
+      "needsMarkup": true,
+      "markupNote": "text duplicated into two inline spans inside one track",
+      "animated": true,
+      "controls": [
+        "speed",
+        "direction",
+        "edgeFade"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 2
+    },
+    {
+      "name": "Spiral text path",
+      "category": "Text on path (SVG textPath)",
+      "technique": "Emit an inline <svg> with a <path> describing an Archimedean spiral (d sampled as r=a+b*theta into polar points) and a <textPath href> binding the headline to it, so letters wind inward toward the center over multiple loops. Salt the path id via svgId(). Static shape; fill/stroke recolor by theme.",
+      "cssFeatures": [
+        "svg textPath",
+        "path d",
+        "fill",
+        "stroke"
+      ],
+      "needsMarkup": true,
+      "markupNote": "inline svg: path + textPath",
+      "animated": false,
+      "controls": [
+        "turns",
+        "tightness",
+        "hue"
+      ],
+      "browserSupport": "all modern",
+      "wow": 4,
+      "difficulty": 3
+    },
+    {
+      "name": "Crop-mark frame",
+      "category": "Pseudo-element composition",
+      "technique": "Use ::before and ::after (each with a couple of layered background linear-gradients or borders) to draw four corner crop-marks / registration brackets around the headline - the print-shop Ls at the box corners - without a continuous border. position:absolute to the four corners of the scoped box; optionally a subtle scaleX/opacity draw-in on load. Clean editorial/technical framing.",
+      "cssFeatures": [
+        "::before",
+        "::after",
+        "position:absolute corners",
+        "layered background"
+      ],
+      "needsMarkup": false,
+      "markupNote": "single element (two pseudo-elements)",
+      "animated": false,
+      "controls": [
+        "markLength",
+        "hue",
+        "inset"
+      ],
+      "browserSupport": "all modern",
+      "wow": 3,
+      "difficulty": 2
+    },
+    {
+      "name": "Follow underline glide",
+      "category": "Selector interaction (:has + underline)",
+      "technique": "Per-letter spans, each with an ::after underline segment (scaleX:0 at rest). Hovering a letter grows only that letter's underline (.l:hover::after{scale:1}) while its immediate siblings get a partial reveal via .l:hover + .l::after and .l:has(+ .l:hover)::after, so the underline appears to slide toward and settle under whichever glyph the cursor is on. transition on transform gives the glide.",
+      "cssFeatures": [
+        ":has()",
+        "::after",
+        "scaleX",
+        "sibling-combinator"
+      ],
+      "needsMarkup": true,
+      "markupNote": "one span per letter",
+      "animated": false,
+      "controls": [
+        "hue",
+        "thickness",
+        "glide"
+      ],
+      "browserSupport": "all modern",
+      "wow": 3,
+      "difficulty": 2
     }
   ]
 }
