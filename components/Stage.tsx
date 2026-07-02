@@ -27,20 +27,20 @@ export function Stage({
   caps,
   root,
   defs,
-  reduceMotion,
   pristine,
   ghostStyle,
   onTextChange,
+  onEditingEnd,
 }: {
   rootClass: string;
   text: string;
   caps: Capability[];
   root: MarkupNode;
   defs?: string;
-  reduceMotion: boolean;
   pristine: boolean;
   ghostStyle?: CSSProperties;
   onTextChange: (t: string) => void;
+  onEditingEnd: () => void;
 }) {
   const perLetter = caps.includes("perLetter");
   const dataText = caps.includes("dataText");
@@ -176,12 +176,26 @@ export function Stage({
     if (document.activeElement === el) {
       el.blur();
       window.getSelection()?.removeAllRanges();
+    } else if ((el.textContent ?? "") === "") {
+      // Empty + unfocused: the editable has collapsed to a near-zero box and the glyphs
+      // the "click the text" rule targets don't exist, so a click anywhere recovers
+      // focus (dropping the caret) instead of being suppressed — otherwise an emptied
+      // field would be unrecoverable.
+      el.focus();
+      selectAllContents(el);
     }
+  };
+
+  // Ending an edit with an empty/whitespace-only field would leave nothing to click back
+  // into; let Studio restore the pristine starter. Fires for both the native blur (click
+  // the grid / tab away) and the imperative blur() in handleStageMouseDown.
+  const handleBlur = () => {
+    onEditingEnd();
   };
 
   return (
     <div
-      className={`${styles.stage}${reduceMotion ? " fx-reduce-motion" : ""}`}
+      className={styles.stage}
       onMouseDown={handleStageMouseDown}
     >
       {/* Distinct keys on the two branch roots: without them React reuses the same
@@ -203,6 +217,7 @@ export function Stage({
             onKeyDown={handleKeyDown}
             onPaste={handlePaste}
             onCompositionStart={handleCompositionStart}
+            onBlur={handleBlur}
             role="textbox"
             aria-label="Effect text"
           />
@@ -220,6 +235,7 @@ export function Stage({
           onKeyDown={handleKeyDown}
           onPaste={handlePaste}
           onCompositionStart={handleCompositionStart}
+          onBlur={handleBlur}
           role="textbox"
           aria-label="Effect text"
         />

@@ -286,6 +286,77 @@ test("a corrupted favorites store does not crash the app", async ({ page }) => {
   expect(errors, "console/runtime errors:\n" + errors.join("\n")).toEqual([]);
 });
 
+test("empty field stays typable, and abandoning it empty restores the pristine starter", async ({
+  page,
+}) => {
+  const errors = trackErrors(page);
+  await pickNeonGlow(page);
+
+  const editor = page.getByRole("textbox", { name: /effect text/i });
+
+  // Delete every character. With no text the editable collapses, but it must stay focused
+  // and typable — emptying it can't lock the user out.
+  await editor.click({ force: true });
+  await page.keyboard.press("Control+A");
+  await page.keyboard.press("Backspace");
+  await expect.poll(async () => (await editor.textContent()) ?? "").toBe("");
+  await expect(editor).toBeFocused();
+  await page.keyboard.type("Yo");
+  await expect.poll(async () => (await editor.textContent())?.trim()).toBe("Yo");
+
+  // Empty it again, then click the stage background: the field blurs (ends editing) AND
+  // the "type here" starter is restored so nothing is left behind.
+  await page.keyboard.press("Control+A");
+  await page.keyboard.press("Backspace");
+  await expect.poll(async () => (await editor.textContent()) ?? "").toBe("");
+
+  const box = await stage(page).boundingBox();
+  expect(box).not.toBeNull();
+  if (!box) return;
+  await page.mouse.click(box.x + box.width / 2, box.y + 10);
+
+  await expect(editor).not.toBeFocused();
+  await expect.poll(async () => (await editor.textContent())?.trim()).toBe("type here");
+
+  // Restore left the field pristine, so first-keystroke replacement re-arms: clicking the
+  // text and typing one char replaces the whole starter, yielding exactly "X".
+  await editor.click({ force: true });
+  await page.keyboard.type("X");
+  await expect.poll(async () => (await editor.textContent())?.trim()).toBe("X");
+
+  expect(errors, "console/runtime errors:\n" + errors.join("\n")).toEqual([]);
+});
+
+test("tuning a slider remounts the stage, restarting one-shot entrance animations", async ({
+  page,
+}) => {
+  const errors = trackErrors(page);
+  await pickNeonGlow(page);
+
+  const editor = page.getByRole("textbox", { name: /effect text/i });
+  await editor.evaluate((el) => {
+    (el as HTMLElement).dataset.marker = "x";
+  });
+  expect(await editor.evaluate((el) => (el as HTMLElement).dataset.marker)).toBe("x");
+
+  // Nudge an Adjust slider. A control change must restart animations by remounting the
+  // stage — browsers don't replay a finished one-shot when its duration/delay changes, so
+  // tuning would look dead on entrance effects otherwise. (Remount-based assertion works
+  // for any effect.) Arrow both ways so the value definitely changes wherever it starts.
+  const slider = page.getByRole("slider").first();
+  await slider.focus();
+  const before = await slider.inputValue();
+  await slider.press("ArrowRight");
+  if ((await slider.inputValue()) === before) await slider.press("ArrowLeft");
+
+  // Stage remounted → the imperatively-set marker on the old node is gone.
+  await expect
+    .poll(async () => await editor.evaluate((el) => (el as HTMLElement).dataset.marker))
+    .toBeUndefined();
+
+  expect(errors, "console/runtime errors:\n" + errors.join("\n")).toEqual([]);
+});
+
 test("Replay remounts the stage textbox, restarting its animation", async ({ page }) => {
   const errors = trackErrors(page);
   await pickNeonGlow(page);
@@ -303,4 +374,57 @@ test("Replay remounts the stage textbox, restarting its animation", async ({ pag
   expect(await editor.evaluate((el) => (el as HTMLElement).dataset.marker)).toBeUndefined();
 
   expect(errors, "console/runtime errors:\n" + errors.join("\n")).toEqual([]);
+});
+
+/** Pulse Glow is caps ["pure"] (single-element → the effect lives on the .fx-live stage
+ *  node) and ALWAYS carries an infinite animation, so its computed animation-duration is
+ *  a reliable motion signal — unlike Neon Glow, whose flicker (and thus animation) is
+ *  random per seed. */
+async function pickPulseGlow(page: Page) {
+  await page.goto("/");
+  await page.waitForSelector(".fx-live");
+  await page.getByRole("button", { name: /browse/i }).click();
+  await page.getByRole("button", { name: "Pulse Glow" }).click();
+  await page.waitForSelector(".fx-live");
+  await expect(page.getByText("Pulse Glow", { exact: true })).toBeVisible();
+}
+
+/** Computed animation-duration (seconds) of the live stage element. Neutralized motion
+ *  reports ~1e-06s ("0.000001s"); a running effect reports its real duration (seconds). */
+function liveAnimSeconds(page: Page): Promise<number> {
+  return page.evaluate(() => {
+    const el = document.querySelector(".fx-live");
+    return el ? parseFloat(getComputedStyle(el).animationDuration) : NaN;
+  });
+}
+
+test("OS reduced-motion is ignored in-app: animated by default, MOTION opts out (persisted)", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await pickPulseGlow(page);
+
+  // Motion is ON by default even under OS reduce — no neutralization class, real duration.
+  await expect(page.locator(".app.fx-reduce-motion")).toHaveCount(0);
+  await expect.poll(() => liveAnimSeconds(page)).toBeGreaterThanOrEqual(0.01);
+
+  // Explicit opt-out via the MOTION toggle neutralizes the animation.
+  await page.getByRole("button", { name: /turn motion off/i }).click();
+  await expect(page.locator(".app.fx-reduce-motion")).toHaveCount(1);
+  await expect.poll(() => liveAnimSeconds(page)).toBeLessThan(0.001);
+
+  // The opt-out persists across a reload (a shuffle picks a fresh effect, so assert
+  // persistence via the class + the toggle's flipped label).
+  await page.reload();
+  await page.waitForSelector(".fx-live");
+  await expect(page.locator(".app.fx-reduce-motion")).toHaveCount(1);
+  await expect(page.getByRole("button", { name: /turn motion on/i })).toBeVisible();
+});
+
+test("with no reduce preference the studio animates at full duration", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await pickPulseGlow(page);
+
+  await expect(page.locator(".app.fx-reduce-motion")).toHaveCount(0);
+  await expect.poll(() => liveAnimSeconds(page)).toBeGreaterThanOrEqual(0.01);
 });

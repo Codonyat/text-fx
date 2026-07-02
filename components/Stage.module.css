@@ -32,6 +32,14 @@
   outline-offset: 10px;
 }
 
+/* With no text the editable collapses to ~zero size — give it a clickable, caret-visible
+   box so an emptied field can be clicked back into. Harmless on the per-letter ghost
+   (also .text): the ghost is transparent, so the min box is invisible. */
+.text:empty {
+  min-width: 2ch;
+  min-height: 1.05em;
+}
+
 .caption {
   position: absolute;
   left: 28px;

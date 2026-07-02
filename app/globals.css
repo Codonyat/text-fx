@@ -91,25 +91,31 @@ textarea {
   --grid: rgba(0, 0, 0, 0.05);
 }
 
-/* Respect reduced-motion globally: tame (not kill) effect animations.
-   The .fx-reduce-motion hook covers the studio Stage; the scope-prefix rule
-   below covers every rendered effect (fx-live, fx-gal-*, fx-fav-*, SSR
-   fx-card-* / fx-effect-*) in the gallery, thumbnails, and SEO pages. */
-@media (prefers-reduced-motion: reduce) {
-  .fx-reduce-motion *,
-  .fx-reduce-motion *::before,
-  .fx-reduce-motion *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
+/* Reduced-motion neutralization: tame (not kill) effect animations.
+   In the studio this is CLASS-driven — motion is ON by default and the OS
+   prefers-reduced-motion setting is ignored in-app; Studio adds .fx-reduce-motion
+   to the root .app only when the user explicitly opts out via the Header MOTION
+   toggle (stored textfx_motion = "off"). The class sits on .app, so the descendant
+   form covers every rendered effect (fx-live, fx-gal-*, fx-fav-*) beneath it. */
+.fx-reduce-motion *,
+.fx-reduce-motion *::before,
+.fx-reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
 
-  :is([class^="fx-"], [class*=" fx-"]),
-  :is([class^="fx-"], [class*=" fx-"])::before,
-  :is([class^="fx-"], [class*=" fx-"])::after,
-  :is([class^="fx-"], [class*=" fx-"]) *,
-  :is([class^="fx-"], [class*=" fx-"]) *::before,
-  :is([class^="fx-"], [class*=" fx-"]) *::after {
+/* SSR/SEO previews carry no JS state, so they fall back to a pure media query —
+   but scoped ONLY to the SSR preview prefixes (fx-card-* on /effects, fx-effect-*
+   on /effects/[id]), NOT the generic fx- prefix, which would crush the studio
+   regardless of the toggle. */
+@media (prefers-reduced-motion: reduce) {
+  :is([class^="fx-card-"], [class*=" fx-card-"], [class^="fx-effect-"], [class*=" fx-effect-"]),
+  :is([class^="fx-card-"], [class*=" fx-card-"], [class^="fx-effect-"], [class*=" fx-effect-"])::before,
+  :is([class^="fx-card-"], [class*=" fx-card-"], [class^="fx-effect-"], [class*=" fx-effect-"])::after,
+  :is([class^="fx-card-"], [class*=" fx-card-"], [class^="fx-effect-"], [class*=" fx-effect-"]) *,
+  :is([class^="fx-card-"], [class*=" fx-card-"], [class^="fx-effect-"], [class*=" fx-effect-"]) *::before,
+  :is([class^="fx-card-"], [class*=" fx-card-"], [class^="fx-effect-"], [class*=" fx-effect-"]) *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;

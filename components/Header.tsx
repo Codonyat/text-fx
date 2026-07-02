@@ -7,12 +7,16 @@ import styles from "./Header.module.css";
 export function Header({
   theme,
   view,
+  motionOn,
   onToggleTheme,
+  onToggleMotion,
   onToggleView,
 }: {
   theme: Theme;
   view: "studio" | "gallery";
+  motionOn: boolean;
   onToggleTheme: () => void;
+  onToggleMotion: () => void;
   onToggleView: () => void;
 }) {
   return (
@@ -43,6 +47,15 @@ export function Header({
           aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
         >
           {theme === "dark" ? "◐ DARK" : "◑ LIGHT"}
+        </button>
+        <button
+          type="button"
+          className={styles.btn}
+          onClick={onToggleMotion}
+          aria-pressed={motionOn}
+          aria-label={motionOn ? "Turn motion off" : "Turn motion on"}
+        >
+          {motionOn ? "≋ MOTION ON" : "≋ MOTION OFF"}
         </button>
       </div>
     </header>

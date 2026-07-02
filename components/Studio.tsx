@@ -58,8 +58,13 @@ export function Studio() {
   const [copied, setCopied] = useState<FlagState>("");
   const [saved, setSaved] = useState<FlagState>("");
   const [shared, setShared] = useState<FlagState>("");
-  const [reduceMotion, setReduceMotion] = useState(false);
+  // Motion is ON by default and OS-independent in-app (the studio's whole point is
+  // animated text): only an explicit stored opt-out reduces motion. SSR/SEO previews
+  // still honor prefers-reduced-motion via the media query in globals.css.
+  const [motionPref, setMotionPref] = useState<"on" | "off" | null>(null);
   const [replayNonce, setReplayNonce] = useState(0);
+
+  const effectiveReduce = motionPref === "off";
 
   const copyT = useRef<number | undefined>(undefined);
   const saveT = useRef<number | undefined>(undefined);
@@ -116,10 +121,10 @@ export function Studio() {
 
   // ---- mount: media query, favorites, share-URL or first shuffle ----
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduceMotion(mq.matches);
-    const onMq = (e: MediaQueryListEvent) => setReduceMotion(e.matches);
-    mq.addEventListener("change", onMq);
+    try {
+      const m = localStorage.getItem("textfx_motion");
+      if (m === "on" || m === "off") setMotionPref(m);
+    } catch {}
 
     let saved: Theme | null = null;
     try {
@@ -143,12 +148,11 @@ export function Studio() {
         setSeed(spec.seed);
         setText(spec.text || DEFAULT_TEXT);
         track("open_share_link");
-        return () => mq.removeEventListener("change", onMq);
+        return;
       }
     }
     // first-visit shuffle (post-hydration, client-only)
     doShuffle();
-    return () => mq.removeEventListener("change", onMq);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -184,6 +188,11 @@ export function Studio() {
     (id: string, value: ControlValue) => {
       setValues((prev) => ({ ...prev, [id]: value }));
       setEditedCss(null);
+      // Remount the stage so one-shot entrance animations replay with the new values —
+      // browsers don't restart a finished animation when its duration/delay change, so
+      // tuning would otherwise look dead on entrances. (Not on text changes: remounting
+      // mid-type destroys the caret; the text-sync path handles those in place.)
+      setReplayNonce((n) => n + 1);
       stripHash();
     },
     [stripHash],
@@ -198,14 +207,35 @@ export function Studio() {
     [stripHash],
   );
 
+  // Abandoning the editable empty (or whitespace-only) leaves nothing to click back into;
+  // restore the pristine starter so the effect keeps text and first-keystroke replacement
+  // re-arms. Reuses onTextChange semantics (editedCss reset + hash strip are acceptable).
+  const onEditingEnd = useCallback(() => {
+    if (text.trim() === "") onTextChange(DEFAULT_TEXT);
+  }, [text, onTextChange]);
+
   const onToggleTheme = useCallback(() => {
     setTheme((t) => (t === "dark" ? "light" : "dark"));
     setEditedCss(null);
+    // Same one-shot problem: recolors are invisible on a finished entrance without a replay.
+    setReplayNonce((n) => n + 1);
   }, []);
 
   const onReplay = useCallback(() => {
     setReplayNonce((n) => n + 1);
   }, []);
+
+  // Flip the explicit motion pref and persist it so it survives reloads. Re-enabling
+  // also bumps replayNonce (same as Replay) so finished one-shot entrances visibly
+  // restart — turning motion on must never look like a no-op.
+  const onToggleMotion = useCallback(() => {
+    const next = effectiveReduce ? "on" : "off";
+    setMotionPref(next);
+    if (next === "on") setReplayNonce((n) => n + 1);
+    try {
+      localStorage.setItem("textfx_motion", next);
+    } catch {}
+  }, [effectiveReduce]);
 
   const onCopy = useCallback(async () => {
     const ok = await copyText(cssDisplay);
@@ -286,12 +316,14 @@ export function Studio() {
   );
 
   return (
-    <div className="app" data-theme={theme}>
+    <div className={`app${effectiveReduce ? " fx-reduce-motion" : ""}`} data-theme={theme}>
       <StyleHost styles={styleEntries} />
       <Header
         theme={theme}
         view={view}
+        motionOn={!effectiveReduce}
         onToggleTheme={onToggleTheme}
+        onToggleMotion={onToggleMotion}
         onToggleView={() => setView((v) => (v === "studio" ? "gallery" : "studio"))}
       />
 
@@ -306,10 +338,10 @@ export function Studio() {
             caps={live.caps}
             root={live.root}
             defs={live.defs}
-            reduceMotion={reduceMotion}
             pristine={text === DEFAULT_TEXT}
             ghostStyle={ghostStyle}
             onTextChange={onTextChange}
+            onEditingEnd={onEditingEnd}
           />
           <ActionBar
             effectName={effect.name}
