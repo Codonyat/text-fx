@@ -51,6 +51,25 @@
   pointer-events: none;
 }
 
+/* Scroll-scrub wrapper for scroll-driven effects: gives view()/scroll() timelines a
+   real scrollport to travel through. Full-height spacers make the cover range
+   (enter-bottom → exit-top) exactly reachable. */
+.scroller {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  scrollbar-width: thin;
+}
+
+.scrollSpacer {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 100%;
+}
+
 .layers {
   position: relative;
   display: grid;

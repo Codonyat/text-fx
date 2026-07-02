@@ -78,6 +78,11 @@
   overflow: hidden;
   cursor: pointer;
   padding: 0;
+  /* Off-screen posters skip style/paint and their CSS animations — the grid
+     renders every effect live, which only stays cheap if scrolled-away cards
+     don't run. Intrinsic size ≈ poster + meta row, keeps scrollbar stable. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 190px;
 }
 .card:hover {
   box-shadow: var(--shadow);

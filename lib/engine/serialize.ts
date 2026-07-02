@@ -132,6 +132,22 @@ export function exportStandaloneHtml(
   const script = r.runtimeSnippet
     ? `  <script>\n${indent(r.runtimeSnippet, "    ")}\n  </script>\n`
     : "";
+  // Scroll-driven effects need a page that actually scrolls: swap the centered
+  // fixed-height layout for spacers around the stage so scrolling the document
+  // scrubs the animation-timeline, plus a hint so the viewer knows to scroll.
+  const isScroll = effect.caps.includes("scroll");
+  const layoutCss = isScroll
+    ? `    body { margin: 0; background: ${bg}; display: flex; flex-direction: column; align-items: center; }
+    .textfx-spacer { height: 120vh; width: 100%; flex: 0 0 auto; }
+    .textfx-hint { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); font: 13px/1 system-ui, -apple-system, sans-serif; color: rgba(128, 128, 128, 0.85); }`
+    : `    html, body { height: 100%; margin: 0; }
+    body { display: grid; place-items: center; background: ${bg}; }`;
+  const stageOpen = isScroll
+    ? `  <div class="textfx-spacer" aria-hidden="true"></div>\n  <div class="stage">`
+    : `  <div class="stage">`;
+  const stageClose = isScroll
+    ? `  </div>\n  <div class="textfx-spacer" aria-hidden="true"></div>\n  <div class="textfx-hint" aria-hidden="true">scroll &darr;</div>`
+    : `  </div>`;
   return `<!doctype html>
 <!-- Made with TEXT-FX · ${SITE_URL} -->
 <html lang="en">
@@ -140,8 +156,7 @@ export function exportStandaloneHtml(
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(effect.name)} — TEXT-FX</title>
 ${fontLinks}  <style>
-    html, body { height: 100%; margin: 0; }
-    body { display: grid; place-items: center; background: ${bg}; }
+${layoutCss}
     .stage { font-size: clamp(40px, 16vw, 200px); line-height: 1.1; text-align: center; padding: 8vmin; max-width: 92vw; word-break: break-word; }
     .textfx-credit { position: fixed; right: 10px; bottom: 8px; z-index: 9; font: 11px/1 system-ui, -apple-system, sans-serif; color: rgba(128, 128, 128, 0.85); text-decoration: none; }
     .textfx-credit:hover { text-decoration: underline; }
@@ -149,9 +164,9 @@ ${indent(css, "    ")}
   </style>
 </head>
 <body>
-${defs}  <div class="stage">
+${defs}${stageOpen}
 ${renderHtml(r.root, 2)}
-  </div>
+${stageClose}
   <a class="textfx-credit" href="${SITE_URL}">made with TEXT-FX</a>
 ${script}</body>
 </html>

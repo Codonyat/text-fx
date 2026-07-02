@@ -100,6 +100,11 @@ textarea {
 .fx-reduce-motion *,
 .fx-reduce-motion *::before,
 .fx-reduce-motion *::after {
+  /* animation-timeline back to auto: scroll-driven animations ignore duration
+     overrides entirely (progress is timeline-driven), so first re-attach them to
+     the time axis — the duration crush below then freezes them at their base
+     (fully-revealed) state. No-op for ordinary animations (auto is the initial). */
+  animation-timeline: auto !important;
   animation-duration: 0.001ms !important;
   animation-iteration-count: 1 !important;
   transition-duration: 0.001ms !important;
@@ -116,6 +121,7 @@ textarea {
   :is([class^="fx-card-"], [class*=" fx-card-"], [class^="fx-effect-"], [class*=" fx-effect-"]) *,
   :is([class^="fx-card-"], [class*=" fx-card-"], [class^="fx-effect-"], [class*=" fx-effect-"]) *::before,
   :is([class^="fx-card-"], [class*=" fx-card-"], [class^="fx-effect-"], [class*=" fx-effect-"]) *::after {
+    animation-timeline: auto !important; /* see .fx-reduce-motion note */
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;

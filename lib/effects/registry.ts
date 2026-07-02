@@ -6,6 +6,7 @@ import pulseGlow from "./neon-glow/pulse-glow";
 import softGlow from "./neon-glow/soft-glow";
 import neonSignFrame from "./neon-glow/neon-sign-frame";
 import halation from "./neon-glow/halation";
+import scrollCharge from "./neon-glow/scroll-charge";
 import conicSpin from "./gradient-fill/conic-spin";
 import duotoneFill from "./gradient-fill/duotone-fill";
 import gradientFlow from "./gradient-fill/gradient-flow";
@@ -33,6 +34,7 @@ import paperCutout from "./threed-depth/paper-cutout";
 import perspectiveTilt from "./threed-depth/perspective-tilt";
 import floating3d from "./threed-depth/floating-3d";
 import parallaxLayers from "./threed-depth/parallax-layers";
+import nablaIso from "./threed-depth/nabla-iso";
 import doubleOutline from "./outline-stroke/double-outline";
 import filledOutline from "./outline-stroke/filled-outline";
 import gradientStroke from "./outline-stroke/gradient-stroke";
@@ -125,6 +127,7 @@ export const EFFECTS: EffectDefinition[] = [
   softGlow,
   neonSignFrame,
   halation,
+  scrollCharge,
   conicSpin,
   duotoneFill,
   gradientFlow,
@@ -152,6 +155,7 @@ export const EFFECTS: EffectDefinition[] = [
   perspectiveTilt,
   floating3d,
   parallaxLayers,
+  nablaIso,
   doubleOutline,
   filledOutline,
   gradientStroke,

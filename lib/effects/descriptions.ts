@@ -15,6 +15,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Glowing text inside a glowing rounded border box — outer and inset halos that breathe on a loop. A complete neon storefront sign.",
   halation:
     "The warm photographic bloom film type picks up — a soft red-orange halation fringe haloing the letters from layered text-shadows. Cinematic, not neon, and stays still.",
+  "scroll-charge":
+    "Layered text-shadows whose blur radii and hot-white core ramp from a near-dead unlit tube to a fully-lit sign as the text travels the scrollport, with a real neon ignition stutter as it strikes. Scroll-scrubbed via animation-timeline: view() — browsers without scroll timelines simply show the finished, fully-lit state.",
   // gradient-fill
   "gradient-flow":
     "A multi-stop gradient clipped to the text that slowly flows by animating its background position. The go-to lively gradient headline.",
@@ -72,6 +74,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "The word hovers above the page, casting a large soft shadow far below while it gently bobs — levitation, not a tight drop shadow.",
   "parallax-layers":
     "Two shaded copies trail the cursor at increasing rates behind the face, so deeper layers slide further — stacked 3D depth that follows the pointer.",
+  "nabla-iso":
+    "Nabla's real COLRv1 glyphs — isometric 3D blocks whose extrusion, highlights and shadows are baked into the font's own paint layers — recolored by two custom palettes that endlessly cross-fade between your hues. A genuine color-font depth effect, not a text-shadow fake.",
   // outline-stroke
   outline:
     "Hollow outline text via -webkit-text-stroke, with an optional offset echo shadow. Minimal, editorial and lightweight.",
