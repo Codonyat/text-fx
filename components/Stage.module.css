@@ -12,7 +12,6 @@
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 34px 34px;
   overflow: hidden;
-  cursor: text;
 }
 
 /* Shared text metrics for the editable node / preview / ghost.

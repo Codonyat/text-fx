@@ -59,6 +59,7 @@ export function Studio() {
   const [saved, setSaved] = useState<FlagState>("");
   const [shared, setShared] = useState<FlagState>("");
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [replayNonce, setReplayNonce] = useState(0);
 
   const copyT = useRef<number | undefined>(undefined);
   const saveT = useRef<number | undefined>(undefined);
@@ -202,6 +203,10 @@ export function Studio() {
     setEditedCss(null);
   }, []);
 
+  const onReplay = useCallback(() => {
+    setReplayNonce((n) => n + 1);
+  }, []);
+
   const onCopy = useCallback(async () => {
     const ok = await copyText(cssDisplay);
     if (ok) track("export", { type: "css_copy" });
@@ -295,13 +300,14 @@ export function Studio() {
       ) : (
         <>
           <Stage
+            key={replayNonce}
             rootClass={live.rootClass}
             text={text}
             caps={live.caps}
             root={live.root}
             defs={live.defs}
             reduceMotion={reduceMotion}
-            selectAllOnFocus={text === DEFAULT_TEXT}
+            pristine={text === DEFAULT_TEXT}
             ghostStyle={ghostStyle}
             onTextChange={onTextChange}
           />
@@ -314,6 +320,7 @@ export function Studio() {
             onSetLock={setLockCategory}
             onSave={onSave}
             onShare={onShare}
+            onReplay={onReplay}
           />
           <div className={grid.grid}>
             <AdjustPanel effect={effect} values={values} onChange={onControlChange} />

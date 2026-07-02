@@ -78,6 +78,23 @@
   background: color-mix(in srgb, var(--fg) 8%, transparent);
 }
 
+.replay {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--fg);
+  background: transparent;
+  border: var(--bd);
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+}
+.replay:hover {
+  background: color-mix(in srgb, var(--fg) 8%, transparent);
+}
+
 .badge {
   display: flex;
   flex-direction: column;
@@ -101,7 +118,8 @@
 
 @media (pointer: coarse) {
   .secondary,
-  .lock {
+  .lock,
+  .replay {
     min-height: 44px;
   }
 }

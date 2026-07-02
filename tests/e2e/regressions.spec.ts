@@ -34,8 +34,9 @@ test("first keystroke replaces the pristine starter text; Enter stays single-lin
   await page.waitForTimeout(1200); // first-visit shuffle + fonts settle
 
   const editor = page.getByRole("textbox", { name: /effect text/i });
-  // Click the centre of the stage text while it is still "type here" — any click
-  // should select-all so the first keystroke REPLACES the starter.
+  // Click the centre of the stage text while it is still "type here" — clicking now only
+  // drops a caret (no select-all). The FIRST typed character replaces the whole starter
+  // via the pristine beforeinput path (deferred replacement at input time).
   await editor.click({ force: true });
   await page.keyboard.type("Hi");
   await expect
@@ -173,13 +174,14 @@ test("share-hash lifecycle: SHARE writes it, SHUFFLE strips it, share URL restor
   await expect(page.getByText("Neon Glow", { exact: true })).toBeVisible();
 });
 
-/** The stage container owns the click-anywhere / end-editing mousedown handler; it is
- *  the only div whose direct child is the "click or tap to edit" caption span. */
+/** The stage container is the grid/background; focus/blur is scoped to the editable
+ *  text itself, not this div. It is the only div whose direct child is the
+ *  "click the text to edit" caption span. */
 function stage(page: Page) {
-  return page.locator('div:has(> span:text-is("click or tap to edit"))');
+  return page.locator('div:has(> span:text-is("click the text to edit"))');
 }
 
-test("clicking the stage background while editing ends editing (blur + clear selection)", async ({
+test("clicking the stage background while editing ends editing (native blur)", async ({
   page,
 }) => {
   const errors = trackErrors(page);
@@ -192,14 +194,14 @@ test("clicking the stage background while editing ends editing (blur + clear sel
   await expect(editor).toBeFocused();
 
   // Click the stage background well away from the (vertically-centred) glyphs: near the
-  // top edge, inside the padding. Target is the stage div, not the editable → end editing.
+  // top edge, inside the padding. The grid is not focusable, so clicking it blurs the
+  // editable — the desired "stop editing" behaviour, entirely via native focus handling.
   const box = await stage(page).boundingBox();
   expect(box).not.toBeNull();
   if (!box) return;
   await page.mouse.click(box.x + box.width / 2, box.y + 10);
 
   await expect(editor).not.toBeFocused();
-  expect(await page.evaluate(() => window.getSelection()?.toString() ?? "")).toBe("");
   expect((await editor.textContent())?.trim()).toBe("Hi");
 
   expect(errors, "console/runtime errors:\n" + errors.join("\n")).toEqual([]);
@@ -216,18 +218,43 @@ test("Escape while editing blurs the editable", async ({ page }) => {
   await expect(editor).not.toBeFocused();
 });
 
-test("clicking the stage background while NOT editing starts editing", async ({ page }) => {
+test("clicking the stage background does NOT start editing (focus is scoped to the text)", async ({
+  page,
+}) => {
   await pickNeonGlow(page);
 
   const editor = page.getByRole("textbox", { name: /effect text/i });
   await expect(editor).not.toBeFocused();
 
+  // Click the grid/background near the top edge (away from the centred glyphs). The grid
+  // is no longer an edit target, so this must not focus the editable.
   const box = await stage(page).boundingBox();
   expect(box).not.toBeNull();
   if (!box) return;
   await page.mouse.click(box.x + box.width / 2, box.y + 10);
 
+  await expect(editor).not.toBeFocused();
+});
+
+test("clicking the text places a collapsed caret (no select-all highlight)", async ({ page }) => {
+  await pickNeonGlow(page);
+
+  const editor = page.getByRole("textbox", { name: /effect text/i });
+  await editor.click({ force: true }); // click the glyphs themselves
+
   await expect(editor).toBeFocused();
+  // The caret must be a collapsed selection inside the editable — no full-text highlight.
+  const sel = await editor.evaluate((el) => {
+    const s = window.getSelection();
+    return {
+      collapsed: s?.isCollapsed ?? null,
+      selected: s?.toString() ?? "",
+      inside: s?.anchorNode ? el.contains(s.anchorNode) : false,
+    };
+  });
+  expect(sel.collapsed).toBe(true);
+  expect(sel.selected).toBe("");
+  expect(sel.inside).toBe(true);
 });
 
 test("a corrupted favorites store does not crash the app", async ({ page }) => {
@@ -255,6 +282,25 @@ test("a corrupted favorites store does not crash the app", async ({ page }) => {
   await expect(page.getByText(/Saved — 1/)).toBeVisible();
   await expect(page.getByRole("button", { name: /^Load saved/i })).toHaveCount(1);
   await expect(page.getByRole("button", { name: /Load saved Neon Glow/i })).toBeVisible();
+
+  expect(errors, "console/runtime errors:\n" + errors.join("\n")).toEqual([]);
+});
+
+test("Replay remounts the stage textbox, restarting its animation", async ({ page }) => {
+  const errors = trackErrors(page);
+  await pickNeonGlow(page);
+
+  const editor = page.getByRole("textbox", { name: /effect text/i });
+  await editor.evaluate((el) => {
+    (el as HTMLElement).dataset.marker = "x";
+  });
+  expect(await editor.evaluate((el) => (el as HTMLElement).dataset.marker)).toBe("x");
+
+  await page.getByRole("button", { name: /replay animation/i }).click();
+
+  await expect(editor).toBeVisible();
+  expect((await editor.textContent())?.trim()).toBe("type here");
+  expect(await editor.evaluate((el) => (el as HTMLElement).dataset.marker)).toBeUndefined();
 
   expect(errors, "console/runtime errors:\n" + errors.join("\n")).toEqual([]);
 });

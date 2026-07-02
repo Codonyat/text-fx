@@ -12,6 +12,7 @@ export function ActionBar({
   onSetLock,
   onSave,
   onShare,
+  onReplay,
 }: {
   effectName: string;
   lockCategory: string;
@@ -21,6 +22,7 @@ export function ActionBar({
   onSetLock: (id: string) => void;
   onSave: () => void;
   onShare: () => void;
+  onReplay: () => void;
 }) {
   return (
     <div className={styles.bar}>
@@ -60,6 +62,16 @@ export function ActionBar({
         <span aria-live="polite">
           {shared === "ok" ? "✓ LINK" : shared === "fail" ? "LINK FAILED" : "↗ SHARE"}
         </span>
+      </button>
+
+      <button
+        type="button"
+        className={styles.replay}
+        onClick={onReplay}
+        aria-label="Replay animation"
+        title="Replay animation"
+      >
+        ↻
       </button>
 
       <div className={styles.badge}>

@@ -7,7 +7,6 @@ import {
   type ClipboardEvent as ReactClipboardEvent,
   type CSSProperties,
   type KeyboardEvent as ReactKeyboardEvent,
-  type MouseEvent as ReactMouseEvent,
   type ReactNode,
 } from "react";
 import { toReact, type CreateElementLike } from "@/lib/engine/markup";
@@ -22,15 +21,6 @@ function selectAllContents(el: HTMLElement) {
   sel?.addRange(range);
 }
 
-function placeCaretAtEdge(el: HTMLElement, atEnd: boolean) {
-  const range = document.createRange();
-  range.selectNodeContents(el);
-  range.collapse(!atEnd); // collapse(true) → start, collapse(false) → end
-  const sel = window.getSelection();
-  sel?.removeAllRanges();
-  sel?.addRange(range);
-}
-
 export function Stage({
   rootClass,
   text,
@@ -38,7 +28,7 @@ export function Stage({
   root,
   defs,
   reduceMotion,
-  selectAllOnFocus,
+  pristine,
   ghostStyle,
   onTextChange,
 }: {
@@ -48,7 +38,7 @@ export function Stage({
   root: MarkupNode;
   defs?: string;
   reduceMotion: boolean;
-  selectAllOnFocus: boolean;
+  pristine: boolean;
   ghostStyle?: CSSProperties;
   onTextChange: (t: string) => void;
 }) {
@@ -56,6 +46,10 @@ export function Stage({
   const dataText = caps.includes("dataText");
   const pointer = caps.includes("pointer");
   const editRef = useRef<HTMLDivElement>(null);
+  // True once the pristine starter has been replaced by an insertion, so a second
+  // same-tick insertText (before React re-renders pristine→false) can't re-select and
+  // clobber the just-typed first character. Reset whenever the field is pristine again.
+  const pristineConsumedRef = useRef(false);
 
   // Push external text changes (shuffle/load) into the editable node without
   // clobbering the caret while the user is typing.
@@ -105,6 +99,31 @@ export function Stage({
     };
   }, [pointer, perLetter]);
 
+  // Pristine starter replacement, deferred to INPUT time (no select-all on click, so
+  // clicking the text just drops a normal caret). While the field still holds the
+  // untouched starter, the FIRST inserted text must replace the whole starter — so we
+  // select-all just before the insertion applies. We listen for the *native* beforeinput
+  // rather than React's onBeforeInput: React 19's synthetic onBeforeInput is a polyfill
+  // whose nativeEvent is a legacy `textInput` event (no `inputType`) and never fires for
+  // drops, so the real InputEvent is the only source of a reliable inputType. Only
+  // insertText/insertFromDrop trigger the replacement; insertCompositionText is skipped
+  // (IME is handled on compositionstart) and deletions edit normally. Re-attaches when
+  // `pristine` flips (once) or when the editable node remounts on a mode switch.
+  useEffect(() => {
+    const el = editRef.current;
+    if (!el) return;
+    if (pristine) pristineConsumedRef.current = false;
+    const onBeforeInput = (e: InputEvent) => {
+      if (!pristine || pristineConsumedRef.current) return;
+      if (e.inputType === "insertText" || e.inputType === "insertFromDrop") {
+        selectAllContents(el);
+        pristineConsumedRef.current = true;
+      }
+    };
+    el.addEventListener("beforeinput", onBeforeInput);
+    return () => el.removeEventListener("beforeinput", onBeforeInput);
+  }, [pristine, perLetter]);
+
   const handleInput = () => {
     const el = editRef.current;
     if (!el) return;
@@ -115,7 +134,7 @@ export function Stage({
 
   // The text model is a single line; contenteditable's Enter would insert a block
   // element, after which textContent silently merges the two lines (state/DOM desync).
-  // Escape ends editing (mirrors clicking the stage background while focused).
+  // Escape ends editing (blurs the field, matching a click on the non-editable grid).
   const handleKeyDown = (e: ReactKeyboardEvent) => {
     if (e.key === "Enter") e.preventDefault();
     if (e.key === "Escape") {
@@ -126,58 +145,38 @@ export function Stage({
 
   // Strip formatting/markup on paste: take plain text only, collapse whitespace runs
   // to single spaces (the model is one line), and insert at the caret via execCommand
-  // so undo and the onInput flow keep working.
+  // so undo and the onInput flow keep working. On pristine starter text, select all
+  // first so the paste replaces the starter instead of merging into it.
   const handlePaste = (e: ReactClipboardEvent) => {
     e.preventDefault();
+    const el = editRef.current;
+    if (pristine && el) selectAllContents(el);
     const txt = e.clipboardData.getData("text/plain").replace(/\s+/g, " ");
     document.execCommand("insertText", false, txt);
   };
 
-  // While the text is still the untouched starter, focusing the field selects all
-  // of it so the first keystroke replaces it. Mouse focus is handled synchronously in
-  // handleStageMouseDown; this covers programmatic/keyboard (Tab) focus.
-  // Deferred a tick so focus's default caret placement doesn't collapse the selection.
-  // Re-checked inside: bail if the field blurred or if anything was typed in the meantime
-  // (the timer must never re-select mid-typing and eat the just-typed character).
-  const handleFocus = () => {
-    if (!selectAllOnFocus) return;
+  // IME: beforeinput's insertCompositionText fires repeatedly mid-composition, so
+  // pristine replacement for composed input is anchored here — select all once at the
+  // start so the whole composition replaces the starter text.
+  const handleCompositionStart = () => {
     const el = editRef.current;
-    if (!el) return;
-    const initial = el.textContent;
-    window.setTimeout(() => {
-      if (document.activeElement === el && el.textContent === initial) selectAllContents(el);
-    }, 0);
+    if (pristine && el) selectAllContents(el);
   };
 
-  const handleStageMouseDown = (e: ReactMouseEvent) => {
-    if (e.button !== 0) return; // primary button only; leave right-click/context menu alone
+  // Scope focus strictly to the text element. Chromium's selection hit-testing would
+  // otherwise drop the caret into the nearest editable text when the grid background is
+  // clicked (focusing the field), and it does NOT blur a focused contenteditable when a
+  // non-focusable background is clicked. So: any primary mousedown outside the text is
+  // suppressed — and if the field was being edited, it ends editing.
+  const handleStageMouseDown = (e: React.MouseEvent) => {
+    if (e.button !== 0) return;
     const el = editRef.current;
-    if (!el) return;
-    // Already editing + click on the stage background (not the glyphs) ends editing:
-    // blur and clear the caret. Takes precedence over the pristine select-all branch so
-    // a focused field + background click stops editing instead of re-selecting.
-    if (document.activeElement === el && !el.contains(e.target as Node)) {
-      e.preventDefault();
+    if (!el || el.contains(e.target as Node)) return;
+    e.preventDefault();
+    if (document.activeElement === el) {
       el.blur();
       window.getSelection()?.removeAllRanges();
-      return;
     }
-    // Pristine starter text: any click (on the glyphs or the empty stage) selects it
-    // all so the first keystroke replaces it. preventDefault stops native mouseup caret
-    // placement from collapsing the selection.
-    if (selectAllOnFocus) {
-      e.preventDefault();
-      el.focus();
-      selectAllContents(el);
-      return;
-    }
-    if (el.contains(e.target as Node)) return; // clicked on the text → let the browser place the caret
-    // Clicking the empty stage (not the glyphs) still focuses the text and drops the caret
-    // at the nearest edge — left half → before the first character, right half → after the last.
-    e.preventDefault(); // we manage focus + caret ourselves (keeps the selection)
-    el.focus();
-    const rect = el.getBoundingClientRect();
-    placeCaretAtEdge(el, e.clientX >= rect.left + rect.width / 2);
   };
 
   return (
@@ -203,7 +202,7 @@ export function Stage({
             onInput={handleInput}
             onKeyDown={handleKeyDown}
             onPaste={handlePaste}
-            onFocus={handleFocus}
+            onCompositionStart={handleCompositionStart}
             role="textbox"
             aria-label="Effect text"
           />
@@ -220,7 +219,7 @@ export function Stage({
           onInput={handleInput}
           onKeyDown={handleKeyDown}
           onPaste={handlePaste}
-          onFocus={handleFocus}
+          onCompositionStart={handleCompositionStart}
           role="textbox"
           aria-label="Effect text"
         />
@@ -236,7 +235,7 @@ export function Stage({
         />
       ) : null}
 
-      <span className={styles.caption}>click or tap to edit</span>
+      <span className={styles.caption}>click the text to edit</span>
     </div>
   );
 }
