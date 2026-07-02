@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, letterSpans } from "@/lib/engine/markup";
-import { hsl, anim } from "@/lib/engine/helpers";
+import { hsl, anim, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 /**
  * Zigzag text: alternate letters sit high and low (a sawtooth), with a matching tilt
@@ -44,6 +44,7 @@ const zigzagText: EffectDefinition = {
 
     const base = ctx.theme === "dark" ? hsl(h, 80, 72) : hsl(h, 78, 46);
     const a = anim(ctx.scope, "zig");
+    const a2 = anim(ctx.scope, "zig-r"); // hover replays the on-load entrance
 
     const css =
       `.${ctx.scope} {\n` +
@@ -58,7 +59,8 @@ const zigzagText: EffectDefinition = {
       `}\n` +
       `.${ctx.scope} .fx-ch:nth-child(2n) {\n` +
       `  transform: translateY(${amp}px) rotate(${tilt}deg);\n` + // even letters: down
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, " .fx-ch", a2);
 
     const keyframes =
       `@keyframes ${a} {\n` +
@@ -68,7 +70,7 @@ const zigzagText: EffectDefinition = {
     return {
       root: el("div", { children: letterSpans(ctx.text, "grapheme") }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, a, a2)}`,
       loopMs: speed * 1000,
     };
   },

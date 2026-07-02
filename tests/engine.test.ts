@@ -130,6 +130,55 @@ describe.each(EFFECTS.map((e) => [e.id, e] as const))("effect %s", (_id, effect)
   });
 });
 
+describe("hover-replay entrance effects", () => {
+  // One-shot ("entrance") effects that sit static after mount. Hovering the scope root
+  // must restart them via the pure-CSS trick: a `:hover` rule swaps `animation-name` to
+  // a salted DUPLICATE keyframe (identical body, name ending in "-r"), so the browser
+  // starts a fresh animation. Ships identically everywhere (studio/gallery/SSR/export).
+  const HOVER_REPLAY_IDS = [
+    "fade-in",
+    "blur-focus-in",
+    "flip-in-3d",
+    "bulge-text",
+    "slope-text",
+    "fan-text",
+    "arc-text",
+    "falling-letters",
+    "decode-reveal",
+    "zigzag-text",
+    "wave-text",
+    "stagger-reveal",
+    "typewriter",
+    "center-grow-underline",
+    "strike-through",
+    "slide-underline",
+    "highlighter",
+    "scribble-underline",
+  ];
+
+  it.each(HOVER_REPLAY_IDS)("%s replays its entrance on hover (default values)", (id) => {
+    const effect = EFFECTS.find((e) => e.id === id);
+    expect(effect, `effect ${id} is registered`).toBeTruthy();
+    const scope = "fxlive";
+    const css = render(effect!, defaultValues(effect!), SAMPLE, { scope, theme: "dark" }).styleText;
+
+    // A :hover rule on the scope root swaps animation-name (root, per-letter or pseudo).
+    const m = css.match(/\.fxlive:hover[^{]*\{\s*animation-name:\s*([^;]+);/);
+    expect(m, `${id} emits a ":hover { animation-name: … }" swap`).toBeTruthy();
+
+    // Every swapped-in duplicate name is salted and has a matching @keyframes block.
+    const dupes = m![1]
+      .split(",")
+      .map((s) => s.trim())
+      .filter((n) => n.endsWith("-r"));
+    expect(dupes.length, `${id} swaps to a duplicate keyframe`).toBeGreaterThan(0);
+    for (const name of dupes) {
+      expect(name.startsWith(scope), `${id} duplicate ${name} is salted`).toBe(true);
+      expect(css.includes(`@keyframes ${name}`), `${id} defines @keyframes ${name}`).toBe(true);
+    }
+  });
+});
+
 describe("export attribution, overrides & escaping", () => {
   const effect = EFFECTS.find((e) => e.id === "neon-glow")!;
   const values = defaultValues(effect);

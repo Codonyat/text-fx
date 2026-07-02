@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, text } from "@/lib/engine/markup";
-import { hsl, anim } from "@/lib/engine/helpers";
+import { hsl, anim, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 /**
  * Focus-in entrance: the word resolves out of a soft blur while opacity rises and
@@ -45,12 +45,14 @@ const blurFocusIn: EffectDefinition = {
 
     const base = ctx.theme === "dark" ? hsl(h, 30, 92) : hsl(h, 35, 22);
     const a = anim(ctx.scope, "focus");
+    const a2 = anim(ctx.scope, "focus-r"); // hover replays the on-load entrance
 
     const css =
       `.${ctx.scope} {\n` +
       `  color: ${base};\n` +
       `  animation: ${a} ${speed.toFixed(1)}s cubic-bezier(0.2, 0.7, 0.2, 1) both;\n` +
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, "", a2);
 
     const keyframes =
       `@keyframes ${a} {\n` +
@@ -61,7 +63,7 @@ const blurFocusIn: EffectDefinition = {
     return {
       root: el("div", { children: [text(ctx.text)] }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, a, a2)}`,
       loopMs: speed * 1000,
     };
   },

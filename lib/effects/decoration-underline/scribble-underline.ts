@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, text } from "@/lib/engine/markup";
-import { hsl, anim, svgId } from "@/lib/engine/helpers";
+import { hsl, anim, svgId, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 /**
  * Scribble underline: a hand-drawn rough rule that draws itself on under the word. A
@@ -48,6 +48,7 @@ const scribbleUnderline: EffectDefinition = {
     const line = ctx.theme === "dark" ? hsl(h, 85, 64) : hsl(h, 80, 50);
     const fid = svgId(ctx.scope, "scribble");
     const a = anim(ctx.scope, "draw");
+    const a2 = anim(ctx.scope, "draw-r"); // hover re-draws the scribble
 
     // Generous vertical room so the displaced bar isn't clipped as it wobbles.
     const defs =
@@ -74,7 +75,8 @@ const scribbleUnderline: EffectDefinition = {
       `  filter: url(#${fid});\n` +
       `  transform-origin: left center;\n` +
       `  animation: ${a} ${speed.toFixed(1)}s cubic-bezier(0.5, 0, 0.5, 1) both;\n` +
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, "::after", a2);
 
     const keyframes =
       `@keyframes ${a} {\n` +
@@ -85,7 +87,7 @@ const scribbleUnderline: EffectDefinition = {
     return {
       root: el("div", { children: [text(ctx.text)] }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, a, a2)}`,
       defs,
       loopMs: speed * 1000,
     };

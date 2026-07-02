@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, letterSpans } from "@/lib/engine/markup";
-import { hsl, anim } from "@/lib/engine/helpers";
+import { hsl, anim, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 /**
  * Arc text: the word bows along a curve — each letter is lifted on a parabola by its
@@ -58,6 +58,7 @@ const arcText: EffectDefinition = {
 
     const base = ctx.theme === "dark" ? hsl(h, 60, 78) : hsl(h, 62, 42);
     const a = anim(ctx.scope, "arc");
+    const a2 = anim(ctx.scope, "arc-r"); // hover replays the on-load entrance
     // Normalised distance from centre, -1 (first) .. +1 (last). The squared term is a
     // parabola: ends drop by the full Depth, centre stays put — a real vertical bow.
     const t = "((var(--i) - var(--mid)) / max(0.5, var(--mid)))";
@@ -75,7 +76,8 @@ const arcText: EffectDefinition = {
       `  transform: ${curved};\n` + // resting curve (also the reduced-motion frame)
       `  animation: ${a} ${speed.toFixed(2)}s ease-out both;\n` +
       `  animation-delay: calc(var(--i) * 0.045s);\n` +
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, " .fx-ch", a2);
 
     // `from`-only keyframe: animate from flat up to the resting curve (implicit `to`).
     const keyframes =
@@ -86,7 +88,7 @@ const arcText: EffectDefinition = {
     return {
       root: el("div", { children: letterSpans(ctx.text, "grapheme") }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, a, a2)}`,
       loopMs: speed * 1000,
     };
   },

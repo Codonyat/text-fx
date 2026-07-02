@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, letterSpans } from "@/lib/engine/markup";
-import { anim, hsl } from "@/lib/engine/helpers";
+import { anim, hsl, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 const staggerReveal: EffectDefinition = {
   id: "stagger-reveal",
@@ -63,9 +63,12 @@ const staggerReveal: EffectDefinition = {
     const loop = Boolean(ctx.values.loop);
     const tint = ctx.theme === "dark" ? hsl(h, 75, 70) : hsl(h, 70, 42);
     const a = anim(ctx.scope, "rise");
+    const a2 = anim(ctx.scope, "rise-r"); // hover replays the once-only entrance
     const iter = loop ? "infinite" : "1";
     const fill = loop ? "" : " both";
     const dur = loop ? 2.4 : 0.6;
+    // Once mode sits static after mount; let a hover restart it. Loop already repeats.
+    const hoverCss = loop ? "" : `\n${hoverReplay(ctx.scope, " .fx-ch", a2)}`;
 
     const css =
       `.${ctx.scope} {\n` +
@@ -77,7 +80,8 @@ const staggerReveal: EffectDefinition = {
       `  will-change: opacity, transform;\n` +
       `  animation: ${a} ${dur}s cubic-bezier(.2,.7,.2,1) ${iter}${fill};\n` +
       `  animation-delay: calc(var(--i) * ${stagger}s);\n` +
-      `}`;
+      `}` +
+      hoverCss;
 
     const keyframes = loop
       ? `@keyframes ${a} {\n` +
@@ -96,7 +100,7 @@ const staggerReveal: EffectDefinition = {
     return {
       root: el("div", { children: letterSpans(ctx.text, "grapheme") }),
       css,
-      keyframes,
+      keyframes: loop ? keyframes : `${keyframes}\n${cloneKeyframes(keyframes, a, a2)}`,
       loopMs,
     };
   },

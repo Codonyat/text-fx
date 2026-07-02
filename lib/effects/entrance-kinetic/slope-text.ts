@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, letterSpans } from "@/lib/engine/markup";
-import { hsl, anim } from "@/lib/engine/helpers";
+import { hsl, anim, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 /**
  * Slope text: the word sits on a straight diagonal incline — each letter stepped
@@ -56,6 +56,7 @@ const slopeText: EffectDefinition = {
 
     const base = ctx.theme === "dark" ? hsl(h, 60, 76) : hsl(h, 62, 42);
     const a = anim(ctx.scope, "slope");
+    const a2 = anim(ctx.scope, "slope-r"); // hover replays the on-load entrance
     // Climb: letters to the right sit higher (negative Y); descend: the reverse.
     const m = asc ? -slope : slope;
     const rot = asc ? -tilt : tilt;
@@ -71,7 +72,8 @@ const slopeText: EffectDefinition = {
       `  transform: ${curved};\n` +
       `  animation: ${a} ${speed.toFixed(2)}s ease-out both;\n` +
       `  animation-delay: calc(var(--i) * 0.04s);\n` +
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, " .fx-ch", a2);
 
     const keyframes =
       `@keyframes ${a} {\n` +
@@ -81,7 +83,7 @@ const slopeText: EffectDefinition = {
     return {
       root: el("div", { children: letterSpans(ctx.text, "grapheme") }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, a, a2)}`,
       loopMs: speed * 1000,
     };
   },

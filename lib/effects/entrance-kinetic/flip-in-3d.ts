@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, letterSpans } from "@/lib/engine/markup";
-import { hsl, anim } from "@/lib/engine/helpers";
+import { hsl, anim, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 /**
  * 3D flip-in: each letter swings down into place around its baseline on a shared
@@ -41,6 +41,7 @@ const flipIn3d: EffectDefinition = {
 
     const base = ctx.theme === "dark" ? hsl(h, 60, 76) : hsl(h, 60, 42);
     const a = anim(ctx.scope, "flip");
+    const a2 = anim(ctx.scope, "flip-r"); // hover replays the on-load entrance
 
     const css =
       `.${ctx.scope} {\n` +
@@ -54,7 +55,8 @@ const flipIn3d: EffectDefinition = {
       `  backface-visibility: hidden;\n` +
       `  animation: ${a} ${speed.toFixed(2)}s cubic-bezier(0.2, 0.7, 0.3, 1.2) both;\n` +
       `  animation-delay: calc(var(--i) * ${stagger}ms);\n` +
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, " .fx-ch", a2);
 
     const keyframes =
       `@keyframes ${a} {\n` +
@@ -66,7 +68,7 @@ const flipIn3d: EffectDefinition = {
     return {
       root: el("div", { children: letterSpans(ctx.text, "grapheme") }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, a, a2)}`,
       loopMs: speed * 1000,
     };
   },

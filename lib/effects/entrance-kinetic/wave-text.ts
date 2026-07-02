@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, letterSpans } from "@/lib/engine/markup";
-import { hsl, anim } from "@/lib/engine/helpers";
+import { hsl, anim, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 /**
  * Wave text: the letters are frozen along a sine ribbon — each offset vertically by
@@ -45,6 +45,7 @@ const waveText: EffectDefinition = {
 
     const base = ctx.theme === "dark" ? hsl(h, 65, 78) : hsl(h, 65, 44);
     const a = anim(ctx.scope, "wavet");
+    const a2 = anim(ctx.scope, "wavet-r"); // hover replays the on-load entrance
     const phase = `var(--i) * ${freq}deg`;
     // Vertical sine offset + a tilt following the wave's slope (cos).
     const curved =
@@ -61,7 +62,8 @@ const waveText: EffectDefinition = {
       `  transform: ${curved};\n` +
       `  animation: ${a} ${speed.toFixed(2)}s ease-out both;\n` +
       `  animation-delay: calc(var(--i) * 0.04s);\n` +
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, " .fx-ch", a2);
 
     const keyframes =
       `@keyframes ${a} {\n` +
@@ -71,7 +73,7 @@ const waveText: EffectDefinition = {
     return {
       root: el("div", { children: letterSpans(ctx.text, "grapheme") }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, a, a2)}`,
       loopMs: speed * 1000,
     };
   },

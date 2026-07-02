@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, letterSpans } from "@/lib/engine/markup";
-import { hsl, anim } from "@/lib/engine/helpers";
+import { hsl, anim, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 /**
  * Fan text: the letters splay out like a hand of cards — each rotated about a low
@@ -44,6 +44,7 @@ const fanText: EffectDefinition = {
 
     const base = ctx.theme === "dark" ? hsl(h, 70, 74) : hsl(h, 70, 44);
     const a = anim(ctx.scope, "fan");
+    const a2 = anim(ctx.scope, "fan-r"); // hover replays the on-load entrance
     // Rotate each letter about a pivot well below the baseline -> a splayed fan.
     const curved = `rotate(calc((var(--i) - var(--mid)) * ${spread}deg))`;
 
@@ -58,7 +59,8 @@ const fanText: EffectDefinition = {
       `  transform: ${curved};\n` +
       `  animation: ${a} ${speed.toFixed(2)}s ease-out both;\n` +
       `  animation-delay: calc(var(--i) * 0.045s);\n` +
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, " .fx-ch", a2);
 
     const keyframes =
       `@keyframes ${a} {\n` +
@@ -68,7 +70,7 @@ const fanText: EffectDefinition = {
     return {
       root: el("div", { children: letterSpans(ctx.text, "grapheme") }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, a, a2)}`,
       loopMs: speed * 1000,
     };
   },

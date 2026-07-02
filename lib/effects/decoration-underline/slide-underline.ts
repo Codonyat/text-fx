@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, text } from "@/lib/engine/markup";
-import { hsl, anim } from "@/lib/engine/helpers";
+import { hsl, anim, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 const slideUnderline: EffectDefinition = {
   id: "slide-underline",
@@ -27,6 +27,7 @@ const slideUnderline: EffectDefinition = {
     const txt = ctx.theme === "dark" ? hsl(h, 25, 96) : hsl(h, 45, 18);
     const c1 = hsl(h, 50, 58);
     const grow = anim(ctx.scope, "grow");
+    const grow2 = anim(ctx.scope, "grow-r"); // hover re-draws the underline
     const gap = Math.max(2, Math.round(thickness * 0.6));
     const css =
       `.${ctx.scope} {\n` +
@@ -47,7 +48,8 @@ const slideUnderline: EffectDefinition = {
       `  transform-origin: left center;\n` +
       `  transform: scaleX(0);\n` +
       `  animation: ${grow} ${speed.toFixed(1)}s ease-in-out forwards;\n` +
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, "::after", grow2);
     const keyframes =
       `@keyframes ${grow} {\n` +
       `  0% { transform: scaleX(0); }\n` +
@@ -56,7 +58,7 @@ const slideUnderline: EffectDefinition = {
     return {
       root: el("div", { children: [text(ctx.text)] }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, grow, grow2)}`,
       // runs once forward (grow), so a single pass is the full visual
       loopMs: Math.round(speed * 1000),
     };

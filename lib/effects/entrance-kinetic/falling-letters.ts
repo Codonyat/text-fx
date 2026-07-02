@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, letterSpans } from "@/lib/engine/markup";
-import { hsl, anim } from "@/lib/engine/helpers";
+import { hsl, anim, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 /**
  * Falling letters: each glyph drops in from above, squashes on landing and settles,
@@ -41,6 +41,7 @@ const fallingLetters: EffectDefinition = {
 
     const base = ctx.theme === "dark" ? hsl(h, 48, 72) : hsl(h, 45, 46);
     const a = anim(ctx.scope, "fall");
+    const a2 = anim(ctx.scope, "fall-r"); // hover replays the on-load entrance
 
     const css =
       `.${ctx.scope} {\n` +
@@ -52,7 +53,8 @@ const fallingLetters: EffectDefinition = {
       `  transform-origin: 50% 100%;\n` +
       `  animation: ${a} ${speed.toFixed(2)}s cubic-bezier(0.3, 0.7, 0.4, 1) both;\n` +
       `  animation-delay: calc(var(--i) * ${stagger}ms);\n` +
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, " .fx-ch", a2);
 
     const keyframes =
       `@keyframes ${a} {\n` +
@@ -67,7 +69,7 @@ const fallingLetters: EffectDefinition = {
     return {
       root: el("div", { children: letterSpans(ctx.text, "grapheme") }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, a, a2)}`,
       loopMs: speed * 1000,
     };
   },

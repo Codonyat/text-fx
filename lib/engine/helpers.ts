@@ -86,6 +86,36 @@ export function fvs(axes: Record<string, number>): string {
   return `font-variation-settings: ${parts.join(", ")};`;
 }
 
+/**
+ * Hover-replay rule for a one-shot ("entrance") animation. Emits a `:hover` rule that
+ * swaps ONLY `animation-name` to a duplicate keyframe — the classic pure-CSS restart
+ * trick: a different name makes the browser start a fresh animation from 0%, while every
+ * other animation longhand (duration, timing, staggered per-letter delays) is inherited
+ * from the base shorthand. Pair with {@link cloneKeyframes} to emit the salted duplicate
+ * `@keyframes` this name refers to. `inner` is the selector suffix after `:hover`
+ * (`""` for the scope root, `" .fx-ch"` for per-letter spans, `"::after"` for a
+ * pseudo-element). `name` is the `animation-name` value — a single dup name, or a comma
+ * list when the base rule runs several animations (swap only the one-shot names).
+ */
+export function hoverReplay(scope: string, inner: string, name: string): string {
+  return `.${scope}:hover${inner} {\n  animation-name: ${name};\n}`;
+}
+
+/**
+ * Clone one `@keyframes fromName { … }` block out of a keyframes string, renamed to
+ * `toName` (both already salted by the caller). Returns just the renamed duplicate block
+ * to append after the original, so a hover name-swap has an identical animation to
+ * restart. Matches a single level of nested braces (the keyframe steps); returns "" if
+ * the block isn't found.
+ */
+export function cloneKeyframes(keyframes: string, fromName: string, toName: string): string {
+  const esc = fromName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const re = new RegExp(`@keyframes\\s+${esc}\\s*\\{(?:[^{}]|\\{[^{}]*\\})*\\}`);
+  const m = keyframes.match(re);
+  if (!m) return "";
+  return m[0].replace(new RegExp(`@keyframes\\s+${esc}`), `@keyframes ${toName}`);
+}
+
 /** Pointer-tracking runtime snippet (sets --mx/--my on the scoped element). */
 export function pointerSnippet(scopeClass: string): string {
   return [

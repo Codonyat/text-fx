@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, text } from "@/lib/engine/markup";
-import { anim, hsl } from "@/lib/engine/helpers";
+import { anim, hsl, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 const typewriter: EffectDefinition = {
   id: "typewriter",
@@ -56,11 +56,15 @@ const typewriter: EffectDefinition = {
     const chars = Math.max(1, [...ctx.text].length);
     const typeDur = Number((perChar * chars).toFixed(2));
     const aType = anim(ctx.scope, "type");
+    const aTypeR = anim(ctx.scope, "type-r"); // hover replays the once-only typing
     const aCaret = anim(ctx.scope, "caret");
     // Looping reveals, holds, then re-hides via the caret-blink-paired timeline.
     const typeIter = loop ? "infinite" : "1";
     const typeFill = loop ? "" : " forwards";
     const caretBlink = "0.8s";
+    // Once mode types out then sits static; hover re-runs the typing (caret name kept,
+    // so only the type animation restarts). Loop already repeats on its own.
+    const hoverCss = loop ? "" : `\n${hoverReplay(ctx.scope, "", `${aTypeR}, ${aCaret}`)}`;
 
     const css =
       `.${ctx.scope} {\n` +
@@ -73,7 +77,8 @@ const typewriter: EffectDefinition = {
       `  animation:\n` +
       `    ${aType} ${typeDur}s steps(${chars}, end) ${typeIter}${typeFill},\n` +
       `    ${aCaret} ${caretBlink} step-end infinite;\n` +
-      `}`;
+      `}` +
+      hoverCss;
 
     const typeKf = loop
       ? `@keyframes ${aType} {\n` +
@@ -90,10 +95,13 @@ const typewriter: EffectDefinition = {
       `  50% { border-color: transparent; }\n` +
       `}`;
 
+    // In once mode, append a salted duplicate of the type keyframes for the hover swap.
+    const typeReplayKf = loop ? "" : `\n${cloneKeyframes(typeKf, aType, aTypeR)}`;
+
     return {
       root: el("div", { children: [text(ctx.text)] }),
       css,
-      keyframes: `${typeKf}\n${caretKf}`,
+      keyframes: `${typeKf}\n${caretKf}${typeReplayKf}`,
       loopMs: loop ? typeDur * 1000 : 800,
     };
   },

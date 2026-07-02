@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, letterSpans } from "@/lib/engine/markup";
-import { anim, hsl } from "@/lib/engine/helpers";
+import { anim, hsl, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 /**
  * Decode reveal: each letter resolves out of a blurred, skewed, jittering state into
@@ -53,6 +53,7 @@ const decodeReveal: EffectDefinition = {
     const base = ctx.theme === "dark" ? hsl(h, 35, 86) : hsl(h, 45, 30);
     const flash = hsl((h + 180) % 360, 90, ctx.theme === "dark" ? 66 : 50);
     const a = anim(ctx.scope, "decode");
+    const a2 = anim(ctx.scope, "decode-r"); // hover replays the on-load entrance
 
     // Mid-decode color flash (optional): a complementary tint that snaps back to base.
     const colorMid = glitch ? `\n  40% { color: ${flash}; }\n  70% { color: ${base}; }` : "";
@@ -66,7 +67,8 @@ const decodeReveal: EffectDefinition = {
       `  display: inline-block;\n` +
       `  animation: ${a} ${speed.toFixed(1)}s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n` +
       `  animation-delay: calc(var(--i) * ${stagger}s);\n` +
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, " .fx-ch", a2);
 
     const keyframes =
       `@keyframes ${a} {\n` +
@@ -80,7 +82,7 @@ const decodeReveal: EffectDefinition = {
     return {
       root: el("div", { children: letterSpans(ctx.text, "grapheme") }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, a, a2)}`,
       loopMs: speed * 1000,
     };
   },

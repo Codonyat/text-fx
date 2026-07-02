@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, text } from "@/lib/engine/markup";
-import { hsl, anim } from "@/lib/engine/helpers";
+import { hsl, anim, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 /**
  * Center-grow underline: a solid underline bar grows outward from the centre to full
@@ -45,6 +45,7 @@ const centerGrowUnderline: EffectDefinition = {
     const textColor = ctx.theme === "dark" ? hsl(h, 25, 92) : hsl(h, 35, 18);
     const rule = hsl(h, 50, ctx.theme === "dark" ? 62 : 48);
     const a = anim(ctx.scope, "grow");
+    const a2 = anim(ctx.scope, "grow-r"); // hover re-draws the underline
 
     const css =
       `.${ctx.scope} {\n` +
@@ -56,7 +57,8 @@ const centerGrowUnderline: EffectDefinition = {
       `  background-position: center 100%;\n` +
       `  background-size: 0% ${thickness}px;\n` +
       `  animation: ${a} ${speed.toFixed(1)}s ease-out both;\n` +
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, "", a2);
 
     const keyframes =
       `@keyframes ${a} {\n` +
@@ -67,7 +69,7 @@ const centerGrowUnderline: EffectDefinition = {
     return {
       root: el("div", { children: [text(ctx.text)] }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, a, a2)}`,
       loopMs: speed * 1000,
     };
   },

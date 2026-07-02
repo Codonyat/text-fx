@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, letterSpans } from "@/lib/engine/markup";
-import { hsl, anim } from "@/lib/engine/helpers";
+import { hsl, anim, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 /**
  * Bulge text: a fish-eye on the word — the centre letters scale up and the ends taper
@@ -44,6 +44,7 @@ const bulgeText: EffectDefinition = {
 
     const base = ctx.theme === "dark" ? hsl(h, 75, 74) : hsl(h, 72, 44);
     const a = anim(ctx.scope, "bulge");
+    const a2 = anim(ctx.scope, "bulge-r"); // hover replays the on-load entrance
     // cos peaks (=1) at the centre letter and falls toward the ends; max(0, cos) clamps
     // the far letters to scale 1 so the ends never shrink below baseline (k<1 already
     // guarantees a positive scale). A little tracking absorbs the centre letters' growth.
@@ -61,7 +62,8 @@ const bulgeText: EffectDefinition = {
       `  transform: ${curved};\n` +
       `  animation: ${a} ${speed.toFixed(2)}s ease-out both;\n` +
       `  animation-delay: calc(var(--i) * 0.035s);\n` +
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, " .fx-ch", a2);
 
     const keyframes =
       `@keyframes ${a} {\n` +
@@ -71,7 +73,7 @@ const bulgeText: EffectDefinition = {
     return {
       root: el("div", { children: letterSpans(ctx.text, "grapheme") }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, a, a2)}`,
       loopMs: speed * 1000,
     };
   },

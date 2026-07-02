@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, text } from "@/lib/engine/markup";
-import { hsl, anim } from "@/lib/engine/helpers";
+import { hsl, anim, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 /**
  * Strike-through draw: a coloured line draws itself across the middle of the text
@@ -42,6 +42,7 @@ const strikeThrough: EffectDefinition = {
     const textColor = ctx.theme === "dark" ? hsl(h, 20, 92) : hsl(h, 30, 18);
     const line = hsl(h, 30, ctx.theme === "dark" ? 60 : 38);
     const a = anim(ctx.scope, "strike");
+    const a2 = anim(ctx.scope, "strike-r"); // hover re-draws the strike line
 
     const css =
       `.${ctx.scope} {\n` +
@@ -52,7 +53,8 @@ const strikeThrough: EffectDefinition = {
       `  background-position: left center;\n` +
       `  background-size: 0% ${thickness}px;\n` +
       `  animation: ${a} ${speed.toFixed(1)}s ease-in-out forwards;\n` +
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, "", a2);
 
     const keyframes =
       `@keyframes ${a} {\n` +
@@ -63,7 +65,7 @@ const strikeThrough: EffectDefinition = {
     return {
       root: el("div", { children: [text(ctx.text)] }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, a, a2)}`,
       loopMs: speed * 1000,
     };
   },

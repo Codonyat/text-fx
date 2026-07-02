@@ -1,6 +1,6 @@
 import type { EffectDefinition } from "@/lib/engine/types";
 import { el, text } from "@/lib/engine/markup";
-import { hsl, anim } from "@/lib/engine/helpers";
+import { hsl, anim, hoverReplay, cloneKeyframes } from "@/lib/engine/helpers";
 
 const highlighter: EffectDefinition = {
   id: "highlighter",
@@ -28,6 +28,7 @@ const highlighter: EffectDefinition = {
     const ink = hsl(h, 45, ctx.theme === "dark" ? 72 : 84, 0.4);
     const txt = ctx.theme === "dark" ? hsl(h, 30, 8) : hsl(h, 60, 14);
     const wipe = anim(ctx.scope, "wipe");
+    const wipe2 = anim(ctx.scope, "wipe-r"); // hover re-wipes the highlight
     const top = (100 - band).toFixed(0);
     const css =
       `.${ctx.scope} {\n` +
@@ -42,7 +43,8 @@ const highlighter: EffectDefinition = {
       `  box-decoration-break: clone;\n` +
       `  -webkit-box-decoration-break: clone;\n` +
       `  animation: ${wipe} ${speed.toFixed(1)}s ease-out 1 forwards;\n` +
-      `}`;
+      `}\n` +
+      hoverReplay(ctx.scope, "", wipe2);
     const keyframes =
       `@keyframes ${wipe} {\n` +
       `  0% { background-size: 0% ${band}%; }\n` +
@@ -51,7 +53,7 @@ const highlighter: EffectDefinition = {
     return {
       root: el("div", { children: [text(ctx.text)] }),
       css,
-      keyframes,
+      keyframes: `${keyframes}\n${cloneKeyframes(keyframes, wipe, wipe2)}`,
       // single wipe-in that holds at full width (forwards).
       loopMs: Math.round(speed * 1000),
     };
