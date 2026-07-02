@@ -7,6 +7,9 @@ import softGlow from "./neon-glow/soft-glow";
 import neonSignFrame from "./neon-glow/neon-sign-frame";
 import halation from "./neon-glow/halation";
 import scrollCharge from "./neon-glow/scroll-charge";
+import colorCycleGlow from "./neon-glow/color-cycle-glow";
+import letterFlicker from "./neon-glow/letter-flicker";
+import sparkleGlints from "./neon-glow/sparkle-glints";
 import conicSpin from "./gradient-fill/conic-spin";
 import duotoneFill from "./gradient-fill/duotone-fill";
 import gradientFlow from "./gradient-fill/gradient-flow";
@@ -15,6 +18,7 @@ import gradientGlow from "./gradient-fill/gradient-glow";
 import gradientFollow from "./gradient-fill/gradient-follow";
 import spotlight from "./gradient-fill/spotlight";
 import softDuotone from "./gradient-fill/soft-duotone";
+import candyGloss from "./gradient-fill/candy-gloss";
 import chrome from "./metallic-holographic/chrome";
 import goldFoil from "./metallic-holographic/gold-foil";
 import holographic from "./metallic-holographic/holographic";
@@ -41,6 +45,7 @@ import gradientStroke from "./outline-stroke/gradient-stroke";
 import outline from "./outline-stroke/outline";
 import glowOutline from "./outline-stroke/glow-outline";
 import outline3dExtrude from "./outline-stroke/outline-3d-extrude";
+import sticker from "./outline-stroke/sticker";
 import glitchRgb from "./glitch-distortion/glitch-rgb";
 import scanlineGlitch from "./glitch-distortion/scanline-glitch";
 import shakeGlitch from "./glitch-distortion/shake-glitch";
@@ -48,10 +53,17 @@ import vhs from "./glitch-distortion/vhs";
 import blockGlitch from "./glitch-distortion/block-glitch";
 import colorSplit from "./glitch-distortion/color-split";
 import terminalPhosphor from "./glitch-distortion/terminal-phosphor";
+import crtCollapse from "./glitch-distortion/crt-collapse";
 import vaporwave from "./retro-themed/vaporwave";
 import distressStamp from "./retro-themed/distress-stamp";
 import chalkboard from "./retro-themed/chalkboard";
 import risoMisregister from "./retro-themed/riso-misregister";
+import pixel8bit from "./retro-themed/pixel-8bit";
+import blueprint from "./retro-themed/blueprint";
+import safetyStencil from "./retro-themed/safety-stencil";
+import hudTargeting from "./retro-themed/hud-targeting";
+import marqueeBulbs from "./retro-themed/marquee-bulbs";
+import artDeco from "./retro-themed/art-deco";
 import dropShadow from "./shadow-press/drop-shadow";
 import emboss from "./shadow-press/emboss";
 import hardOffset from "./shadow-press/hard-offset";
@@ -76,6 +88,7 @@ import halftoneDots from "./fill-texture/halftone-dots";
 import camouflageFill from "./fill-texture/camouflage-fill";
 import scrollingTexture from "./fill-texture/scrolling-texture";
 import grainGradient from "./fill-texture/grain-gradient";
+import bokehFill from "./fill-texture/bokeh-fill";
 import fadeIn from "./entrance-kinetic/fade-in";
 import letterWave from "./entrance-kinetic/letter-wave";
 import staggerReveal from "./entrance-kinetic/stagger-reveal";
@@ -128,6 +141,9 @@ export const EFFECTS: EffectDefinition[] = [
   neonSignFrame,
   halation,
   scrollCharge,
+  colorCycleGlow,
+  letterFlicker,
+  sparkleGlints,
   conicSpin,
   duotoneFill,
   gradientFlow,
@@ -136,6 +152,7 @@ export const EFFECTS: EffectDefinition[] = [
   gradientFollow,
   spotlight,
   softDuotone,
+  candyGloss,
   chrome,
   goldFoil,
   holographic,
@@ -162,6 +179,7 @@ export const EFFECTS: EffectDefinition[] = [
   outline,
   glowOutline,
   outline3dExtrude,
+  sticker,
   glitchRgb,
   scanlineGlitch,
   shakeGlitch,
@@ -169,10 +187,17 @@ export const EFFECTS: EffectDefinition[] = [
   blockGlitch,
   colorSplit,
   terminalPhosphor,
+  crtCollapse,
   vaporwave,
   distressStamp,
   chalkboard,
   risoMisregister,
+  pixel8bit,
+  blueprint,
+  safetyStencil,
+  hudTargeting,
+  marqueeBulbs,
+  artDeco,
   dropShadow,
   emboss,
   hardOffset,
@@ -197,6 +222,7 @@ export const EFFECTS: EffectDefinition[] = [
   camouflageFill,
   scrollingTexture,
   grainGradient,
+  bokehFill,
   fadeIn,
   letterWave,
   staggerReveal,

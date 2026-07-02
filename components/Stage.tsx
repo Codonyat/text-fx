@@ -46,6 +46,12 @@ export function Stage({
   const dataText = caps.includes("dataText");
   const pointer = caps.includes("pointer");
   const scroll = caps.includes("scroll");
+  // Effects whose root markup carries element children (letter spans, duplicated
+  // ticker tracks, nested ink spans, stacked copies) can't render inside a bare
+  // contentEditable div — they use the ghost-over-preview two-layer branch so the
+  // real AST is mounted while an invisible overlay stays editable.
+  const composite =
+    perLetter || (root.children ?? []).some((c) => c.kind !== "text");
   const editRef = useRef<HTMLDivElement>(null);
   const layersRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -65,7 +71,7 @@ export function Stage({
     // single-element <-> per-letter mode switch OR a scroll <-> non-scroll switch (the
     // scroller wrapper changes the branch's parent, which also forces a fresh node) —
     // otherwise the new node stays empty when `text` is unchanged.
-  }, [text, dataText, perLetter, scroll]);
+  }, [text, dataText, composite, scroll]);
 
   // Pointer-reactive effects: feed the cursor position into --mx/--my (percent
   // within the scoped element) so CSS can position masks/gradients at the cursor.
@@ -75,7 +81,7 @@ export function Stage({
   // custom properties inherit into it).
   useEffect(() => {
     if (!pointer) return;
-    const el = perLetter ? layersRef.current : editRef.current;
+    const el = composite ? layersRef.current : editRef.current;
     if (!el) return;
     // pointerdown as well as pointermove so a touch tap (which never fires move)
     // still positions the effect at the finger.
@@ -103,7 +109,7 @@ export function Stage({
       el.style.removeProperty("--mx");
       el.style.removeProperty("--my");
     };
-  }, [pointer, perLetter]);
+  }, [pointer, composite]);
 
   // Scroll-driven effects render inside a scrollable wrapper so their
   // animation-timeline: view()/scroll() timelines have real travel to scrub against.
@@ -139,7 +145,7 @@ export function Stage({
     };
     el.addEventListener("beforeinput", onBeforeInput);
     return () => el.removeEventListener("beforeinput", onBeforeInput);
-  }, [pristine, perLetter]);
+  }, [pristine, composite]);
 
   const handleInput = () => {
     const el = editRef.current;
@@ -216,7 +222,7 @@ export function Stage({
   // Distinct keys on the two branch roots: without them React reuses the same
   // <div> across a mode switch (same tag + position) and orphans the
   // imperatively-set text node inside the repurposed element.
-  const content = perLetter ? (
+  const content = composite ? (
     <div key="pl" ref={layersRef} className={styles.layers}>
       <div className={`${styles.text} ${styles.preview}`} aria-hidden="true">
         {toReact(root, createElement as unknown as CreateElementLike) as ReactNode}

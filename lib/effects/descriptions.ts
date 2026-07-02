@@ -17,6 +17,12 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "The warm photographic bloom film type picks up — a soft red-orange halation fringe haloing the letters from layered text-shadows. Cinematic, not neon, and stays still.",
   "scroll-charge":
     "Layered text-shadows whose blur radii and hot-white core ramp from a near-dead unlit tube to a fully-lit sign as the text travels the scrollport, with a real neon ignition stutter as it strikes. Scroll-scrubbed via animation-timeline: view() — browsers without scroll timelines simply show the finished, fully-lit state.",
+  "color-cycle-glow":
+    "A neon tube whose hue travels the full color wheel forever, driven by a salted @property number the browser interpolates every frame. The letter fill and its halo both read the same live hue, so the glow morphs cyan to magenta to amber in one continuous, GPU-smooth loop.",
+  "letter-flicker":
+    "A worn neon sign where every tube blinks on its own clock: per-letter delays and duration buckets keep the flicker desynced instead of pulsing as one word. One letter, picked from the text itself, reads as the dying tube — it stutters harder and holds a long dark dwell while the rest of the sign keeps glowing steady.",
+  "sparkle-glints":
+    "A handful of four-point star glints — crossed thin gradient rays plus a small radial core, screen-blended so they read as pure light — wink in and out at staggered spots across the word. The letters themselves stay a clean metallic fill, so it reads like diamond twinkle on jewelry lettering rather than a sweep or a texture.",
   // gradient-fill
   "gradient-flow":
     "A multi-stop gradient clipped to the text that slowly flows by animating its background position. The go-to lively gradient headline.",
@@ -34,6 +40,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A near-white heading lit by a soft off-center gradient — almost monochrome, just a whisper of hue. The restrained way premium product sites treat hero type.",
   "soft-duotone":
     "A refined two-tone gradient in close, muted hues — the editorial gradient on modern headings, not a bold poster split. Low saturation keeps it tasteful.",
+  "candy-gloss":
+    "A wet hard-candy shell: a saturated vertical gradient clipped to the glyphs from bright sugary top to deep juicy base, topped with a soft white specular band across the upper third. A thin darker stroke contains the shine and a tight lift shadow gives it body — sweet and glossy, never metallic.",
   // metallic-holographic
   chrome:
     "A vertical metallic gradient clipped to the text with a soft drop-shadow for that shiny chrome bevel. Tint it warm or cool with a single control.",
@@ -89,6 +97,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Hollow letters with a bright colored stroke lit by a drop-shadow halo, plus an optional broken-sign flicker. A neon tube outline.",
   "outline-3d-extrude":
     "Hollow letters pushed into 3D by a stacked offset shadow in a deeper shade, so the outline itself reads as a chunky block.",
+  "sticker":
+    "Die-cut vinyl sticker lettering: a bright solid fill wrapped in a thick contrasting border, like the white edge left behind by a sticker cutter. A hard, zero-blur offset shadow drops it onto the page for a real peel-and-stick feel.",
   // glitch-distortion
   "glitch-rgb":
     "The classic RGB-split glitch: cyan/magenta pseudo-element copies tear and shift on clip-path keyframes. Cyberpunk in a single class (needs a data-text attribute).",
@@ -103,6 +113,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Two offset duotone copies sit either side of a neutral core for a static chromatic-aberration print look. Recolorable; no jitter.",
   "terminal-phosphor":
     "Glowing CRT-monitor text with an irregular power-on flicker, like an old phosphor screen warming up and stuttering.",
+  "crt-collapse":
+    "An old CRT tube snapping on: the word pinches to a blinding horizontal line, flickers, then punches open with a fast vertical overshoot before settling into crisp, phosphor-tinted text. A one-shot power-on entrance — hover to trigger it again.",
   // retro-themed
   vaporwave:
     "A pink-to-cyan gradient title with a soft, dreamy glow. The signature 80s/synthwave aesthetic in pure CSS.",
@@ -112,6 +124,18 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Chalk-dust lettering with edges roughened by an SVG turbulence displacement and a faint dusty halo. White chalk on dark, charcoal on light.",
   "riso-misregister":
     "Risograph print drift: the word in two spot inks that don't quite align, the offset copy blended over the base so the misregistered fringes and a third overlap tone show. Static.",
+  "pixel-8bit":
+    "Silkscreen's true bitmap glyphs get a hard, zero-blur offset shadow stacked in two darker tones for a chunky NES-title-screen slab — no blur anywhere, just clean pixel-grid steps. Four arcade palette-swaps (NES gray/red, Game Boy green, arcade cyan/magenta, insert-coin gold) plus an optional stepped blink dial in the retro-console feel.",
+  "blueprint":
+    "Hollow hairline-stroked letterforms sit as line-art on a deep cyanotype-blue drawing sheet, complete with a faint graph-paper grid, corner registration marks, and a dashed dimension line under the baseline. On a light stage the process inverts to navy ink on pale drafting paper, echoing the classic diazo whiteprint.",
+  "safety-stencil":
+    "Bold flat spray ink with literal die-cut bridge gaps — thin transparent bands masked straight through every glyph, exactly the bridges a real letter stencil needs to hold its shape together. Wrap it in the yellow-and-black hazard-stripe frame for the full military-crate warning-label look, crisp and geometric with zero grunge.",
+  "hud-targeting":
+    "Four L-shaped corner brackets lock onto the word like a fighter-jet targeting reticle, while a bright scan-line sweeps down through the glyphs on a loop and a dashed data-readout strip ticks along under the baseline. A steady cyan/green glow holds the text itself rock-solid — this is HUD chrome built around the word, not a flicker on the letters.",
+  "marquee-bulbs":
+    "A pair of incandescent bulb strips run above and below the lettering, every other socket popping bright in a hard, discrete jump — the real Broadway chase, built from tiled radial-gradient dots and steps() rather than a smooth slide. The gold-gradient lettering gets its own soft bevel via a drop-shadow stack, and an optional boxed cabinet turns the strips into an enclosed marquee sign.",
+  "art-deco":
+    "A 1920s Gatsby poster treatment: a flat, graphic gold gradient clipped to the letters, framed by thin flanking rules that taper into diamond terminals, with a faint sunburst medallion glowing behind the whole word. Slide the hue from rose through gold to silver, tune the rule weight, and toggle the sunburst for period geometry with luxurious restraint.",
   // shadow-press
   "drop-shadow":
     "A simple soft drop shadow under solid text, with blur and distance controls. The dependable, readable depth cue.",
@@ -161,6 +185,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A fine two-tone crosshatch weave clipped to the text that scrolls diagonally on a loop. A moving woven material fill.",
   "grain-gradient":
     "A restrained low-saturation gradient with a faint film grain dusted over the glyphs (SVG noise) — the matte, tactile gradient finish on modern brand type.",
+  "bokeh-fill":
+    "A stack of large, feathered radial-gradient discs — the defocused circles-of-confusion of city lights through a wide-open lens — clipped into the glyphs over a dark backdrop. Each disc drifts at its own lazy pace and a couple breathe in size for a twinkle, warming to amber-and-white orbs on the light theme so the fill still reads as photographic.",
   // entrance-kinetic
   "fade-in":
     "The whole word fades and gently rises into place on load. A tasteful, universal entrance animation.",

@@ -83,6 +83,18 @@ export function renderHtml(node: MarkupChild, indent = 0): string {
     const inner = children.map((c) => renderHtml(c)).join("");
     return `${pad}<${node.tag}${attrStr}>${inner}</${node.tag}>`;
   }
+  // Also inline when every child is a text slot or a LEAF element (only text inside),
+  // e.g. per-letter spans. Pretty-printed newlines between spans become FORCED line
+  // breaks (plus rendered indentation) under `white-space: pre`, which per-letter
+  // effects set to preserve spaces — stacking every glyph on its own line in the SSR
+  // previews and the copy-pasted HTML exports.
+  const leafRun = children.every(
+    (c) => c.kind === "text" || (c.children ?? []).every((g) => g.kind === "text"),
+  );
+  if (leafRun) {
+    const inner = children.map((c) => renderHtml(c)).join("");
+    return `${pad}<${node.tag}${attrStr}>${inner}</${node.tag}>`;
+  }
   const inner = children.map((c) => renderHtml(c, indent + 1)).join("\n");
   return `${pad}<${node.tag}${attrStr}>\n${inner}\n${pad}</${node.tag}>`;
 }
