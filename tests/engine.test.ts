@@ -72,6 +72,7 @@ describe("hover-replay entrance effects", () => {
     "shatter-in",
     "odometer-roll",
     "split-flap",
+    "swoosh-in",
   ];
 
   it.each(HOVER_REPLAY_IDS)("%s replays its entrance on hover (default values)", (id) => {

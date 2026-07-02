@@ -46,6 +46,8 @@ import parallaxLayers from "./threed-depth/parallax-layers";
 import nablaIso from "./threed-depth/nabla-iso";
 import balloonPuff from "./threed-depth/balloon-puff";
 import synthwaveGrid from "./threed-depth/synthwave-grid";
+import pointerTilt from "./threed-depth/pointer-tilt";
+import cubeSpin from "./threed-depth/cube-spin";
 import doubleOutline from "./outline-stroke/double-outline";
 import filledOutline from "./outline-stroke/filled-outline";
 import gradientStroke from "./outline-stroke/gradient-stroke";
@@ -153,6 +155,9 @@ import confettiBurst from "./entrance-kinetic/confetti-burst";
 import shatterIn from "./entrance-kinetic/shatter-in";
 import odometerRoll from "./entrance-kinetic/odometer-roll";
 import splitFlap from "./entrance-kinetic/split-flap";
+import swooshIn from "./entrance-kinetic/swoosh-in";
+import circleSpin from "./entrance-kinetic/circle-spin";
+import spiralText from "./entrance-kinetic/spiral-text";
 import highlighter from "./decoration-underline/highlighter";
 import slideUnderline from "./decoration-underline/slide-underline";
 import wavyUnderline from "./decoration-underline/wavy-underline";
@@ -176,6 +181,10 @@ import weightRippleHover from "./interactive-advanced/weight-ripple-hover";
 import gradientLink from "./interactive-advanced/gradient-link";
 import neonSelection from "./interactive-advanced/neon-selection";
 import borderDraw from "./interactive-advanced/border-draw";
+import dockMagnify from "./interactive-advanced/dock-magnify";
+import swashBloom from "./interactive-advanced/swash-bloom";
+import weightScrub from "./interactive-advanced/weight-scrub";
+import cursorRepel from "./interactive-advanced/cursor-repel";
 
 /** Every implemented effect (hand-maintained: import + array entry per file). */
 export const EFFECTS: EffectDefinition[] = [
@@ -225,6 +234,8 @@ export const EFFECTS: EffectDefinition[] = [
   nablaIso,
   balloonPuff,
   synthwaveGrid,
+  pointerTilt,
+  cubeSpin,
   doubleOutline,
   filledOutline,
   gradientStroke,
@@ -332,6 +343,9 @@ export const EFFECTS: EffectDefinition[] = [
   shatterIn,
   odometerRoll,
   splitFlap,
+  swooshIn,
+  circleSpin,
+  spiralText,
   highlighter,
   slideUnderline,
   wavyUnderline,
@@ -355,6 +369,10 @@ export const EFFECTS: EffectDefinition[] = [
   gradientLink,
   neonSelection,
   borderDraw,
+  dockMagnify,
+  swashBloom,
+  weightScrub,
+  cursorRepel,
 ];
 
 export const EFFECTS_BY_ID: Record<string, EffectDefinition> = Object.fromEntries(

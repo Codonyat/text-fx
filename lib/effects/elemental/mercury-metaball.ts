@@ -4,8 +4,9 @@ import { hsl, anim, svgId, round } from "@/lib/engine/helpers";
 
 /**
  * Mercury metaball: the word rendered as chrome liquid metal. A gooey SVG filter
- * (feGaussianBlur + feColorMatrix alpha-contrast, feComposite atop to keep the
- * glyph cores crisp) fuses the letters with a handful of absolutely-positioned
+ * (feGaussianBlur + feColorMatrix alpha-contrast; the crisp SourceGraphic is then
+ * composited OVER the goo so glyphs stay legible) rims the letters with a liquid
+ * meniscus and fuses them with a handful of absolutely-positioned
  * satellite DROPLETS that slowly drift in from the perimeter, get pinched into the
  * letterforms and absorbed, then re-appear at a second spot — the visible metaball
  * merge is the payoff. Everything is filled with a silvery vertical chrome gradient
@@ -121,15 +122,17 @@ const mercuryMetaball: EffectDefinition = {
       };
     });
 
-    // Goo merge filter: blur, alpha-contrast to hard blobby edges, then composite
-    // the crisp SourceGraphic back on top so letters stay legible (atop).
-    const blur = 7;
+    // Goo merge filter: modest blur + hard alpha contrast makes a tight liquid
+    // rim that bridges droplets into the letters, then the ORIGINAL SourceGraphic
+    // is composited OVER the goo — crisp glyphs (counters included) always sit on
+    // top and stay instantly legible; the metaball lives only at the edges.
+    const blur = 4;
     const defs =
-      `<filter id="${fid}" x="-110%" y="-180%" width="320%" height="460%">\n` +
+      `<filter id="${fid}" x="-70%" y="-120%" width="240%" height="340%">\n` +
       `  <feGaussianBlur in="SourceGraphic" stdDeviation="${blur}" result="blur"/>\n` +
       `  <feColorMatrix in="blur" mode="matrix" ` +
-      `values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -8" result="goo"/>\n` +
-      `  <feComposite in="SourceGraphic" in2="goo" operator="atop"/>\n` +
+      `values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10" result="goo"/>\n` +
+      `  <feComposite in="SourceGraphic" in2="goo" operator="over"/>\n` +
       `</filter>`;
 
     const css =

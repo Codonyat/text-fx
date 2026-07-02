@@ -98,6 +98,10 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Each letter is filled with an off-center radial gradient — a bright specular spot near the upper-left curving through a saturated hue down to a deep latex edge — for the unmistakable sheen of an inflated party balloon. A soft two-layer shadow floats well below each glyph for lift, while a gentle per-letter scale breathe, staggered by index, keeps the whole word subtly alive.",
   "synthwave-grid":
     "The full 80s album-cover scene: chrome-to-sunset lettering split by a bright horizon line leans back on its own perspective, standing on a neon grid floor that scrolls forever toward a glowing sun. Pure CSS — two repeating-gradient planes under a rotateX perspective, driving into the sunset.",
+  "pointer-tilt":
+    "A rigid, glossy slab that tilts in real 3D toward your cursor: rotateX and rotateY are derived live from the pointer under a perspective, while a diagonal specular sheen slides across the letters tracking the horizontal cursor position. A floating counter-shadow swings opposite the tilt, so the headline reads as a card hovering off the page.",
+  "cube-spin":
+    "Every letter becomes a solid 3D cube that tumbles forward on its horizontal axis, dwelling on each face long enough to read before clunking to the next, staggered so the whole word ripples through space. Four faces share the same glyph and side faces pick up a colored tint as they turn away, selling honest depth (per-letter markup).",
   // outline-stroke
   outline:
     "Hollow outline text via -webkit-text-stroke, with an optional offset echo shadow. Minimal, editorial and lightweight.",
@@ -219,7 +223,7 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
   "caustics":
     "Sunlight caustics ripple across the letters like light on a pool floor: the glyphs sit in a deep-aqua gradient while thin, branching white-cyan webs — an SVG turbulence spiked into ridge lines — drift and shimmer inside them. Two layers at different scales crawl at different speeds for real underwater depth, clipped strictly to the text with a soft blue bloom.",
   "mercury-metaball":
-    "A gooey SVG filter fuses the letters with drifting satellite droplets that get pinched into the letterforms and absorbed, all wrapped in a silvery chrome gradient swept by a moving specular highlight and a cool reflective glow. Liquid mercury in motion — reflective, metallic and hypnotic, and it stays legible on dark or light backgrounds.",
+    "A gooey SVG filter rims the letters with a liquid meniscus and fuses them with drifting satellite droplets that get pinched into the letterforms and absorbed, all wrapped in a silvery chrome gradient swept by a moving specular highlight and a cool reflective glow. Liquid mercury in motion — reflective, metallic and hypnotic, and it stays legible on dark or light backgrounds.",
   // fill-texture
   "image-fill":
     "Glyphs filled with a rich multi-gradient that reads like a photographic texture, via background-clip:text. An image-in-text look with zero assets.",
@@ -316,6 +320,12 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Each letter spins into place like a mechanical odometer: a vertical reel of neighbouring glyphs rolls upward inside a fixed, overflow-clipped window and lands on the target with a small settling bounce, staggered left to right. Digits wrap through 0-9 and letters through the alphabet, framed in counter cells with drum-curved top and bottom shading for a hardware feel (per-letter markup).",
   "split-flap":
     "An airport Solari departure board: every letter sits on its own dark rounded chip split by a hinge line, and the blank top card clacks down two to five times in an accelerating-then-settling rhythm before folding away to reveal the bright glyph, cascading across the line by index. Choose amber, white or phosphor-green — the mechanics are sold through hinge shadow and motion rather than fake intermediate characters (per-letter markup).",
+  "swoosh-in":
+    "Each letter flies in along a curved CSS motion path, sweeping up from the lower-left, arcing over the top and banking with offset-rotate:auto before gliding down to land flat, staggered by index. The path ends with a horizontal tangent so glyphs un-bank to level exactly as they settle — a swooping, paper-plane entrance (per-letter markup).",
+  "circle-spin":
+    "The eternal spinning sticker: your text is laid around a full circle with an SVG textPath, repeated with dot, star or dash separators until the ring is filled, and the whole badge rotates forever. A static center dot and framing ring finish the rubber-stamp look; tune spin speed, direction and text size.",
+  "spiral-text":
+    "An inline SVG binds your words to a hand-sampled Archimedean spiral, so the letters wind inward along the coil, rotating to follow every turn from the outer edge toward the centre. A faint gradient guide-wire and a gentle opacity fade toward the middle give it real depth — a static composition with an optional slow Spin.",
   // decoration-underline
   "slide-underline":
     "A gradient underline bar grows in from the left beneath the text. Clean, modern link and heading emphasis.",
@@ -363,6 +373,14 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "The payoff is dormant until you drag-select the text: the selection inverts the glyphs, flipping the background to the text's resting hue and the foreground to a blazing bright tone while a layered neon bloom ignites. At rest it's a restrained two-tone heading with a faint underline and a slow glow pulse — just enough hint to invite the select.",
   "border-draw":
     "Hover the word and a frame draws itself around it stroke by stroke, top then right then bottom then left, like a pen tracing a rectangle. Leave and it retracts in reverse; a faint corner-tick hint keeps the frame legible even at rest.",
+  "dock-magnify":
+    "The macOS dock fisheye applied to text: the hovered letter scales up the most, its neighbors swell on a falloff, and the two-away letters bulge a touch — all through pure :hover, adjacent-sibling and :has() previous-sibling selectors with no JavaScript. Letters grow up from the baseline with a springy overshoot, and a faint dotted rail hints at the interactivity at rest.",
+  "swash-bloom":
+    "Resting, the word is clean upright Goudy roman; hover it and a stacked italic copy — OpenType swashes, ligatures and stylistic alternates switched on — crossfades in over a springy scale settle, so the letterforms bloom into calligraphic flourishes. Sorts Mill Goudy's italic carries the flowing swash and ligature forms, with an optional warm accent tinting the ornamental copy.",
+  "weight-scrub":
+    "The cursor becomes a weight dial: sweep left-to-right to scrub Recursive's variable weight from feather-light to massive, while up-and-down leans the slant axis, all tracking the pointer live and smooth. Driven by @property-registered numbers fed a percentage-to-number calc off the pointer vars, with a short transition for buttery two-axis motion.",
+  "cursor-repel":
+    "Each letter measures its own distance from the cursor and slides, lifts and leans away, so the whole word fans open around the pointer while the nearest letters bloom in colour. A purely spatial, pointer-tracked repel built entirely from per-letter calc against live custom properties — no JS animation, just transitions that glide.",
 
 };
 

@@ -27,15 +27,15 @@ const liquidLens: EffectDefinition = {
   controls: [
     { id: "blur", label: "Refraction", type: "range", default: 1.6, min: 0, max: 4, step: 0.1, unit: "px" },
     { id: "hue", label: "Tint Hue", type: "range", default: 205, min: 0, max: 360, step: 1, unit: "°" },
-    { id: "tint", label: "Tint", type: "range", default: 26, min: 0, max: 60, step: 1, unit: "%" },
-    { id: "rim", label: "Rim", type: "range", default: 60, min: 0, max: 100, step: 1, unit: "%" },
+    { id: "tint", label: "Tint", type: "range", default: 38, min: 0, max: 60, step: 1, unit: "%" },
+    { id: "rim", label: "Rim", type: "range", default: 72, min: 0, max: 100, step: 1, unit: "%" },
     { id: "shimmer", label: "Shimmer", type: "toggle", default: true, onLabel: "On", offLabel: "Off" },
   ],
   rand: (R) => ({
     blur: Number(R.rnd(1.1, 2.4).toFixed(1)),
     hue: R.ri(0, 360),
-    tint: R.ri(18, 36),
-    rim: R.ri(45, 75),
+    tint: R.ri(30, 50),
+    rim: R.ri(58, 88),
     shimmer: R.chance(0.8),
   }),
   build: (ctx) => {
@@ -53,29 +53,32 @@ const liquidLens: EffectDefinition = {
     const rN = rim / 100;
 
     // Glass body tint — translucent so the refracted backdrop still shows through, but
-    // present enough that flat backdrops still read as a tonal lens (light theme carries a
-    // touch more body + saturation so the glass reads against the near-white stage).
-    const aTop = (dark ? 0.08 : 0.16) + sA * (dark ? 0.5 : 0.6);
-    const aBot = (dark ? 0.05 : 0.14) + sA * (dark ? 0.4 : 0.55);
-    const tintTop = dark ? hsl(h, 55, 86, Number(aTop.toFixed(3))) : hsl(h, 62, 56, Number(aTop.toFixed(3)));
-    const tintBot = dark ? hsl(h, 50, 74, Number(aBot.toFixed(3))) : hsl(h, 64, 44, Number(aBot.toFixed(3)));
+    // with enough body that FLAT backdrops (the SSR/OG posters use a plain stage color,
+    // no grid) still read clearly as tinted glass letters. The refraction is the bonus
+    // on textured backdrops; the body carries legibility everywhere else.
+    const aTop = (dark ? 0.22 : 0.2) + sA * (dark ? 0.55 : 0.6);
+    const aBot = (dark ? 0.16 : 0.17) + sA * (dark ? 0.45 : 0.55);
+    const tintTop = dark ? hsl(h, 62, 88, Number(aTop.toFixed(3))) : hsl(h, 62, 52, Number(aTop.toFixed(3)));
+    const tintBot = dark ? hsl(h, 55, 74, Number(aBot.toFixed(3))) : hsl(h, 64, 40, Number(aBot.toFixed(3)));
 
-    const bf = `blur(${blur}px) saturate(1.4) brightness(${dark ? 1.22 : 1.02})`;
+    const bf = `blur(${blur}px) saturate(1.4) brightness(${dark ? 1.35 : 1.02})`;
 
-    // Rim + lift: a thin light top edge, a thin dark bottom edge (lens thickness) and a
-    // soft drop-shadow that lifts the glass off the backdrop. drop-shadow follows the
-    // clipped glyph alpha, so these hug every letter. On light the white top edge would
-    // vanish into the stage, so a faint all-around dark halo keeps the letters defined.
-    const rimLight = `rgba(255,255,255,${(rN * 0.6).toFixed(3)})`;
+    // Rim + lift: a thin light top edge, a thin dark bottom edge (lens thickness), a
+    // soft drop-shadow that lifts the glass off the backdrop, and a faint all-around
+    // halo (light on dark, dark on light) so the letterforms stay defined on flat
+    // stages. drop-shadow follows the clipped glyph alpha, so these hug every letter.
+    const rimLight = `rgba(255,255,255,${(rN * 0.9).toFixed(3)})`;
     const rimDark = dark ? `rgba(4,8,16,${(rN * 0.5).toFixed(3)})` : `rgba(18,24,38,${(rN * 0.55).toFixed(3)})`;
     const lift = dark ? "rgba(0,0,0,0.42)" : "rgba(30,40,60,0.22)";
-    const halo = dark ? "" : ` drop-shadow(0 0 0.5px rgba(18,24,38,${(rN * 0.4).toFixed(3)}))`;
+    const halo = dark
+      ? ` drop-shadow(0 0 0.7px rgba(255,255,255,${(rN * 0.5).toFixed(3)}))`
+      : ` drop-shadow(0 0 0.5px rgba(18,24,38,${(rN * 0.45).toFixed(3)}))`;
     const bodyFilter =
       `drop-shadow(0 1px 3px ${lift}) drop-shadow(0 -0.5px 0 ${rimLight}) drop-shadow(0 0.6px 0 ${rimDark})${halo}`;
 
     // Inner sheen gradient: bright specular top + dark thickness shade at the bottom.
-    const specTop = "rgba(255,255,255,0.5)";
-    const shadeBot = dark ? "rgba(6,10,18,0.4)" : "rgba(20,28,46,0.3)";
+    const specTop = dark ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0.55)";
+    const shadeBot = dark ? "rgba(6,10,18,0.45)" : "rgba(20,28,46,0.32)";
     const staticSheen = `linear-gradient(180deg, ${specTop} 0%, transparent 42%, transparent 72%, ${shadeBot} 100%)`;
     const sweepCol = dark ? "rgba(255,255,255,0.28)" : "rgba(255,255,255,0.5)";
     const sweep = `linear-gradient(115deg, transparent 38%, ${sweepCol} 50%, transparent 62%)`;

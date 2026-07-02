@@ -59,18 +59,24 @@ const marchingAnts: EffectDefinition = {
     const ink = hsl(h, tint, light);
     // Translucent interior fill so the hollow glyph silhouette reads at rest,
     // while the marching stroke stays clearly the star.
-    const fill = hsl(h, tint, light, 0.25);
+    const fill = hsl(h, tint, light, 0.28);
 
-    // Equal dash/gap (classic marquee). `period` is measured along the 45° gradient
+    // Dash-heavy duty cycle (~62% on): a thin 50/50 chop leaves so little lit stroke
+    // that the word averages to gray at page scale — wider dashes + a thicker stroke
+    // keep the marquee unmistakably bright. `period` is measured along the 45° gradient
     // axis; `tile` is that period projected onto the x/y axes — using it for both
     // mask-size and the position shift keeps the tiling AND the loop perfectly seamless.
     const period = dash * 2;
+    const on = round(dash * 1.25, 2);
     const tile = round(period * Math.SQRT2, 2);
     const a = anim(ctx.scope, "march");
+    // drop-shadow applies AFTER the mask, so this halo hugs the dashes themselves —
+    // lifts perceived brightness without softening the hard dash edges.
+    const halo = `drop-shadow(0 0 1px ${ink}) drop-shadow(0 0 6px ${hsl(h, tint, light, 0.4)})`;
 
     const maskImg =
       `repeating-linear-gradient(45deg, ` +
-      `#000 0, #000 ${dash}px, transparent ${dash}px, transparent ${period}px)`;
+      `#000 0, #000 ${on}px, transparent ${on}px, transparent ${period}px)`;
 
     const css =
       `.${ctx.scope} {\n` +
@@ -86,7 +92,8 @@ const marchingAnts: EffectDefinition = {
       `  pointer-events: none;\n` +
       `  color: transparent;\n` +
       `  -webkit-text-fill-color: transparent;\n` +
-      `  -webkit-text-stroke: 2.5px ${ink};\n` +
+      `  -webkit-text-stroke: 3.5px ${ink};\n` +
+      `  filter: ${halo};\n` +
       `  -webkit-mask-image: ${maskImg};\n` +
       `          mask-image: ${maskImg};\n` +
       `  -webkit-mask-size: ${tile}px ${tile}px;\n` +
