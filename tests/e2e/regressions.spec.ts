@@ -173,6 +173,63 @@ test("share-hash lifecycle: SHARE writes it, SHUFFLE strips it, share URL restor
   await expect(page.getByText("Neon Glow", { exact: true })).toBeVisible();
 });
 
+/** The stage container owns the click-anywhere / end-editing mousedown handler; it is
+ *  the only div whose direct child is the "click or tap to edit" caption span. */
+function stage(page: Page) {
+  return page.locator('div:has(> span:text-is("click or tap to edit"))');
+}
+
+test("clicking the stage background while editing ends editing (blur + clear selection)", async ({
+  page,
+}) => {
+  const errors = trackErrors(page);
+  await pickNeonGlow(page);
+
+  const editor = page.getByRole("textbox", { name: /effect text/i });
+  await editor.click({ force: true });
+  await page.keyboard.press("Control+A");
+  await page.keyboard.type("Hi");
+  await expect(editor).toBeFocused();
+
+  // Click the stage background well away from the (vertically-centred) glyphs: near the
+  // top edge, inside the padding. Target is the stage div, not the editable → end editing.
+  const box = await stage(page).boundingBox();
+  expect(box).not.toBeNull();
+  if (!box) return;
+  await page.mouse.click(box.x + box.width / 2, box.y + 10);
+
+  await expect(editor).not.toBeFocused();
+  expect(await page.evaluate(() => window.getSelection()?.toString() ?? "")).toBe("");
+  expect((await editor.textContent())?.trim()).toBe("Hi");
+
+  expect(errors, "console/runtime errors:\n" + errors.join("\n")).toEqual([]);
+});
+
+test("Escape while editing blurs the editable", async ({ page }) => {
+  await pickNeonGlow(page);
+
+  const editor = page.getByRole("textbox", { name: /effect text/i });
+  await editor.click({ force: true });
+  await expect(editor).toBeFocused();
+
+  await page.keyboard.press("Escape");
+  await expect(editor).not.toBeFocused();
+});
+
+test("clicking the stage background while NOT editing starts editing", async ({ page }) => {
+  await pickNeonGlow(page);
+
+  const editor = page.getByRole("textbox", { name: /effect text/i });
+  await expect(editor).not.toBeFocused();
+
+  const box = await stage(page).boundingBox();
+  expect(box).not.toBeNull();
+  if (!box) return;
+  await page.mouse.click(box.x + box.width / 2, box.y + 10);
+
+  await expect(editor).toBeFocused();
+});
+
 test("a corrupted favorites store does not crash the app", async ({ page }) => {
   const errors = trackErrors(page);
 

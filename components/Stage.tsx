@@ -115,8 +115,13 @@ export function Stage({
 
   // The text model is a single line; contenteditable's Enter would insert a block
   // element, after which textContent silently merges the two lines (state/DOM desync).
+  // Escape ends editing (mirrors clicking the stage background while focused).
   const handleKeyDown = (e: ReactKeyboardEvent) => {
     if (e.key === "Enter") e.preventDefault();
+    if (e.key === "Escape") {
+      e.preventDefault();
+      editRef.current?.blur();
+    }
   };
 
   // Strip formatting/markup on paste: take plain text only, collapse whitespace runs
@@ -148,6 +153,15 @@ export function Stage({
     if (e.button !== 0) return; // primary button only; leave right-click/context menu alone
     const el = editRef.current;
     if (!el) return;
+    // Already editing + click on the stage background (not the glyphs) ends editing:
+    // blur and clear the caret. Takes precedence over the pristine select-all branch so
+    // a focused field + background click stops editing instead of re-selecting.
+    if (document.activeElement === el && !el.contains(e.target as Node)) {
+      e.preventDefault();
+      el.blur();
+      window.getSelection()?.removeAllRanges();
+      return;
+    }
     // Pristine starter text: any click (on the glyphs or the empty stage) selects it
     // all so the first keystroke replaces it. preventDefault stops native mouseup caret
     // placement from collapsing the selection.
