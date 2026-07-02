@@ -9,7 +9,7 @@ import styles from "./effects.module.css";
 
 const SAMPLE = "Text";
 const DESC =
-  "Browse 166 pure-CSS text effects across 13 categories — neon, gradient, chrome, glitch, 3D, fire, glass and more. Open any in the generator to tune and export.";
+  "Browse 176 pure-CSS text effects across 13 categories — neon, gradient, chrome, glitch, 3D, fire, glass and more. Open any in the generator to tune and export.";
 
 export const metadata: Metadata = {
   title: "All CSS Text Effects",

@@ -10,6 +10,7 @@ import scrollCharge from "./neon-glow/scroll-charge";
 import colorCycleGlow from "./neon-glow/color-cycle-glow";
 import letterFlicker from "./neon-glow/letter-flicker";
 import sparkleGlints from "./neon-glow/sparkle-glints";
+import neonTubeDraw from "./neon-glow/neon-tube-draw";
 import conicSpin from "./gradient-fill/conic-spin";
 import duotoneFill from "./gradient-fill/duotone-fill";
 import gradientFlow from "./gradient-fill/gradient-flow";
@@ -33,6 +34,7 @@ import glareSweep from "./metallic-holographic/glare-sweep";
 import holoPointer from "./metallic-holographic/holo-pointer";
 import sheen from "./metallic-holographic/sheen";
 import glassPill from "./metallic-holographic/glass-pill";
+import liquidLens from "./metallic-holographic/liquid-lens";
 import extrude3d from "./threed-depth/extrude-3d";
 import isometric3d from "./threed-depth/isometric-3d";
 import longShadow from "./threed-depth/long-shadow";
@@ -85,6 +87,7 @@ import letterpress from "./shadow-press/letterpress";
 import long45 from "./shadow-press/long-45";
 import engrave from "./shadow-press/engrave";
 import rainbowStack from "./shadow-press/rainbow-stack";
+import bevelPlate from "./shadow-press/bevel-plate";
 import aurora from "./elemental/aurora";
 import fire from "./elemental/fire";
 import gooey from "./elemental/gooey";
@@ -100,6 +103,9 @@ import flameEdges from "./elemental/flame-edges";
 import waveCrest from "./elemental/wave-crest";
 import frostCreep from "./elemental/frost-creep";
 import icicles from "./elemental/icicles";
+import particleDissolve from "./elemental/particle-dissolve";
+import caustics from "./elemental/caustics";
+import mercuryMetaball from "./elemental/mercury-metaball";
 import imageFill from "./fill-texture/image-fill";
 import starfield from "./fill-texture/starfield";
 import stripeFill from "./fill-texture/stripe-fill";
@@ -143,6 +149,10 @@ import kerningDrift from "./entrance-kinetic/kerning-drift";
 import decodeReveal from "./entrance-kinetic/decode-reveal";
 import slicedType from "./entrance-kinetic/sliced-type";
 import tickerScroll from "./entrance-kinetic/ticker-scroll";
+import confettiBurst from "./entrance-kinetic/confetti-burst";
+import shatterIn from "./entrance-kinetic/shatter-in";
+import odometerRoll from "./entrance-kinetic/odometer-roll";
+import splitFlap from "./entrance-kinetic/split-flap";
 import highlighter from "./decoration-underline/highlighter";
 import slideUnderline from "./decoration-underline/slide-underline";
 import wavyUnderline from "./decoration-underline/wavy-underline";
@@ -179,6 +189,7 @@ export const EFFECTS: EffectDefinition[] = [
   colorCycleGlow,
   letterFlicker,
   sparkleGlints,
+  neonTubeDraw,
   conicSpin,
   duotoneFill,
   gradientFlow,
@@ -202,6 +213,7 @@ export const EFFECTS: EffectDefinition[] = [
   holoPointer,
   sheen,
   glassPill,
+  liquidLens,
   extrude3d,
   isometric3d,
   longShadow,
@@ -254,6 +266,7 @@ export const EFFECTS: EffectDefinition[] = [
   long45,
   engrave,
   rainbowStack,
+  bevelPlate,
   aurora,
   fire,
   gooey,
@@ -269,6 +282,9 @@ export const EFFECTS: EffectDefinition[] = [
   waveCrest,
   frostCreep,
   icicles,
+  particleDissolve,
+  caustics,
+  mercuryMetaball,
   imageFill,
   starfield,
   stripeFill,
@@ -312,6 +328,10 @@ export const EFFECTS: EffectDefinition[] = [
   decodeReveal,
   slicedType,
   tickerScroll,
+  confettiBurst,
+  shatterIn,
+  odometerRoll,
+  splitFlap,
   highlighter,
   slideUnderline,
   wavyUnderline,

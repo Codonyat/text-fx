@@ -24,10 +24,12 @@ function ring(r: number, color: string, steps: number): string[] {
  * fiber texture (an overlaid span, background-clip:text) — two low-contrast
  * repeating-radial-gradient fiber fields at mismatched pitches/centres interfere
  * into an irregular fabric fuzz over a softly sheened team-colour base. The root
- * copy draws THREE nested sewn rings (cream / deep team / dark edge) from stacked
+ * copy draws THREE nested sewn rings (cream felt / deep team band / dark stitch,
+ * ordered per theme so the silhouette ring always contrasts the page) from stacked
  * multi-directional hard text-shadows at increasing radii, plus a soft directional
  * filter drop-shadow so the whole patch reads appliqued onto the page. Team
- * defaults span crimson / navy / forest with a cream inner stitch. Static.
+ * defaults span crimson / navy / forest with theme-fixed lightness floors so even
+ * the darkest team hue stays legible. Static.
  */
 const varsityPatch: EffectDefinition = {
   id: "varsity-patch",
@@ -56,14 +58,16 @@ const varsityPatch: EffectDefinition = {
     const dark = ctx.theme === "dark";
 
     // --- Chenille team-colour fill: low-contrast tonal fuzz over a sheened base ---
+    // Lightness is THEME-FIXED (never hue-derived), so no team-hue roll — navy is
+    // the worst case — can sink the fill below legibility on the dark stage.
     const S = 70;
-    const L = dark ? 50 : 46; // team-fill lightness that reads on both stages
-    const fillHi = hsl(h, S, L + 5);
-    const fillLo = hsl(h, S, L - 7);
-    // Fiber tones sit ~±18 L from the base at half alpha, so the texture stays soft
-    // and fabric-like (fuzz, not a high-contrast halftone).
-    const hiFiber = hsl(h, S - 14, Math.min(L + 18, 90), 0.5);
-    const loFiber = hsl(h, Math.min(S + 10, 92), Math.max(L - 18, 12), 0.45);
+    const L = dark ? 56 : 46;
+    const fillHi = hsl(h, S, L + 6);
+    const fillLo = hsl(h, S, L - 6);
+    // Fiber tones sit ~±19 L from the base at half alpha, so the texture stays soft
+    // and fabric-like (fuzz, not a high-contrast halftone) while still reading on dark.
+    const hiFiber = hsl(h, S - 14, Math.min(L + 20, 90), dark ? 0.55 : 0.5);
+    const loFiber = hsl(h, Math.min(S + 10, 92), Math.max(L - 18, 14), 0.45);
     // Fuzz density -> fiber pitch (higher density = finer). Two mismatched pitches
     // + offset centres make the two ring fields interfere into an irregular pile.
     const p1 = round(5.4 - d * 0.7, 2);
@@ -73,18 +77,24 @@ const varsityPatch: EffectDefinition = {
       `repeating-radial-gradient(circle at 72% 74%, ${loFiber} 0, ${loFiber} 0.7px, transparent 0.7px, transparent ${p2}px), ` +
       `linear-gradient(178deg, ${fillHi}, ${fillLo})`;
 
-    // --- Sewn rings (inner -> outer): cream stitch / deep team / dark edge ---
-    // Bracketing the patch with a bright (cream) and a dark ring keeps it legible on
-    // BOTH themes — whichever ring matches the stage, the other carries the edge.
-    const t = 2.6; // per-ring band width
+    // --- Sewn rings: cream felt / deep team band / dark stitch ---
+    // The OUTERMOST ring is the patch's silhouette against the page, so its tone is
+    // theme-driven: bright cream felt on the dark stage (widened so it carries the
+    // outline), dark edge stitch on the light stage. The opposite tone moves inward
+    // as the stitch ring hugging the glyphs. Cream is theme-FIXED bright — never
+    // derived from the team hue, so a navy roll can't dim the silhouette.
+    const t = 2.6; // base ring band width
     const steps = 12;
-    const cream = hsl(45, 55, dark ? 92 : 95);
-    const team = hsl(h, Math.min(S + 14, 92), dark ? L - 22 : L - 24);
-    const edge = hsl(h, 35, dark ? 11 : 12);
-    // Listed outer -> inner: last (smallest radius, cream) paints on top, hugging the
-    // glyph, exactly like double-outline's stacking.
-    const bands =
-      count === 3
+    const cream = hsl(45, 60, 93);
+    const team = hsl(h, Math.min(S + 14, 92), dark ? 38 : 30);
+    const edge = hsl(h, 40, dark ? 14 : 12);
+    // Listed outer -> inner: the last (smallest radius) band paints on top, hugging
+    // the glyph, exactly like double-outline's stacking.
+    const bands = dark
+      ? count === 3
+        ? [{ r: t * 3.4, c: cream }, { r: t * 2, c: team }, { r: t, c: edge }]
+        : [{ r: t * 2.4, c: cream }, { r: t, c: edge }]
+      : count === 3
         ? [{ r: t * 3, c: edge }, { r: t * 2, c: team }, { r: t, c: cream }]
         : [{ r: t * 2, c: edge }, { r: t, c: cream }];
     const layers = bands.flatMap((b) => ring(b.r, b.c, steps));

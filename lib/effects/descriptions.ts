@@ -23,6 +23,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A worn neon sign where every tube blinks on its own clock: per-letter delays and duration buckets keep the flicker desynced instead of pulsing as one word. One letter, picked from the text itself, reads as the dying tube — it stutters harder and holds a long dark dwell while the rest of the sign keeps glowing steady.",
   "sparkle-glints":
     "Four-point star glints — crossed gradient rays around a white-hot core, screen-blended so they read as pure light — wink in and out at staggered spots across the word, timed so two or three are always sparkling. The letters keep a bright polished-metal fill, like diamond twinkle on jewelry lettering rather than a sweep or a texture.",
+  "neon-tube-draw":
+    "A neon sign that writes itself: the word is an inline SVG whose coloured stroke — the glass tube — draws on by animating stroke-dashoffset while a layered drop-shadow halo brightens to full glow. Once lit it holds with a faint buzz, powers down in a broken-sign flicker, then silently resets and redraws on an endless loop.",
   // gradient-fill
   "gradient-flow":
     "A multi-stop gradient clipped to the text that slowly flows by animating its background position. The go-to lively gradient headline.",
@@ -71,6 +73,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A soft silver heading with a slow specular highlight gliding across now and then — the understated glint premium brands use on a wordmark.",
   "glass-pill":
     "The word set in a frosted glassmorphism chip: a translucent panel with a hairline border, inset highlight and backdrop blur. The modern changelog-badge treatment.",
+  "liquid-lens":
+    "The glyphs become clear liquid-glass lenses that refract whatever sits behind them — an SVG clipPath of the word clips a backdrop-filtered layer, so the stage blurs and saturates through the letterforms. A specular top edge, a dark bottom edge for lens thickness, a faint rim stroke and a slow sheen sweep sell the glass, while a tint control guarantees visible body even on flat backdrops.",
   // threed-depth
   "extrude-3d":
     "Stacked offset text-shadows build a solid 3D extrusion with depth and direction controls, plus an optional float. The quintessential chunky 3D title.",
@@ -112,7 +116,7 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
   "sketch-outline":
     "Hollow pen-drawn letterforms pushed through a gentle SVG turbulence displacement so every stroke wavers like a hand-drawn line, doubled by a fainter, differently-wobbled second pass for that gone-over-twice sketchbook feel. Choose graphite, ink-black or ballpoint-blue and flip on faint diagonal hatching inside the glyphs; it reads on the dark stage or the paper-white theme.",
   "marching-ants":
-    "The selection-marquee classic wrapped around your letters: a hollow text-stroke outline chopped into crisp diagonal dashes by a repeating-gradient mask, whose position animates so the dashes crawl forever like marching ants. Monochrome white-on-dark / black-on-light by default with an optional hue tint and a faint inner fill so the hollow glyph reads intentional.",
+    "The selection-marquee classic wrapped around your letters: a hollow text-stroke outline chopped into crisp diagonal dashes by a repeating-gradient mask, whose position animates so the dashes crawl forever like marching ants. Monochrome white-on-dark / black-on-light by default with an optional hue tint and a translucent inner fill so the hollow glyph reads intentional.",
   "flowing-stroke":
     "Hollow letters whose outline itself comes alive: a multi-hue conic gradient is clipped to the text and rotated forever through a transparent stroke, so a neon current circulates continuously around the glyph edges. Unlike a static gradient stroke, the colour never stops moving — a duo-hue-to-rainbow band flows around the letterforms while a page-matching fill keeps the centres clean.",
   // glitch-distortion
@@ -179,6 +183,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Letters carved into the surface — a low-contrast fill with a shadow on top and a highlight below (the inverse of emboss). Debossed and tactile.",
   "rainbow-stack":
     "A staircase of hard, zero-blur shadow steps marches behind the neutral face, and every step gets its own distinct hue walking the color wheel — full rainbow spread or a tight analogous walk from your chosen start hue. The retro-poster spectral trail, tunable by step count, march angle, hue span, and starting hue.",
+  "bevel-plate":
+    "Real SVG lighting turns each glyph into a machined metal plate: the alpha is blurred into a height map, then feDiffuseLighting paints the metal body while feSpecularLighting drops a sharp hotspot right on the beveled rim. Pick steel, brass, copper or gunmetal and aim the distant light — engraved, cast and unmistakably three-dimensional, not a flat shadow trick.",
   // elemental
   fire: "Flickering flame text built from layered orange/red/yellow glows that dance on a loop. Hot, animated and attention-grabbing.",
   ice: "Crystalline ice — a cool blue gradient fill with a frosty stroke and a cold shadow. Wintry and clean.",
@@ -208,6 +214,12 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A warm word slowly freezes over: a pale blue-white crystalline copy creeps across the glyphs behind a soft, turbulence-warped mask front, holds fully frozen with a pulsing cold glow, then thaws back to warm. A slow atmospheric loop built from an SVG displacement filter and an animated gradient mask.",
   "icicles":
     "Frozen crystalline lettering with a band of sharp icicles hanging off the baseline: a cold blue-white gradient fills the glyphs behind a frosty stroke, while a double row of downward spikes at varied lengths reads organic rather than a perfect zigzag. A slow specular glint drifts across the ice for a quiet winter shimmer.",
+  "particle-dissolve":
+    "A Thanos-snap dissolve: an SVG displacement filter shatters the word into a fine drift of dust that scatters and lifts away, then re-forms, sitting legible for most of the loop. Pure CSS and SVG with SMIL-animated scale, blur, offset and alpha — a dramatic disintegrate-and-reassemble cycle.",
+  "caustics":
+    "Sunlight caustics ripple across the letters like light on a pool floor: the glyphs sit in a deep-aqua gradient while thin, branching white-cyan webs — an SVG turbulence spiked into ridge lines — drift and shimmer inside them. Two layers at different scales crawl at different speeds for real underwater depth, clipped strictly to the text with a soft blue bloom.",
+  "mercury-metaball":
+    "A gooey SVG filter fuses the letters with drifting satellite droplets that get pinched into the letterforms and absorbed, all wrapped in a silvery chrome gradient swept by a moving specular highlight and a cool reflective glow. Liquid mercury in motion — reflective, metallic and hypnotic, and it stays legible on dark or light backgrounds.",
   // fill-texture
   "image-fill":
     "Glyphs filled with a rich multi-gradient that reads like a photographic texture, via background-clip:text. An image-in-text look with zero assets.",
@@ -244,7 +256,7 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
   "embroidery-stitch":
     "The word sewn in thread: a tight diagonal satin-stitch fill of fine dark/light floss ridges with a bright sheen line, ringed by a contrasting running-stitch outline chopped into dashes. An optional woven-linen backing chip turns any letters into a hand-embroidered patch.",
   "varsity-patch":
-    "A collegiate letterman patch: the glyphs fill with a low-contrast chenille fiber fuzz — two mismatched repeating-radial-gradient fields interfering over a sheened team-color base — wrapped in three nested sewn rings of cream, deep team, and dark edge built from stacked multi-directional hard text-shadows. A soft directional drop-shadow lifts the whole patch off the page like it's appliqued on, with crimson, navy, and forest team defaults.",
+    "A collegiate letterman patch: the glyphs fill with a low-contrast chenille fiber fuzz — two mismatched repeating-radial-gradient fields interfering over a sheened team-color base — wrapped in three nested sewn rings of cream felt, deep team color, and dark stitch built from stacked multi-directional hard text-shadows. A soft directional drop-shadow lifts the whole patch off the page like it's appliqued on, with crimson, navy, and forest team defaults.",
   // entrance-kinetic
   "fade-in":
     "The whole word fades and gently rises into place on load. A tasteful, universal entrance animation.",
@@ -296,6 +308,14 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A word cut clean along a tunable diagonal line: two data-text halves, each clipped to its side of the seam, fly apart on entrance, hold a beat, then settle back — but not quite flush, leaving a crisp hairline gap as the permanent signature. No RGB tints, no jitter, just a katana-sharp reveal.",
   "ticker-scroll":
     "A seamless news-ticker: two identical copies of your text scroll in an endless conveyor loop, with the strip's edges dissolving glyphs in and out via a soft mask fade. Hover pauses the scroll — the classic ticker-tape convention, done in pure CSS.",
+  "confetti-burst":
+    "A celebration entrance: the word pops in with a scale overshoot while dozens of tiny colored rectangles and dots explode radially from behind it, spinning and falling under fake gravity before they fade, topped with a quick expanding shockwave ring. Two counter-rotating pseudo-element layers carry the particles, settling to clean multi-hue lettering in a party palette derived from one base hue.",
+  "shatter-in":
+    "Six or eight glass shards, each a differently clip-path'd copy of the word, fly in from scattered angles and tumble through 3D space before snapping into perfect registration, a bright edge-flash selling the impact. A hard geometric shatter-reassembly entrance whose shards tile the text box exactly once so every glyph lands precisely.",
+  "odometer-roll":
+    "Each letter spins into place like a mechanical odometer: a vertical reel of neighbouring glyphs rolls upward inside a fixed, overflow-clipped window and lands on the target with a small settling bounce, staggered left to right. Digits wrap through 0-9 and letters through the alphabet, framed in counter cells with drum-curved top and bottom shading for a hardware feel (per-letter markup).",
+  "split-flap":
+    "An airport Solari departure board: every letter sits on its own dark rounded chip split by a hinge line, and the blank top card clacks down two to five times in an accelerating-then-settling rhythm before folding away to reveal the bright glyph, cascading across the line by index. Choose amber, white or phosphor-green — the mechanics are sold through hinge shadow and motion rather than fake intermediate characters (per-letter markup).",
   // decoration-underline
   "slide-underline":
     "A gradient underline bar grows in from the left beneath the text. Clean, modern link and heading emphasis.",

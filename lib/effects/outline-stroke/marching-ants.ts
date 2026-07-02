@@ -52,10 +52,14 @@ const marchingAnts: EffectDefinition = {
     const tint = ctx.values.tint as number;
 
     const dark = ctx.theme === "dark";
-    const light = dark ? 92 : 18;
+    // Contrast is guaranteed by pinning lightness to the extremes: near-white ants on the
+    // dark stage, near-black on the light one. Tint adds saturation but only nudges the
+    // lightness (95→87 / 12→20 at max tint), so even fully tinted variants stay bright.
+    const light = dark ? round(95 - tint * 0.1, 1) : round(12 + tint * 0.1, 1);
     const ink = hsl(h, tint, light);
-    // Faint interior tint so the hollow letterform still reads between the ant gaps.
-    const fill = hsl(h, tint, light, 0.15);
+    // Translucent interior fill so the hollow glyph silhouette reads at rest,
+    // while the marching stroke stays clearly the star.
+    const fill = hsl(h, tint, light, 0.25);
 
     // Equal dash/gap (classic marquee). `period` is measured along the 45° gradient
     // axis; `tile` is that period projected onto the x/y axes — using it for both
@@ -82,7 +86,7 @@ const marchingAnts: EffectDefinition = {
       `  pointer-events: none;\n` +
       `  color: transparent;\n` +
       `  -webkit-text-fill-color: transparent;\n` +
-      `  -webkit-text-stroke: 2px ${ink};\n` +
+      `  -webkit-text-stroke: 2.5px ${ink};\n` +
       `  -webkit-mask-image: ${maskImg};\n` +
       `          mask-image: ${maskImg};\n` +
       `  -webkit-mask-size: ${tile}px ${tile}px;\n` +
