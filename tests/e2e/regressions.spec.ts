@@ -37,7 +37,12 @@ test("first keystroke replaces the pristine starter text; Enter stays single-lin
   // Click the centre of the stage text while it is still "type here" — clicking now only
   // drops a caret (no select-all). The FIRST typed character replaces the whole starter
   // via the pristine beforeinput path (deferred replacement at input time).
-  await editor.click({ force: true });
+  // Retry click-until-focused: a cold-start layout/hydration hiccup can eat the first
+  // forced click (observed ~1/30 runs); a genuinely broken focus path still fails.
+  await expect(async () => {
+    await editor.click({ force: true });
+    await expect(editor).toBeFocused({ timeout: 500 });
+  }).toPass({ timeout: 5000 });
   await page.keyboard.type("Hi");
   await expect
     .poll(async () => (await editor.textContent())?.trim())
@@ -339,20 +344,27 @@ test("tuning a slider remounts the stage, restarting one-shot entrance animation
   });
   expect(await editor.evaluate((el) => (el as HTMLElement).dataset.marker)).toBe("x");
 
-  // Nudge an Adjust slider. A control change must restart animations by remounting the
-  // stage — browsers don't replay a finished one-shot when its duration/delay changes, so
-  // tuning would look dead on entrance effects otherwise. (Remount-based assertion works
-  // for any effect.) Arrow both ways so the value definitely changes wherever it starts.
+  // Nudge an Adjust slider. A control change must (eventually) restart animations by
+  // remounting the stage — browsers don't replay a finished one-shot when its
+  // duration/delay changes, so tuning would look dead on entrance effects otherwise.
+  // (Remount-based assertion works for any effect.) Arrow both ways so the value
+  // definitely changes wherever it starts.
   const slider = page.getByRole("slider").first();
   await slider.focus();
   const before = await slider.inputValue();
   await slider.press("ArrowRight");
   if ((await slider.inputValue()) === before) await slider.press("ArrowLeft");
 
-  // Stage remounted → the imperatively-set marker on the old node is gone.
-  await expect
-    .poll(async () => await editor.evaluate((el) => (el as HTMLElement).dataset.marker))
-    .toBeUndefined();
+  // The replay is debounced (~300ms after the last change) so a drag's micro-steps
+  // don't each restart the animation — immediately after the first nudge the stage must
+  // NOT have remounted yet, i.e. the marker is still there.
+  expect(await editor.evaluate((el) => (el as HTMLElement).dataset.marker)).toBe("x");
+
+  // Once the user stops adjusting, the debounced replay fires and the stage remounts →
+  // the imperatively-set marker on the old node is gone.
+  await expect(async () => {
+    expect(await editor.evaluate((el) => (el as HTMLElement).dataset.marker)).toBeUndefined();
+  }).toPass({ timeout: 2000 });
 
   expect(errors, "console/runtime errors:\n" + errors.join("\n")).toEqual([]);
 });

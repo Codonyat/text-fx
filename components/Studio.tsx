@@ -69,6 +69,13 @@ export function Studio() {
   const copyT = useRef<number | undefined>(undefined);
   const saveT = useRef<number | undefined>(undefined);
   const shareT = useRef<number | undefined>(undefined);
+  const replayT = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
+    return () => {
+      if (replayT.current) window.clearTimeout(replayT.current);
+    };
+  }, []);
 
   const effect = getEffect(effectId) ?? DEFAULT_EFFECT;
 
@@ -191,8 +198,13 @@ export function Studio() {
       // Remount the stage so one-shot entrance animations replay with the new values —
       // browsers don't restart a finished animation when its duration/delay change, so
       // tuning would otherwise look dead on entrances. (Not on text changes: remounting
-      // mid-type destroys the caret; the text-sync path handles those in place.)
-      setReplayNonce((n) => n + 1);
+      // mid-type destroys the caret; the text-sync path handles those in place.) Debounced:
+      // range controls fire continuously while dragging, and restarting the animation on
+      // every micro step makes a drag look broken. Only replay once the user stops.
+      if (replayT.current) window.clearTimeout(replayT.current);
+      replayT.current = window.setTimeout(() => {
+        setReplayNonce((n) => n + 1);
+      }, 300);
       stripHash();
     },
     [stripHash],
