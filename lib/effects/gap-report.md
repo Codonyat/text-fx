@@ -314,3 +314,39 @@ These are house originals that grew beyond the research catalog — no action ne
 2. **Fatten retro-themed** with the style-family candidates (marquee bulbs, art deco, stencil, HUD, blueprint, Win-95) — all pure-CSS, no new engine capability needed.
 3. **Prototype one COLRv1 effect** (Nabla or Honk) to validate the font-loading path; if it works, three more follow nearly free.
 4. Mine the top of the ranked table for v1MustHave/v1Nice leftovers — 'Per-letter staggered flicker', 'Color-cycling glow', 'Sticker', 'Draw-on stroke animation' are high-wow, low-difficulty, and conspicuously absent.
+
+## Implemented 2026-07 batch (80 effects; library 116 → 196)
+
+All wow ≥ 4, family-deduped, feasible open ideas were implemented in one multi-agent
+batch (Opus/Sonnet workers, wave-gated with per-effect contract tests + screenshot QA).
+
+**Shipped (by wave):**
+- Pilots: scroll-charge, nabla-iso
+- W1: letter-flicker, color-cycle-glow, sparkle-glints, sticker, pixel-8bit, marquee-bulbs,
+  blueprint, art-deco, hud-targeting, safety-stencil, crt-collapse, candy-gloss, bokeh-fill
+- W2: drop-cap, balloon-puff, rainbow-stack, prism-fringe, sliced-type, ticker-scroll,
+  rolling-squiggle, emphasis-pop, border-draw, neon-selection, knockout-panel, blend-invert,
+  woven-mesh
+- W3: flame-edges, icicles, frost-creep, wave-crest, equalizer-bars, marble-fill, wood-grain,
+  matrix-rain, led-matrix, tv-static, datamosh-smear
+- W4: graffiti-spray, torn-paper, ransom-note, varsity-patch, embroidery-stitch,
+  flowing-stroke, marching-ants, sketch-outline, plasma-energy, radar-sweep, synthwave-grid
+- W5: neon-tube-draw, mercury-metaball, particle-dissolve, caustics, liquid-lens, shatter-in,
+  split-flap, odometer-roll, confetti-burst, bevel-plate
+- W6: swoosh-in, spiral-text, circle-spin, cube-spin, pointer-tilt, cursor-repel,
+  dock-magnify, weight-scrub, swash-bloom
+- Scroll lane: scroll-glitch, scroll-fill, scroll-flip, scroll-parallax, scroll-spread,
+  scroll-morph, scroll-letters, scroll-reveal
+- Font lane: foldit-fold, honk-shine, bungee-layers
+
+**Excluded with reasons (dedupe/feasibility ledger):** video-filled text (needs a video
+asset — zero-asset contract), CSS scramble + multi-phrase typewriter (need JS / don't fit
+the single-headline text model), draw-on stroke ⊂ neon-tube-draw, liquid-metal ≡
+mercury-metaball, digital-noise ≡ tv-static, frosted-ice-shine / metallic+3D-shadow /
+synthwave-grid-fill ≡ composables of shipped effects, hue-blend ≡ blend-invert family,
+magnetic-attract ≡ cursor-repel family (inverse), motion-path conveyor ≡ circle-spin family,
+multi-axis VF morph ≡ casual-morph, Rocher Color (not on Google Fonts — hosting burden),
+plus all wow ≤ 3 variants (see ranked table above; still open for a future filler batch).
+
+The remaining open ideas in the ranked table (wow ≤ 3 + the excluded families) stay in
+tiers.v2Candidates / this report for future rounds.
