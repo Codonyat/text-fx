@@ -19,6 +19,7 @@ import gradientFollow from "./gradient-fill/gradient-follow";
 import spotlight from "./gradient-fill/spotlight";
 import softDuotone from "./gradient-fill/soft-duotone";
 import candyGloss from "./gradient-fill/candy-gloss";
+import dropCap from "./gradient-fill/drop-cap";
 import chrome from "./metallic-holographic/chrome";
 import goldFoil from "./metallic-holographic/gold-foil";
 import holographic from "./metallic-holographic/holographic";
@@ -39,6 +40,7 @@ import perspectiveTilt from "./threed-depth/perspective-tilt";
 import floating3d from "./threed-depth/floating-3d";
 import parallaxLayers from "./threed-depth/parallax-layers";
 import nablaIso from "./threed-depth/nabla-iso";
+import balloonPuff from "./threed-depth/balloon-puff";
 import doubleOutline from "./outline-stroke/double-outline";
 import filledOutline from "./outline-stroke/filled-outline";
 import gradientStroke from "./outline-stroke/gradient-stroke";
@@ -54,6 +56,7 @@ import blockGlitch from "./glitch-distortion/block-glitch";
 import colorSplit from "./glitch-distortion/color-split";
 import terminalPhosphor from "./glitch-distortion/terminal-phosphor";
 import crtCollapse from "./glitch-distortion/crt-collapse";
+import prismFringe from "./glitch-distortion/prism-fringe";
 import vaporwave from "./retro-themed/vaporwave";
 import distressStamp from "./retro-themed/distress-stamp";
 import chalkboard from "./retro-themed/chalkboard";
@@ -70,6 +73,7 @@ import hardOffset from "./shadow-press/hard-offset";
 import letterpress from "./shadow-press/letterpress";
 import long45 from "./shadow-press/long-45";
 import engrave from "./shadow-press/engrave";
+import rainbowStack from "./shadow-press/rainbow-stack";
 import aurora from "./elemental/aurora";
 import fire from "./elemental/fire";
 import gooey from "./elemental/gooey";
@@ -89,6 +93,9 @@ import camouflageFill from "./fill-texture/camouflage-fill";
 import scrollingTexture from "./fill-texture/scrolling-texture";
 import grainGradient from "./fill-texture/grain-gradient";
 import bokehFill from "./fill-texture/bokeh-fill";
+import wovenMesh from "./fill-texture/woven-mesh";
+import knockoutPanel from "./fill-texture/knockout-panel";
+import blendInvert from "./fill-texture/blend-invert";
 import fadeIn from "./entrance-kinetic/fade-in";
 import letterWave from "./entrance-kinetic/letter-wave";
 import staggerReveal from "./entrance-kinetic/stagger-reveal";
@@ -112,6 +119,8 @@ import zigzagText from "./entrance-kinetic/zigzag-text";
 import bulgeText from "./entrance-kinetic/bulge-text";
 import kerningDrift from "./entrance-kinetic/kerning-drift";
 import decodeReveal from "./entrance-kinetic/decode-reveal";
+import slicedType from "./entrance-kinetic/sliced-type";
+import tickerScroll from "./entrance-kinetic/ticker-scroll";
 import highlighter from "./decoration-underline/highlighter";
 import slideUnderline from "./decoration-underline/slide-underline";
 import wavyUnderline from "./decoration-underline/wavy-underline";
@@ -120,6 +129,8 @@ import marchingUnderline from "./decoration-underline/marching-underline";
 import centerGrowUnderline from "./decoration-underline/center-grow-underline";
 import strikeThrough from "./decoration-underline/strike-through";
 import scribbleUnderline from "./decoration-underline/scribble-underline";
+import emphasisPop from "./decoration-underline/emphasis-pop";
+import rollingSquiggle from "./decoration-underline/rolling-squiggle";
 import hoverSpotlight from "./interactive-advanced/hover-spotlight";
 import mirrorReflection from "./interactive-advanced/mirror-reflection";
 import echoTrail from "./interactive-advanced/echo-trail";
@@ -131,6 +142,8 @@ import cursorFlashlight from "./interactive-advanced/cursor-flashlight";
 import focusLens from "./interactive-advanced/focus-lens";
 import weightRippleHover from "./interactive-advanced/weight-ripple-hover";
 import gradientLink from "./interactive-advanced/gradient-link";
+import neonSelection from "./interactive-advanced/neon-selection";
+import borderDraw from "./interactive-advanced/border-draw";
 
 /** Every implemented effect (hand-maintained: import + array entry per file). */
 export const EFFECTS: EffectDefinition[] = [
@@ -153,6 +166,7 @@ export const EFFECTS: EffectDefinition[] = [
   spotlight,
   softDuotone,
   candyGloss,
+  dropCap,
   chrome,
   goldFoil,
   holographic,
@@ -173,6 +187,7 @@ export const EFFECTS: EffectDefinition[] = [
   floating3d,
   parallaxLayers,
   nablaIso,
+  balloonPuff,
   doubleOutline,
   filledOutline,
   gradientStroke,
@@ -188,6 +203,7 @@ export const EFFECTS: EffectDefinition[] = [
   colorSplit,
   terminalPhosphor,
   crtCollapse,
+  prismFringe,
   vaporwave,
   distressStamp,
   chalkboard,
@@ -204,6 +220,7 @@ export const EFFECTS: EffectDefinition[] = [
   letterpress,
   long45,
   engrave,
+  rainbowStack,
   aurora,
   fire,
   gooey,
@@ -223,6 +240,9 @@ export const EFFECTS: EffectDefinition[] = [
   scrollingTexture,
   grainGradient,
   bokehFill,
+  wovenMesh,
+  knockoutPanel,
+  blendInvert,
   fadeIn,
   letterWave,
   staggerReveal,
@@ -246,6 +266,8 @@ export const EFFECTS: EffectDefinition[] = [
   bulgeText,
   kerningDrift,
   decodeReveal,
+  slicedType,
+  tickerScroll,
   highlighter,
   slideUnderline,
   wavyUnderline,
@@ -254,6 +276,8 @@ export const EFFECTS: EffectDefinition[] = [
   centerGrowUnderline,
   strikeThrough,
   scribbleUnderline,
+  emphasisPop,
+  rollingSquiggle,
   hoverSpotlight,
   mirrorReflection,
   echoTrail,
@@ -265,6 +289,8 @@ export const EFFECTS: EffectDefinition[] = [
   focusLens,
   weightRippleHover,
   gradientLink,
+  neonSelection,
+  borderDraw,
 ];
 
 export const EFFECTS_BY_ID: Record<string, EffectDefinition> = Object.fromEntries(

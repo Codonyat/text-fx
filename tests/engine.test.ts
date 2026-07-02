@@ -66,6 +66,8 @@ describe("hover-replay entrance effects", () => {
     "highlighter",
     "scribble-underline",
     "crt-collapse",
+    "sliced-type",
+    "emphasis-pop",
   ];
 
   it.each(HOVER_REPLAY_IDS)("%s replays its entrance on hover (default values)", (id) => {

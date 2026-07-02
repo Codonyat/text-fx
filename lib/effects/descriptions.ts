@@ -22,7 +22,7 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
   "letter-flicker":
     "A worn neon sign where every tube blinks on its own clock: per-letter delays and duration buckets keep the flicker desynced instead of pulsing as one word. One letter, picked from the text itself, reads as the dying tube — it stutters harder and holds a long dark dwell while the rest of the sign keeps glowing steady.",
   "sparkle-glints":
-    "A handful of four-point star glints — crossed thin gradient rays plus a small radial core, screen-blended so they read as pure light — wink in and out at staggered spots across the word. The letters themselves stay a clean metallic fill, so it reads like diamond twinkle on jewelry lettering rather than a sweep or a texture.",
+    "Four-point star glints — crossed gradient rays around a white-hot core, screen-blended so they read as pure light — wink in and out at staggered spots across the word, timed so two or three are always sparkling. The letters keep a bright polished-metal fill, like diamond twinkle on jewelry lettering rather than a sweep or a texture.",
   // gradient-fill
   "gradient-flow":
     "A multi-stop gradient clipped to the text that slowly flows by animating its background position. The go-to lively gradient headline.",
@@ -42,6 +42,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A refined two-tone gradient in close, muted hues — the editorial gradient on modern headings, not a bold poster split. Low saturation keeps it tasteful.",
   "candy-gloss":
     "A wet hard-candy shell: a saturated vertical gradient clipped to the glyphs from bright sugary top to deep juicy base, topped with a soft white specular band across the upper third. A thin darker stroke contains the shine and a tight lift shadow gives it body — sweet and glossy, never metallic.",
+  "drop-cap":
+    "Only the first letter gets the manuscript treatment: an enlarged ::first-letter with a rich diagonal gradient fill, a thin contrast rim, and a soft drop-shadow, while the rest of the word stays plain and quiet. An optional tinted frame sits behind the cap for a fuller illuminated-initial feel.",
   // metallic-holographic
   chrome:
     "A vertical metallic gradient clipped to the text with a soft drop-shadow for that shiny chrome bevel. Tint it warm or cool with a single control.",
@@ -84,6 +86,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Two shaded copies trail the cursor at increasing rates behind the face, so deeper layers slide further — stacked 3D depth that follows the pointer.",
   "nabla-iso":
     "Nabla's real COLRv1 glyphs — isometric 3D blocks whose extrusion, highlights and shadows are baked into the font's own paint layers — recolored by two custom palettes that endlessly cross-fade between your hues. A genuine color-font depth effect, not a text-shadow fake.",
+  "balloon-puff":
+    "Each letter is filled with an off-center radial gradient — a bright specular spot near the upper-left curving through a saturated hue down to a deep latex edge — for the unmistakable sheen of an inflated party balloon. A soft two-layer shadow floats well below each glyph for lift, while a gentle per-letter scale breathe, staggered by index, keeps the whole word subtly alive.",
   // outline-stroke
   outline:
     "Hollow outline text via -webkit-text-stroke, with an optional offset echo shadow. Minimal, editorial and lightweight.",
@@ -115,6 +119,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Glowing CRT-monitor text with an irregular power-on flicker, like an old phosphor screen warming up and stuttering.",
   "crt-collapse":
     "An old CRT tube snapping on: the word pinches to a blinding horizontal line, flickers, then punches open with a fast vertical overshoot before settling into crisp, phosphor-tinted text. A one-shot power-on entrance — hover to trigger it again.",
+  "prism-fringe":
+    "Eight hue-stepped text-shadow layers fan out along one axis from red through violet, with the outermost violet layer travelling furthest — just like real dispersion, where shorter wavelengths bend more. A slow ease-in-out breathe slides the whole spectrum out and back in while the glyph fill stays a crisp, neutral face.",
   // retro-themed
   vaporwave:
     "A pink-to-cyan gradient title with a soft, dreamy glow. The signature 80s/synthwave aesthetic in pure CSS.",
@@ -149,6 +155,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A raised, embossed relief created with opposing light and dark text-shadows that adapt to the theme. A tactile, debossed-paper feel.",
   "engrave":
     "Letters carved into the surface — a low-contrast fill with a shadow on top and a highlight below (the inverse of emboss). Debossed and tactile.",
+  "rainbow-stack":
+    "A staircase of hard, zero-blur shadow steps marches behind the neutral face, and every step gets its own distinct hue walking the color wheel — full rainbow spread or a tight analogous walk from your chosen start hue. The retro-poster spectral trail, tunable by step count, march angle, hue span, and starting hue.",
   // elemental
   fire: "Flickering flame text built from layered orange/red/yellow glows that dance on a loop. Hot, animated and attention-grabbing.",
   ice: "Crystalline ice — a cool blue gradient fill with a frosty stroke and a cold shadow. Wintry and clean.",
@@ -187,6 +195,12 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A restrained low-saturation gradient with a faint film grain dusted over the glyphs (SVG noise) — the matte, tactile gradient finish on modern brand type.",
   "bokeh-fill":
     "A stack of large, feathered radial-gradient discs — the defocused circles-of-confusion of city lights through a wide-open lens — clipped into the glyphs over a dark backdrop. Each disc drifts at its own lazy pace and a couple breathe in size for a twinkle, warming to amber-and-white orbs on the light theme so the fill still reads as photographic.",
+  "woven-mesh":
+    "Two crossed repeating-gradient masks intersect via mask-composite so only their crossing squares survive, punching a grid of tiny holes clean through every letter like woven metal grille. Flip to Diamond for a criss-crossed weave, or flick on Crawl to drift the mesh slowly through the glyphs.",
+  "knockout-panel":
+    "The text is punched clean through a vivid sticker panel — a padded, rounded chip whose gradient sweeps, bursts, or spins behind the letters while the glyphs themselves read as bare holes to the page beneath. Three gradient styles and an optional slow drift keep the panel alive without ever touching the cut-out shape of the type.",
+  "blend-invert":
+    "A self-contained backdrop of drifting two-tone stripes sits behind the glyphs, and mix-blend-mode: difference inverts a near-white duplicate wherever the boundary crosses it. The invert line sweeps continuously through the letterforms as the bands drift — bright over the dark stripe, dark over the light one — walled off inside the scope so the blend never touches the page.",
   // entrance-kinetic
   "fade-in":
     "The whole word fades and gently rises into place on load. A tasteful, universal entrance animation.",
@@ -234,6 +248,10 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "The letters breathe sideways, each sliding a hair left and right on a shared rhythm but phase-offset by index, so the spacing gently opens and closes. Transform-only, subtle, looping.",
   "decode-reveal":
     "Each letter resolves out of a blurred, skewed, jittering state into crisp type, staggered so a decode sweep runs across the word. A pure-CSS staged glitch entrance (not a random-glyph scramble).",
+  "sliced-type":
+    "A word cut clean along a tunable diagonal line: two data-text halves, each clipped to its side of the seam, fly apart on entrance, hold a beat, then settle back — but not quite flush, leaving a crisp hairline gap as the permanent signature. No RGB tints, no jitter, just a katana-sharp reveal.",
+  "ticker-scroll":
+    "A seamless news-ticker: two identical copies of your text scroll in an endless conveyor loop, with the strip's edges dissolving glyphs in and out via a soft mask fade. Hover pauses the scroll — the classic ticker-tape convention, done in pure CSS.",
   // decoration-underline
   "slide-underline":
     "A gradient underline bar grows in from the left beneath the text. Clean, modern link and heading emphasis.",
@@ -251,6 +269,10 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A colored line draws itself across the middle of the text, holds, then retracts — a looping strikethrough, set apart from the underlines.",
   "scribble-underline":
     "A hand-drawn rough rule that sketches itself on under the word — a flat bar warped by an SVG displacement filter into a wobbly ink squiggle, drawn left-to-right. Looser than the tidy wavy underline.",
+  "emphasis-pop":
+    "Native East-Asian emphasis marks crown each glyph from above via text-emphasis — a dot, circle, sesame or triangle, no extra DOM required. Letters and their marks pop into place together in a bouncy, staggered entrance, with the mark's hue carrying the color while the text itself stays theme-neutral.",
+  "rolling-squiggle":
+    "A wavy underline strip whose sine pattern rolls sideways forever, like a ribbon scrolling beneath the word. Built from a tiny inline SVG wave tile — hue baked straight into the stroke — repeated as a background and marched via an animated background-position-x for a seamless, endless roll.",
   // interactive-advanced
   "hover-spotlight":
     "A radial spotlight reveals the colored text on hover using a CSS mask — no JavaScript. An interactive flashlight reveal.",
@@ -273,7 +295,11 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
   "weight-ripple-hover":
     "Hovering sends a wave of boldness sweeping through the letters via per-letter variable-font weight transitions — a ripple of weight, no JavaScript.",
   "gradient-link":
-    "A clean neutral heading that crossfades into a soft gradient on hover — the understated fill-with-color-on-hover treatment from modern docs and marketing links.",
+    "A clean neutral heading that crossfades into a soft gradient on hover — the understated fill-with-color-on-hover treatment from modern docs and marketing links.",  "neon-selection":
+    "The payoff is dormant until you drag-select the text: the selection inverts the glyphs, flipping the background to the text's resting hue and the foreground to a blazing bright tone while a layered neon bloom ignites. At rest it's a restrained two-tone heading with a faint underline and a slow glow pulse — just enough hint to invite the select.",
+  "border-draw":
+    "Hover the word and a frame draws itself around it stroke by stroke, top then right then bottom then left, like a pen tracing a rectangle. Leave and it retracts in reverse; a faint corner-tick hint keeps the frame legible even at rest.",
+
 };
 
 /** Full description with a sensible fallback. */
