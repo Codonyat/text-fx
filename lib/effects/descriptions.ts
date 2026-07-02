@@ -44,6 +44,10 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A wet hard-candy shell: a saturated vertical gradient clipped to the glyphs from bright sugary top to deep juicy base, topped with a soft white specular band across the upper third. A thin darker stroke contains the shine and a tight lift shadow gives it body — sweet and glossy, never metallic.",
   "drop-cap":
     "Only the first letter gets the manuscript treatment: an enlarged ::first-letter with a rich diagonal gradient fill, a thin contrast rim, and a soft drop-shadow, while the rest of the word stays plain and quiet. An optional tinted frame sits behind the cap for a fuller illuminated-initial feel.",
+  "radar-sweep":
+    "A dim, still-legible word sits behind a single bright conic beam that spins around its centre using an animated @property angle, lighting each letter as the sweep passes and leaving a decaying afterglow trail. Radar-green by default with amber and blue phosphor variants plus optional faint concentric scope rings — a sonar scanner clipped to your text.",
+  "plasma-energy":
+    "The word as contained ball-lightning: a conic gradient clipped to the glyphs spins on an animated @property angle while a second @property cycles every hue at once, so the swirl never settles into a tidy colour wheel. A white-hot core and a breathing magenta-to-cyan drop-shadow glow make it read as humming, ionised energy.",
   // metallic-holographic
   chrome:
     "A vertical metallic gradient clipped to the text with a soft drop-shadow for that shiny chrome bevel. Tint it warm or cool with a single control.",
@@ -88,6 +92,8 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Nabla's real COLRv1 glyphs — isometric 3D blocks whose extrusion, highlights and shadows are baked into the font's own paint layers — recolored by two custom palettes that endlessly cross-fade between your hues. A genuine color-font depth effect, not a text-shadow fake.",
   "balloon-puff":
     "Each letter is filled with an off-center radial gradient — a bright specular spot near the upper-left curving through a saturated hue down to a deep latex edge — for the unmistakable sheen of an inflated party balloon. A soft two-layer shadow floats well below each glyph for lift, while a gentle per-letter scale breathe, staggered by index, keeps the whole word subtly alive.",
+  "synthwave-grid":
+    "The full 80s album-cover scene: chrome-to-sunset lettering split by a bright horizon line leans back on its own perspective, standing on a neon grid floor that scrolls forever toward a glowing sun. Pure CSS — two repeating-gradient planes under a rotateX perspective, driving into the sunset.",
   // outline-stroke
   outline:
     "Hollow outline text via -webkit-text-stroke, with an optional offset echo shadow. Minimal, editorial and lightweight.",
@@ -103,6 +109,12 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "Hollow letters pushed into 3D by a stacked offset shadow in a deeper shade, so the outline itself reads as a chunky block.",
   "sticker":
     "Die-cut vinyl sticker lettering: a bright solid fill wrapped in a thick contrasting border, like the white edge left behind by a sticker cutter. A hard, zero-blur offset shadow drops it onto the page for a real peel-and-stick feel.",
+  "sketch-outline":
+    "Hollow pen-drawn letterforms pushed through a gentle SVG turbulence displacement so every stroke wavers like a hand-drawn line, doubled by a fainter, differently-wobbled second pass for that gone-over-twice sketchbook feel. Choose graphite, ink-black or ballpoint-blue and flip on faint diagonal hatching inside the glyphs; it reads on the dark stage or the paper-white theme.",
+  "marching-ants":
+    "The selection-marquee classic wrapped around your letters: a hollow text-stroke outline chopped into crisp diagonal dashes by a repeating-gradient mask, whose position animates so the dashes crawl forever like marching ants. Monochrome white-on-dark / black-on-light by default with an optional hue tint and a faint inner fill so the hollow glyph reads intentional.",
+  "flowing-stroke":
+    "Hollow letters whose outline itself comes alive: a multi-hue conic gradient is clipped to the text and rotated forever through a transparent stroke, so a neon current circulates continuously around the glyph edges. Unlike a static gradient stroke, the colour never stops moving — a duo-hue-to-rainbow band flows around the letterforms while a page-matching fill keeps the centres clean.",
   // glitch-distortion
   "glitch-rgb":
     "The classic RGB-split glitch: cyan/magenta pseudo-element copies tear and shift on clip-path keyframes. Cyberpunk in a single class (needs a data-text attribute).",
@@ -121,6 +133,10 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "An old CRT tube snapping on: the word pinches to a blinding horizontal line, flickers, then punches open with a fast vertical overshoot before settling into crisp, phosphor-tinted text. A one-shot power-on entrance — hover to trigger it again.",
   "prism-fringe":
     "Eight hue-stepped text-shadow layers fan out along one axis from red through violet, with the outermost violet layer travelling furthest — just like real dispersion, where shorter wavelengths bend more. A slow ease-in-out breathe slides the whole spectrum out and back in while the glyph fill stays a crisp, neutral face.",
+  "datamosh-smear":
+    "An SVG displacement filter fed by anisotropic noise drags whole horizontal strips of the glyphs sideways like broken video macroblocks, with a hue-skewed tinted ghost surfacing on top. Stepped SMIL timing detonates a violent compression-artifact burst early in every loop, then snaps clean for a long pristine stretch before a late micro-burst hits.",
+  "tv-static":
+    "An SVG feTurbulence noise, hard-thresholded to pure black-and-white speckle and composited only inside the letters, so the word reads like a dead channel wearing its own silhouette. A stepped seed animation crawls the snow frame-to-frame, with an optional rolling sync bar, a faint cool tint and a subtle brightness flicker.",
   // retro-themed
   vaporwave:
     "A pink-to-cyan gradient title with a soft, dreamy glow. The signature 80s/synthwave aesthetic in pure CSS.",
@@ -142,6 +158,12 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "A pair of incandescent bulb strips run above and below the lettering, every other socket popping bright in a hard, discrete jump — the real Broadway chase, built from tiled radial-gradient dots and steps() rather than a smooth slide. The gold-gradient lettering gets its own soft bevel via a drop-shadow stack, and an optional boxed cabinet turns the strips into an enclosed marquee sign.",
   "art-deco":
     "A 1920s Gatsby poster treatment: a flat, graphic gold gradient clipped to the letters, framed by thin flanking rules that taper into diamond terminals, with a faint sunburst medallion glowing behind the whole word. Slide the hue from rose through gold to silver, tune the rule weight, and toggle the sunburst for period geometry with luxurious restraint.",
+  "graffiti-spray":
+    "Street-art spray-paint: a vivid saturated fill wrapped in a thick contrasting keyline, its edges frayed by a subtle SVG turbulence displacement so they read like aerosol on a wall. A blurred second-colour copy mists a soft overspray halo around the letters, with optional wet paint drips running off their bottoms.",
+  "ransom-note":
+    "Each letter is a paper scrap cut from a different magazine — its own typeface, paper color and ink, tacked down at a slight angle with a hard rim and a little drop shadow. Deterministic per-letter buckets mix the fonts and a rotating paper palette (classic newsprint, neon zine, or kidnapper chic) so no two neighbors match.",
+  "torn-paper":
+    "The word ripped in half like a paper scrap: two paper-white copies are clipped to the top and bottom of a single irregular, deterministically-jagged tear seam, then nudged a few pixels apart and rotated in opposite directions. A brighter fiber backing peeks through the rip to catch light while a soft shadow underneath adds depth, with a warm, adjustable paper tint.",
   // shadow-press
   "drop-shadow":
     "A simple soft drop shadow under solid text, with blur and distance controls. The dependable, readable depth cue.",
@@ -178,6 +200,14 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "The word seen through rising hot air — a fast, fine SVG turbulence shimmers the glyph edges like a desert mirage. Finer and quicker than Liquid Warp's underwater wobble.",
   "ink-bleed":
     "Solid ink soaked a little into paper: an feMorphology dilate fattens the glyphs and a turbulence displacement frays the edges into capillary fingers, with a faint soak halo. Letters stay separate. Static.",
+  "flame-edges":
+    "An SVG turbulence filter physically distorts the glyph contours so the letter edges writhe and lick upward like live fire, boiled by SMIL-animated noise with no JavaScript. The letters are filled with a rising fire gradient — deep-red base through orange to white-yellow tips — under a warm drop-shadow glow, and a single knob walks the whole palette from flame-orange to cool blue-flame.",
+  "wave-crest":
+    "Water fills the letters with a real rolling surf: the level holds at mid-height while a shaped sine crest travels sideways as an SVG wave mask, topped by a bright foam line riding the exact same curve. Below the crest a deep aqua gradient fills the glyphs and above it they read as a hollow stroked outline, with a gentle vertical bob making the whole body swell.",
+  "frost-creep":
+    "A warm word slowly freezes over: a pale blue-white crystalline copy creeps across the glyphs behind a soft, turbulence-warped mask front, holds fully frozen with a pulsing cold glow, then thaws back to warm. A slow atmospheric loop built from an SVG displacement filter and an animated gradient mask.",
+  "icicles":
+    "Frozen crystalline lettering with a band of sharp icicles hanging off the baseline: a cold blue-white gradient fills the glyphs behind a frosty stroke, while a double row of downward spikes at varied lengths reads organic rather than a perfect zigzag. A slow specular glint drifts across the ice for a quiet winter shimmer.",
   // fill-texture
   "image-fill":
     "Glyphs filled with a rich multi-gradient that reads like a photographic texture, via background-clip:text. An image-in-text look with zero assets.",
@@ -201,6 +231,20 @@ export const EFFECT_DESCRIPTIONS: Record<string, string> = {
     "The text is punched clean through a vivid sticker panel — a padded, rounded chip whose gradient sweeps, bursts, or spins behind the letters while the glyphs themselves read as bare holes to the page beneath. Three gradient styles and an optional slow drift keep the panel alive without ever touching the cut-out shape of the type.",
   "blend-invert":
     "A self-contained backdrop of drifting two-tone stripes sits behind the glyphs, and mix-blend-mode: difference inverts a near-white duplicate wherever the boundary crosses it. The invert line sweeps continuously through the letterforms as the bands drift — bright over the dark stripe, dark over the light one — walled off inside the scope so the blend never touches the page.",
+  "matrix-rain":
+    "Columns of glowing green code-rain fall through the glyphs at different speeds over a dark green-black base, with brighter, faster head streaks leading the pack and a phosphor-green glow. An honest pure-CSS approximation of the Matrix effect — clipped, vertically-scrolling gradient streaks rather than real characters — that reads on both dark and light backgrounds.",
+  "equalizer-bars":
+    "Each glyph is filled with a bank of neon columns whose heights bounce independently on their own timers, like a music visualizer's bar meter poured into your letters. It's pure CSS rhythm with a dark in-glyph base and a faint neon outline — no audio involved, it just looks like it's dancing to a track.",
+  "marble-fill":
+    "Multi-octave SVG fractal noise is knife-edge thresholded into thin, meandering high-contrast veins with a faint cloudy mottle, composited inside the letters over a stone-base gradient with a polished top sheen and soft contact shadow. Pick white Carrara with gray veining, black Nero with pale veins, or green Verde with calcite threads — a fill that reads as cut, polished marble.",
+  "led-matrix":
+    "The word rendered as lit pixels on a dot-matrix scoreboard: an emissive radial-gradient LED grid clipped to the letters, glowing against a dark display board whose dimmer sockets sit unlit on the same grid. Classic red, amber or green hardware with a backlit bloom and a slow refresh scan.",
+  "wood-grain":
+    "Glyphs cut from planed timber: an anisotropic SVG turbulence stretches the noise into long horizontal fibers, which a component-transfer remaps into repeating dark-and-light ring bands over a warm brown base — tunable from pale pine through walnut to deep mahogany. A soft vertical sheen and a darker sawn-edge rim finish the boards, so the letters read as obviously wood, not marble.",
+  "embroidery-stitch":
+    "The word sewn in thread: a tight diagonal satin-stitch fill of fine dark/light floss ridges with a bright sheen line, ringed by a contrasting running-stitch outline chopped into dashes. An optional woven-linen backing chip turns any letters into a hand-embroidered patch.",
+  "varsity-patch":
+    "A collegiate letterman patch: the glyphs fill with a low-contrast chenille fiber fuzz — two mismatched repeating-radial-gradient fields interfering over a sheened team-color base — wrapped in three nested sewn rings of cream, deep team, and dark edge built from stacked multi-directional hard text-shadows. A soft directional drop-shadow lifts the whole patch off the page like it's appliqued on, with crimson, navy, and forest team defaults.",
   // entrance-kinetic
   "fade-in":
     "The whole word fades and gently rises into place on load. A tasteful, universal entrance animation.",

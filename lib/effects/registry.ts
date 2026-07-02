@@ -20,6 +20,8 @@ import spotlight from "./gradient-fill/spotlight";
 import softDuotone from "./gradient-fill/soft-duotone";
 import candyGloss from "./gradient-fill/candy-gloss";
 import dropCap from "./gradient-fill/drop-cap";
+import radarSweep from "./gradient-fill/radar-sweep";
+import plasmaEnergy from "./gradient-fill/plasma-energy";
 import chrome from "./metallic-holographic/chrome";
 import goldFoil from "./metallic-holographic/gold-foil";
 import holographic from "./metallic-holographic/holographic";
@@ -41,6 +43,7 @@ import floating3d from "./threed-depth/floating-3d";
 import parallaxLayers from "./threed-depth/parallax-layers";
 import nablaIso from "./threed-depth/nabla-iso";
 import balloonPuff from "./threed-depth/balloon-puff";
+import synthwaveGrid from "./threed-depth/synthwave-grid";
 import doubleOutline from "./outline-stroke/double-outline";
 import filledOutline from "./outline-stroke/filled-outline";
 import gradientStroke from "./outline-stroke/gradient-stroke";
@@ -48,6 +51,9 @@ import outline from "./outline-stroke/outline";
 import glowOutline from "./outline-stroke/glow-outline";
 import outline3dExtrude from "./outline-stroke/outline-3d-extrude";
 import sticker from "./outline-stroke/sticker";
+import sketchOutline from "./outline-stroke/sketch-outline";
+import marchingAnts from "./outline-stroke/marching-ants";
+import flowingStroke from "./outline-stroke/flowing-stroke";
 import glitchRgb from "./glitch-distortion/glitch-rgb";
 import scanlineGlitch from "./glitch-distortion/scanline-glitch";
 import shakeGlitch from "./glitch-distortion/shake-glitch";
@@ -57,6 +63,8 @@ import colorSplit from "./glitch-distortion/color-split";
 import terminalPhosphor from "./glitch-distortion/terminal-phosphor";
 import crtCollapse from "./glitch-distortion/crt-collapse";
 import prismFringe from "./glitch-distortion/prism-fringe";
+import datamoshSmear from "./glitch-distortion/datamosh-smear";
+import tvStatic from "./glitch-distortion/tv-static";
 import vaporwave from "./retro-themed/vaporwave";
 import distressStamp from "./retro-themed/distress-stamp";
 import chalkboard from "./retro-themed/chalkboard";
@@ -67,6 +75,9 @@ import safetyStencil from "./retro-themed/safety-stencil";
 import hudTargeting from "./retro-themed/hud-targeting";
 import marqueeBulbs from "./retro-themed/marquee-bulbs";
 import artDeco from "./retro-themed/art-deco";
+import graffitiSpray from "./retro-themed/graffiti-spray";
+import ransomNote from "./retro-themed/ransom-note";
+import tornPaper from "./retro-themed/torn-paper";
 import dropShadow from "./shadow-press/drop-shadow";
 import emboss from "./shadow-press/emboss";
 import hardOffset from "./shadow-press/hard-offset";
@@ -85,6 +96,10 @@ import lightning from "./elemental/lightning";
 import meltDrip from "./elemental/melt-drip";
 import heatHaze from "./elemental/heat-haze";
 import inkBleed from "./elemental/ink-bleed";
+import flameEdges from "./elemental/flame-edges";
+import waveCrest from "./elemental/wave-crest";
+import frostCreep from "./elemental/frost-creep";
+import icicles from "./elemental/icicles";
 import imageFill from "./fill-texture/image-fill";
 import starfield from "./fill-texture/starfield";
 import stripeFill from "./fill-texture/stripe-fill";
@@ -96,6 +111,13 @@ import bokehFill from "./fill-texture/bokeh-fill";
 import wovenMesh from "./fill-texture/woven-mesh";
 import knockoutPanel from "./fill-texture/knockout-panel";
 import blendInvert from "./fill-texture/blend-invert";
+import matrixRain from "./fill-texture/matrix-rain";
+import equalizerBars from "./fill-texture/equalizer-bars";
+import marbleFill from "./fill-texture/marble-fill";
+import ledMatrix from "./fill-texture/led-matrix";
+import woodGrain from "./fill-texture/wood-grain";
+import embroideryStitch from "./fill-texture/embroidery-stitch";
+import varsityPatch from "./fill-texture/varsity-patch";
 import fadeIn from "./entrance-kinetic/fade-in";
 import letterWave from "./entrance-kinetic/letter-wave";
 import staggerReveal from "./entrance-kinetic/stagger-reveal";
@@ -167,6 +189,8 @@ export const EFFECTS: EffectDefinition[] = [
   softDuotone,
   candyGloss,
   dropCap,
+  radarSweep,
+  plasmaEnergy,
   chrome,
   goldFoil,
   holographic,
@@ -188,6 +212,7 @@ export const EFFECTS: EffectDefinition[] = [
   parallaxLayers,
   nablaIso,
   balloonPuff,
+  synthwaveGrid,
   doubleOutline,
   filledOutline,
   gradientStroke,
@@ -195,6 +220,9 @@ export const EFFECTS: EffectDefinition[] = [
   glowOutline,
   outline3dExtrude,
   sticker,
+  sketchOutline,
+  marchingAnts,
+  flowingStroke,
   glitchRgb,
   scanlineGlitch,
   shakeGlitch,
@@ -204,6 +232,8 @@ export const EFFECTS: EffectDefinition[] = [
   terminalPhosphor,
   crtCollapse,
   prismFringe,
+  datamoshSmear,
+  tvStatic,
   vaporwave,
   distressStamp,
   chalkboard,
@@ -214,6 +244,9 @@ export const EFFECTS: EffectDefinition[] = [
   hudTargeting,
   marqueeBulbs,
   artDeco,
+  graffitiSpray,
+  ransomNote,
+  tornPaper,
   dropShadow,
   emboss,
   hardOffset,
@@ -232,6 +265,10 @@ export const EFFECTS: EffectDefinition[] = [
   meltDrip,
   heatHaze,
   inkBleed,
+  flameEdges,
+  waveCrest,
+  frostCreep,
+  icicles,
   imageFill,
   starfield,
   stripeFill,
@@ -243,6 +280,13 @@ export const EFFECTS: EffectDefinition[] = [
   wovenMesh,
   knockoutPanel,
   blendInvert,
+  matrixRain,
+  equalizerBars,
+  marbleFill,
+  ledMatrix,
+  woodGrain,
+  embroideryStitch,
+  varsityPatch,
   fadeIn,
   letterWave,
   staggerReveal,

@@ -55,9 +55,13 @@ const wovenMesh: EffectDefinition = {
     const solid = 11;
     const pitch = solid + gap;
 
-    // Subtle brushed-metal two-tone fill, adapted per theme.
-    const c1 = hsl(h, dark ? 38 : 46, dark ? 74 : 40);
-    const c2 = hsl((h + 6) % 360, dark ? 30 : 38, dark ? 44 : 22);
+    // Bright gleaming grille fill. The mesh holes eat ~40% of every glyph, so
+    // the surviving threads must carry HIGH contrast against the page: near-white
+    // tinted steel on dark, deep vivid threads on light. Lightness is fixed (only
+    // hue is randomized), so no rand() roll can produce a dim fill — even the
+    // perceptually darkest hues stay legible at these lightness floors.
+    const c1 = dark ? hsl(h, 55, 88) : hsl(h, 75, 32);
+    const c2 = dark ? hsl((h + 8) % 360, 75, 62) : hsl((h + 8) % 360, 80, 14);
     const fill = `linear-gradient(155deg, ${c1}, ${c2})`;
 
     const band = (deg: number): string =>
@@ -88,7 +92,7 @@ const wovenMesh: EffectDefinition = {
       `  mask-position: 0px 0px, 0px 0px;\n` +
       `  -webkit-mask-composite: source-in;\n` +
       `  mask-composite: intersect;\n` +
-      `  ${dropGlow(hsl(h, 55, dark ? 65 : 45, 0.3), [4])}` +
+      `  ${dropGlow(hsl(h, 85, dark ? 70 : 38, dark ? 0.5 : 0.35), [2, 9])}` +
       `${animDecl}\n` +
       `}`;
 
