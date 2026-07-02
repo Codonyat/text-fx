@@ -12,6 +12,7 @@
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 34px 34px;
   overflow: hidden;
+  cursor: text;
 }
 
 /* Shared text metrics for the editable node / preview / ghost.
@@ -25,6 +26,11 @@
   caret-color: var(--fg);
   word-break: break-word;
   cursor: text;
+}
+
+.text:focus-visible {
+  outline: 2px dashed var(--muted);
+  outline-offset: 10px;
 }
 
 .caption {

@@ -19,10 +19,22 @@ function hashSeed(id: string): number {
   return h || 1;
 }
 
-export function Gallery({ theme, onPick }: { theme: Theme; onPick: (id: string) => void }) {
+export function Gallery({
+  theme,
+  onPick,
+}: {
+  theme: Theme;
+  onPick: (id: string, seed: number) => void;
+}) {
   const [q, setQ] = useState("");
   const [cat, setCat] = useState("");
   const [motion, setMotion] = useState<Motion>("all");
+
+  const clearFilters = () => {
+    setQ("");
+    setCat("");
+    setMotion("all");
+  };
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
@@ -99,13 +111,21 @@ export function Gallery({ theme, onPick }: { theme: Theme; onPick: (id: string) 
         <span className={styles.count}>{filtered.length} effects</span>
       </div>
 
+      {posters.length === 0 ? (
+        <div className={styles.empty}>
+          <p className={styles.emptyText}>No effects match those filters.</p>
+          <button type="button" className={styles.sel} onClick={clearFilters}>
+            Clear filters
+          </button>
+        </div>
+      ) : (
       <div className={styles.grid}>
         {posters.map(({ m, rendered }) => (
           <button
             key={m.id}
             type="button"
             className={styles.card}
-            onClick={() => onPick(m.id)}
+            onClick={() => onPick(m.id, hashSeed(m.id))}
             title={m.name}
           >
             <div className={styles.poster}>
@@ -129,6 +149,7 @@ export function Gallery({ theme, onPick }: { theme: Theme; onPick: (id: string) 
           </button>
         ))}
       </div>
+      )}
     </div>
   );
 }

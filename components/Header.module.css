@@ -33,6 +33,19 @@
   font-weight: 400;
 }
 
+.tagline {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+@media (max-width: 620px) {
+  .tagline {
+    display: none;
+  }
+}
+
 .actions {
   display: flex;
   align-items: center;
@@ -60,4 +73,10 @@
 
 .btn:hover {
   background: color-mix(in srgb, var(--fg) 8%, transparent);
+}
+
+@media (pointer: coarse) {
+  .btn {
+    min-height: 44px;
+  }
 }

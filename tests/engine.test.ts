@@ -1,10 +1,12 @@
 import { describe, it, expect } from "vitest";
+import LZString from "lz-string";
 import { EFFECTS } from "@/lib/effects/registry";
 import { defaultValues, randomizeValues, render, sanitizeValues } from "@/lib/engine/build";
 import { exportCss, exportHtml, exportJsx, exportStandaloneHtml } from "@/lib/engine/serialize";
 import { encodeSpec, decodeSpec } from "@/lib/engine/share";
 import { makeRng } from "@/lib/engine/rng";
 import { FONTS } from "@/lib/fonts";
+import { SITE_URL } from "@/lib/site";
 import type { EffectSpec } from "@/lib/engine/types";
 
 const SAMPLE = "Glow & <Café> 42";
@@ -94,10 +96,15 @@ describe.each(EFFECTS.map((e) => [e.id, e] as const))("effect %s", (_id, effect)
     expect(r.root.attrs?.["data-text"]).toBe(SAMPLE);
   });
 
-  it("exporters produce non-empty, escaped output", () => {
-    expect(exportCss(effect, values, SAMPLE, "dark")).toContain(".text-effect");
+  it("exporters produce non-empty, escaped, attributed output", () => {
+    const css = exportCss(effect, values, SAMPLE, "dark");
+    expect(css).toContain(".text-effect");
+    // Attribution in every code export (growth requirement).
+    expect(css).toContain(`made with TEXT-FX · ${SITE_URL}`);
+
     const html = exportHtml(effect, values, SAMPLE, "dark");
     expect(html).toContain("<style>");
+    expect(html).toContain(`<!-- Made with TEXT-FX · ${SITE_URL} -->`);
     // user text is HTML-escaped (contiguous for single-element, per-span for perLetter)
     if (effect.caps.includes("perLetter")) {
       expect(html).toContain("&lt;");
@@ -106,9 +113,47 @@ describe.each(EFFECTS.map((e) => [e.id, e] as const))("effect %s", (_id, effect)
     } else {
       expect(html).toContain("&lt;Café&gt;");
     }
-    expect(exportJsx(effect, values, SAMPLE, "dark")).toContain("className=");
+
+    const jsx = exportJsx(effect, values, SAMPLE, "dark");
+    expect(jsx).toContain("className=");
+    expect(jsx).toContain(`{/* Made with TEXT-FX · ${SITE_URL} */}`);
+
     const doc = exportStandaloneHtml(effect, values, SAMPLE, "dark");
     expect(doc.startsWith("<!doctype html>")).toBe(true);
+    expect(doc).toContain("made with TEXT-FX");
+    expect(doc).toContain(SITE_URL);
+
+    // Normalized parity: the exact generated CSS is embedded verbatim; only the
+    // attribution header differs from render()'s styleText.
+    const r = render(effect, values, SAMPLE, { scope: "text-effect", mode: "export", theme: "dark" });
+    expect(css).toContain(r.styleText);
+  });
+});
+
+describe("export attribution, overrides & escaping", () => {
+  const effect = EFFECTS.find((e) => e.id === "neon-glow")!;
+  const values = defaultValues(effect);
+
+  it("cssOverride is used verbatim by all four exporters (replaces generated CSS)", () => {
+    const override = ".text-effect { color: rgb(1, 2, 3); }";
+    for (const out of [
+      exportCss(effect, values, SAMPLE, "dark", override),
+      exportHtml(effect, values, SAMPLE, "dark", override),
+      exportStandaloneHtml(effect, values, SAMPLE, "dark", "#000", override),
+    ]) {
+      expect(out).toContain("rgb(1, 2, 3)");
+      // generated CSS (which always sets font-family via commonCss) is gone
+      expect(out).not.toContain("font-family");
+    }
+    const jsx = exportJsx(effect, values, SAMPLE, "dark", override);
+    expect(jsx).toContain("rgb(1, 2, 3)");
+    expect(jsx).not.toContain("font-family");
+  });
+
+  it("JSX escapes literal braces in user text", () => {
+    const jsx = exportJsx(effect, values, "a{b}c", "dark");
+    expect(jsx).toContain('{"{"}');
+    expect(jsx).toContain('{"}"}');
   });
 });
 
@@ -127,6 +172,20 @@ describe("share codec", () => {
   it("rejects junk", () => {
     expect(decodeSpec("not-valid-lz")).toBeNull();
     expect(decodeSpec("")).toBeNull();
+  });
+  it("rejects an oversized-decompression payload", () => {
+    const huge = JSON.stringify({
+      v: 1,
+      effectId: "neon-glow",
+      seed: 1,
+      values: {},
+      text: "x".repeat(200_000),
+    });
+    const packed = LZString.compressToEncodedURIComponent(huge);
+    // Compresses well under the compressed-length cap, so only the
+    // decompressed-size guard can reject it.
+    expect(packed.length).toBeLessThan(4000);
+    expect(decodeSpec(packed)).toBeNull();
   });
   it("sanitizes out-of-range values", () => {
     const eff = EFFECTS.find((e) => e.id === "neon-glow")!;

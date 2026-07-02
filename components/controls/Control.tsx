@@ -49,6 +49,7 @@ export function Control({
           type="button"
           className={styles.toggle}
           aria-pressed={Boolean(value)}
+          aria-label={`${c.label}: ${valueLabel(c, value)}`}
           onClick={() => onChange(!value)}
         >
           {valueLabel(c, value)}

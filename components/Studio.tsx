@@ -6,6 +6,8 @@ import { EFFECTS, getEffect } from "@/lib/effects/registry";
 import { randomizeValues, render, sanitizeValues, textMetrics } from "@/lib/engine/build";
 import { makeRng, randomSeed } from "@/lib/engine/rng";
 import { decodeSpec, encodeSpec } from "@/lib/engine/share";
+import { copyText } from "@/lib/export/download";
+import { track } from "@/lib/analytics";
 import {
   loadFavorites,
   newFavId,
@@ -26,10 +28,17 @@ import grid from "./Studio.module.css";
 const DEFAULT_EFFECT = EFFECTS[0];
 const DEFAULT_TEXT = "type here";
 
-function flag(setter: (v: boolean) => void, ref: { current: number | undefined }, ms: number) {
-  setter(true);
+type FlagState = "" | "ok" | "fail";
+
+function flag(
+  setter: (v: FlagState) => void,
+  ref: { current: number | undefined },
+  state: FlagState,
+  ms: number,
+) {
+  setter(state);
   if (ref.current) window.clearTimeout(ref.current);
-  ref.current = window.setTimeout(() => setter(false), ms);
+  ref.current = window.setTimeout(() => setter(""), ms);
 }
 
 export function Studio() {
@@ -46,9 +55,9 @@ export function Studio() {
   const [editedCss, setEditedCss] = useState<string | null>(null);
 
   const [favorites, setFavorites] = useState<Favorite[]>([]);
-  const [copied, setCopied] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [shared, setShared] = useState(false);
+  const [copied, setCopied] = useState<FlagState>("");
+  const [saved, setSaved] = useState<FlagState>("");
+  const [shared, setShared] = useState<FlagState>("");
   const [reduceMotion, setReduceMotion] = useState(false);
 
   const copyT = useRef<number | undefined>(undefined);
@@ -132,6 +141,7 @@ export function Studio() {
         setValues(sanitizeValues(eff, spec.values));
         setSeed(spec.seed);
         setText(spec.text || DEFAULT_TEXT);
+        track("open_share_link");
         return () => mq.removeEventListener("change", onMq);
       }
     }
@@ -147,6 +157,14 @@ export function Studio() {
     } catch {}
   }, [theme]);
 
+  // Drop a stale #s= share hash the moment state diverges from it, so a reload
+  // doesn't silently revert to the shared spec. (Share / Post write it back.)
+  const stripHash = useCallback(() => {
+    if (window.location.hash.startsWith("#s=")) {
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+  }, []);
+
   // ---- actions ----
   const doShuffle = useCallback(() => {
     const pool = lockCategory ? EFFECTS.filter((e) => e.category === lockCategory) : EFFECTS;
@@ -157,23 +175,37 @@ export function Studio() {
     setSeed(s);
     setValues(randomizeValues(eff, makeRng(s)));
     setEditedCss(null);
-  }, [lockCategory]);
+    stripHash();
+    track("shuffle", { effect: eff.id });
+  }, [lockCategory, stripHash]);
 
-  const onControlChange = useCallback((id: string, value: ControlValue) => {
-    setValues((prev) => ({ ...prev, [id]: value }));
-    setEditedCss(null);
-  }, []);
+  const onControlChange = useCallback(
+    (id: string, value: ControlValue) => {
+      setValues((prev) => ({ ...prev, [id]: value }));
+      setEditedCss(null);
+      stripHash();
+    },
+    [stripHash],
+  );
+
+  const onTextChange = useCallback(
+    (value: string) => {
+      setText(value);
+      setEditedCss(null);
+      stripHash();
+    },
+    [stripHash],
+  );
 
   const onToggleTheme = useCallback(() => {
     setTheme((t) => (t === "dark" ? "light" : "dark"));
     setEditedCss(null);
   }, []);
 
-  const onCopy = useCallback(() => {
-    try {
-      navigator.clipboard?.writeText(cssDisplay);
-    } catch {}
-    flag(setCopied, copyT, 1400);
+  const onCopy = useCallback(async () => {
+    const ok = await copyText(cssDisplay);
+    if (ok) track("export", { type: "css_copy" });
+    flag(setCopied, copyT, ok ? "ok" : "fail", 1400);
   }, [cssDisplay]);
 
   const onSave = useCallback(() => {
@@ -186,33 +218,45 @@ export function Studio() {
       values,
       theme,
     };
-    setFavorites((prev) => {
-      const next = [fav, ...prev];
-      persistFavorites(next);
-      return next;
-    });
-    flag(setSaved, saveT, 1200);
-  }, [effect, text, seed, values, theme]);
+    const next = [fav, ...favorites];
+    const ok = persistFavorites(next);
+    setFavorites(next);
+    flag(setSaved, saveT, ok ? "ok" : "fail", 1200);
+    track("save");
+  }, [effect, text, seed, values, theme, favorites]);
 
-  const onShare = useCallback(() => {
+  const shareUrl = useCallback(() => {
     const spec: EffectSpec = { v: 1, effectId: effect.id, seed, values, text };
     const hash = "#s=" + encodeSpec(spec);
-    try {
-      window.history.replaceState(null, "", hash);
-      const url = window.location.origin + window.location.pathname + hash;
-      navigator.clipboard?.writeText(url);
-    } catch {}
-    flag(setShared, shareT, 1400);
+    window.history.replaceState(null, "", hash);
+    return window.location.origin + window.location.pathname + hash;
   }, [effect, seed, values, text]);
 
-  const onLoadFav = useCallback((fav: Favorite) => {
-    setEffectId(fav.effectId);
-    setValues(fav.values);
-    setSeed(fav.seed);
-    setText(fav.word);
-    setEditedCss(null);
-    setView("studio");
-  }, []);
+  const onShare = useCallback(async () => {
+    let url = "";
+    try {
+      url = shareUrl();
+    } catch {}
+    const ok = url ? await copyText(url) : false;
+    flag(setShared, shareT, ok ? "ok" : "fail", 1400);
+    track("share");
+  }, [shareUrl]);
+
+  const onLoadFav = useCallback(
+    (fav: Favorite) => {
+      const eff = getEffect(fav.effectId);
+      if (!eff) return;
+      setEffectId(eff.id);
+      setValues(sanitizeValues(eff, fav.values));
+      setSeed(fav.seed);
+      setText(fav.word);
+      setTheme(fav.theme);
+      setEditedCss(null);
+      setView("studio");
+      stripHash();
+    },
+    [stripHash],
+  );
 
   const onRemoveFav = useCallback((id: string) => {
     setFavorites((prev) => {
@@ -222,16 +266,19 @@ export function Studio() {
     });
   }, []);
 
-  const onPickFromGallery = useCallback((id: string) => {
-    const eff = getEffect(id);
-    if (!eff) return;
-    const s = randomSeed();
-    setEffectId(eff.id);
-    setSeed(s);
-    setValues(randomizeValues(eff, makeRng(s)));
-    setEditedCss(null);
-    setView("studio");
-  }, []);
+  const onPickFromGallery = useCallback(
+    (id: string, s: number) => {
+      const eff = getEffect(id);
+      if (!eff) return;
+      setEffectId(eff.id);
+      setSeed(s);
+      setValues(randomizeValues(eff, makeRng(s)));
+      setEditedCss(null);
+      setView("studio");
+      stripHash();
+    },
+    [stripHash],
+  );
 
   return (
     <div className="app" data-theme={theme}>
@@ -256,7 +303,7 @@ export function Studio() {
             reduceMotion={reduceMotion}
             selectAllOnFocus={text === DEFAULT_TEXT}
             ghostStyle={ghostStyle}
-            onTextChange={setText}
+            onTextChange={onTextChange}
           />
           <ActionBar
             effectName={effect.name}
@@ -273,10 +320,18 @@ export function Studio() {
             <CssPanel
               css={cssDisplay}
               copied={copied}
+              edited={editedCss !== null}
               onCopy={onCopy}
               onEdit={setEditedCss}
+              onRevert={() => setEditedCss(null)}
               exportSlot={
-                <ExportMenu effect={effect} values={values} text={text} theme={theme} />
+                <ExportMenu
+                  effect={effect}
+                  values={values}
+                  text={text}
+                  theme={theme}
+                  cssOverride={editedCss}
+                />
               }
             />
           </div>

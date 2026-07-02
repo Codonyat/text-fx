@@ -3,6 +3,7 @@ import { render } from "./build";
 import { renderHtml, renderJsx, escapeHtml } from "./markup";
 import { indent } from "./helpers";
 import { googleHrefForFamilies } from "@/lib/fonts";
+import { SITE_URL } from "@/lib/site";
 
 const EXPORT_SCOPE = "text-effect";
 
@@ -37,20 +38,19 @@ export function exportCss(
   values: Record<string, ControlValue>,
   text: string,
   theme: Theme = "dark",
-  asFile = false,
+  cssOverride?: string | null,
 ): string {
-  const r = renderExport(effect, values, text, theme);
+  const css = cssOverride ?? renderExport(effect, values, text, theme).styleText;
   const fonts = fontFamiliesUsed(effect, values).join(", ");
   const header = [
-    `/* ${effect.name} — generated with TEXT-FX`,
+    `/* ${effect.name} — made with TEXT-FX · ${SITE_URL}`,
     ` * HTML: ${markupNote(effect.caps)}.`,
     fonts ? ` * Font: ${fonts} (load from Google Fonts).` : null,
-    asFile ? ` * https://text-fx.app` : null,
     ` */`,
   ]
     .filter(Boolean)
     .join("\n");
-  return `${header}\n\n${r.styleText}\n`;
+  return `${header}\n\n${css}\n`;
 }
 
 export function exportHtml(
@@ -58,9 +58,14 @@ export function exportHtml(
   values: Record<string, ControlValue>,
   text: string,
   theme: Theme = "dark",
+  cssOverride?: string | null,
 ): string {
   const r = renderExport(effect, values, text, theme);
-  const parts: string[] = [`<style>\n${r.styleText}\n</style>`];
+  const css = cssOverride ?? r.styleText;
+  const parts: string[] = [
+    `<!-- Made with TEXT-FX · ${SITE_URL} -->`,
+    `<style>\n${css}\n</style>`,
+  ];
   if (r.defs) {
     parts.push(
       `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>\n${r.defs}\n</defs></svg>`,
@@ -76,9 +81,13 @@ export function exportJsx(
   values: Record<string, ControlValue>,
   text: string,
   theme: Theme = "dark",
+  cssOverride?: string | null,
 ): string {
   const r = renderExport(effect, values, text, theme);
-  const css = r.styleText.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
+  const css = (cssOverride ?? r.styleText)
+    .replace(/\\/g, "\\\\")
+    .replace(/`/g, "\\`")
+    .replace(/\$\{/g, "\\${");
   const markup = renderJsx(r.root, 3);
   const defs = r.defs
     ? `\n      <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden dangerouslySetInnerHTML={{ __html: \`<defs>${r.defs.replace(/`/g, "\\`")}</defs>\` }} />`
@@ -92,6 +101,7 @@ export function exportJsx(
   return `export function TextEffect() {
   return (
     <>
+      {/* Made with TEXT-FX · ${SITE_URL} */}
       <style dangerouslySetInnerHTML={{ __html: \`
 ${css}
 \` }} />${defs}
@@ -108,8 +118,10 @@ export function exportStandaloneHtml(
   text: string,
   theme: Theme = "dark",
   bg = "#0a0a0a",
+  cssOverride?: string | null,
 ): string {
   const r = renderExport(effect, values, text, theme);
+  const css = cssOverride ?? r.styleText;
   const href = googleHrefForFamilies(fontFamiliesUsed(effect, values));
   const fontLinks = href
     ? `  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n  <link href="${href}" rel="stylesheet">\n`
@@ -121,6 +133,7 @@ export function exportStandaloneHtml(
     ? `  <script>\n${indent(r.runtimeSnippet, "    ")}\n  </script>\n`
     : "";
   return `<!doctype html>
+<!-- Made with TEXT-FX · ${SITE_URL} -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -130,13 +143,16 @@ ${fontLinks}  <style>
     html, body { height: 100%; margin: 0; }
     body { display: grid; place-items: center; background: ${bg}; }
     .stage { font-size: clamp(40px, 16vw, 200px); line-height: 1.1; text-align: center; padding: 8vmin; max-width: 92vw; word-break: break-word; }
-${indent(r.styleText, "    ")}
+    .textfx-credit { position: fixed; right: 10px; bottom: 8px; z-index: 9; font: 11px/1 system-ui, -apple-system, sans-serif; color: rgba(128, 128, 128, 0.85); text-decoration: none; }
+    .textfx-credit:hover { text-decoration: underline; }
+${indent(css, "    ")}
   </style>
 </head>
 <body>
 ${defs}  <div class="stage">
 ${renderHtml(r.root, 2)}
   </div>
+  <a class="textfx-credit" href="${SITE_URL}">made with TEXT-FX</a>
 ${script}</body>
 </html>
 `;

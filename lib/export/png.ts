@@ -15,13 +15,18 @@ export async function nodeToPng(
       // ignore
     }
   }
-  return toPng(node, {
-    pixelRatio: opts.pixelRatio ?? 2,
-    backgroundColor: opts.transparent ? undefined : opts.bg,
-    cacheBust: true,
-    // Give the capture some breathing room around the glyph shadows/glows.
-    style: { padding: "12px" },
-  });
+  try {
+    return await toPng(node, {
+      pixelRatio: opts.pixelRatio ?? 2,
+      backgroundColor: opts.transparent ? undefined : opts.bg,
+      cacheBust: true,
+      // Give the capture some breathing room around the glyph shadows/glows.
+      style: { padding: "12px" },
+    });
+  } catch (err) {
+    console.warn("nodeToPng failed", err);
+    throw err;
+  }
 }
 
 /** Read the current stage background color from the live app shell. */

@@ -3,6 +3,7 @@ import type { EffectSpec } from "./types";
 
 const MAX_HASH = 4000;
 const MAX_TEXT = 240;
+const MAX_DECOMPRESSED = 100_000;
 
 /** Compress a spec to a URL-hash-safe string. Encodes the spec, never the CSS. */
 export function encodeSpec(spec: EffectSpec): string {
@@ -19,7 +20,7 @@ export function decodeSpec(s: string | null | undefined): EffectSpec | null {
   if (!s || s.length > MAX_HASH) return null;
   try {
     const json = LZString.decompressFromEncodedURIComponent(s);
-    if (!json) return null;
+    if (!json || json.length > MAX_DECOMPRESSED) return null;
     const obj = JSON.parse(json) as Partial<EffectSpec>;
     if (!obj || obj.v !== 1 || typeof obj.effectId !== "string") return null;
     return {

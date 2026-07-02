@@ -15,8 +15,8 @@ export function ActionBar({
 }: {
   effectName: string;
   lockCategory: string;
-  saved: boolean;
-  shared: boolean;
+  saved: "" | "ok" | "fail";
+  shared: "" | "ok" | "fail";
   onShuffle: () => void;
   onSetLock: (id: string) => void;
   onSave: () => void;
@@ -31,7 +31,11 @@ export function ActionBar({
         SHUFFLE
       </button>
 
+      <label htmlFor="lock-category" className={styles.lockLabel}>
+        Lock
+      </label>
       <select
+        id="lock-category"
         className={styles.lock}
         value={lockCategory}
         onChange={(e) => onSetLock(e.target.value)}
@@ -47,11 +51,15 @@ export function ActionBar({
       </select>
 
       <button type="button" className={styles.secondary} onClick={onSave}>
-        {saved ? "✓ SAVED" : "+ SAVE"}
+        <span aria-live="polite">
+          {saved === "ok" ? "✓ SAVED" : saved === "fail" ? "SAVE FAILED" : "+ SAVE"}
+        </span>
       </button>
 
       <button type="button" className={styles.secondary} onClick={onShare}>
-        {shared ? "✓ LINK" : "↗ SHARE"}
+        <span aria-live="polite">
+          {shared === "ok" ? "✓ LINK" : shared === "fail" ? "LINK FAILED" : "↗ SHARE"}
+        </span>
       </button>
 
       <div className={styles.badge}>

@@ -6,24 +6,38 @@ import styles from "./CssPanel.module.css";
 export function CssPanel({
   css,
   copied,
+  edited,
   onCopy,
   onEdit,
+  onRevert,
   exportSlot,
 }: {
   css: string;
-  copied: boolean;
+  copied: "" | "ok" | "fail";
+  edited: boolean;
   onCopy: () => void;
   onEdit: (value: string) => void;
+  onRevert: () => void;
   exportSlot?: ReactNode;
 }) {
   return (
     <section className={styles.panel}>
       <div className={styles.header}>
-        <span className={styles.title}>editable css</span>
+        <span className={styles.title}>
+          editable css
+          {edited ? <span className={styles.edited}>EDITED</span> : null}
+        </span>
         <div className={styles.tools}>
+          {edited ? (
+            <button type="button" className={styles.revert} onClick={onRevert}>
+              REVERT
+            </button>
+          ) : null}
           {exportSlot}
           <button type="button" className={styles.copy} onClick={onCopy}>
-            {copied ? "COPIED" : "COPY"}
+            <span aria-live="polite">
+              {copied === "ok" ? "COPIED" : copied === "fail" ? "COPY FAILED" : "COPY"}
+            </span>
           </button>
         </div>
       </div>

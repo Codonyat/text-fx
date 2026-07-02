@@ -11,7 +11,7 @@ const cursorFlashlight: EffectDefinition = {
   id: "cursor-flashlight",
   name: "Cursor Flashlight",
   category: "interactive-advanced",
-  tags: ["interactive", "pointer", "flashlight", "spotlight", "reveal", "animated"],
+  tags: ["interactive", "pointer", "flashlight", "spotlight", "reveal"],
   caps: ["dataText", "pointer"],
   pngSupport: "partial",
   supports: "Follows the cursor via a pointer-tracked radial mask — static preview shows the centred disc.",

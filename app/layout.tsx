@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GOOGLE_FONTS_HREF } from "@/lib/fonts";
 import { SITE_URL, SITE_NAME, TAGLINE, DESCRIPTION } from "@/lib/site";
 import { serializeJsonLd, graph, webApplicationLd, webSiteLd } from "@/lib/jsonld";
@@ -71,7 +73,7 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="stylesheet" href={GOOGLE_FONTS_HREF} />
+        <link rel="stylesheet" href={GOOGLE_FONTS_HREF} crossOrigin="anonymous" />
       </head>
       <body>
         <script
@@ -81,6 +83,13 @@ export default function RootLayout({
           }}
         />
         {children}
+        {/* The /_vercel script routes only exist on Vercel-hosted deploys. */}
+        {process.env.VERCEL ? (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        ) : null}
       </body>
     </html>
   );

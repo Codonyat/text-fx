@@ -65,7 +65,7 @@ textarea {
   --label-ls: 2px;
   --code-bg: #000000;
   --code-fg: #fafafa;
-  --code-comment: #666666;
+  --code-comment: #8c8c8c;
   --grid: rgba(255, 255, 255, 0.1);
 }
 
@@ -74,7 +74,7 @@ textarea {
   --fg: #0a0a0a;
   --panel: #fafaf7;
   --stage: #fafaf7;
-  --muted: #888888;
+  --muted: #6b6b6b;
   --accent: #0a0a0a;
   --accent-fg: #fafaf7;
   --bd: 2px solid #0a0a0a;
@@ -91,7 +91,10 @@ textarea {
   --grid: rgba(0, 0, 0, 0.05);
 }
 
-/* Respect reduced-motion globally: tame (not kill) effect animations. */
+/* Respect reduced-motion globally: tame (not kill) effect animations.
+   The .fx-reduce-motion hook covers the studio Stage; the scope-prefix rule
+   below covers every rendered effect (fx-live, fx-gal-*, fx-fav-*, SSR
+   fx-card-* / fx-effect-*) in the gallery, thumbnails, and SEO pages. */
 @media (prefers-reduced-motion: reduce) {
   .fx-reduce-motion *,
   .fx-reduce-motion *::before,
@@ -100,4 +103,21 @@ textarea {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+
+  :is([class^="fx-"], [class*=" fx-"]),
+  :is([class^="fx-"], [class*=" fx-"])::before,
+  :is([class^="fx-"], [class*=" fx-"])::after,
+  :is([class^="fx-"], [class*=" fx-"]) *,
+  :is([class^="fx-"], [class*=" fx-"]) *::before,
+  :is([class^="fx-"], [class*=" fx-"]) *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Focus-visible baseline for interactive controls in both themes. */
+.app :is(button, select, input, textarea, a, [tabindex]):focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
 }

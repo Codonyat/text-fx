@@ -19,11 +19,30 @@ export function downloadDataUrl(filename: string, dataUrl: string): void {
   a.remove();
 }
 
-export async function copyText(text: string): Promise<void> {
+export async function copyText(text: string): Promise<boolean> {
   try {
-    await navigator.clipboard?.writeText(text);
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
   } catch {
-    // clipboard may be unavailable (insecure context)
+    // clipboard may be unavailable (insecure context) — fall back below
+  }
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.top = "-9999px";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    const ok = document.execCommand("copy");
+    ta.remove();
+    return ok;
+  } catch {
+    return false;
   }
 }
 

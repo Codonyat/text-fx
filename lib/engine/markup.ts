@@ -49,6 +49,10 @@ export function escapeHtml(s: string): string {
 export function escapeAttr(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 }
+// JSX treats bare { and } as expression delimiters — emit them as string literals.
+function escapeJsxText(s: string): string {
+  return escapeHtml(s).replace(/\{/g, '{"{"}').replace(/\}/g, '{"}"}');
+}
 
 function varsToInlineStyle(vars?: Record<string, string | number>): string {
   if (!vars) return "";
@@ -91,7 +95,7 @@ function attrToJsx(k: string): string {
 }
 
 export function renderJsx(node: MarkupChild, indent = 0): string {
-  if (node.kind === "text") return escapeHtml(node.value);
+  if (node.kind === "text") return escapeJsxText(node.value);
   const pad = "  ".repeat(indent);
   const attrs: string[] = [];
   if (node.attrs) {

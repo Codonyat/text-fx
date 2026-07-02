@@ -19,6 +19,9 @@
 }
 
 .title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: "Space Mono", monospace;
   font-size: 11px;
   letter-spacing: 1px;
@@ -26,10 +29,36 @@
   color: var(--code-comment);
 }
 
+.edited {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--accent-fg);
+  background: var(--accent);
+  border-radius: var(--btn-radius);
+  padding: 2px 6px;
+}
+
 .tools {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.revert {
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--fg) 35%, transparent);
+  border-radius: var(--btn-radius);
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.revert:hover {
+  background: color-mix(in srgb, var(--fg) 10%, transparent);
 }
 
 .copy {
@@ -62,4 +91,16 @@
   white-space: pre;
   tab-size: 2;
   overflow: auto;
+}
+
+.panel .code:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--code-fg);
+}
+
+@media (pointer: coarse) {
+  .copy,
+  .revert {
+    min-height: 44px;
+  }
 }

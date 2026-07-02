@@ -4,7 +4,9 @@ import {
   createElement,
   useEffect,
   useRef,
+  type ClipboardEvent as ReactClipboardEvent,
   type CSSProperties,
+  type KeyboardEvent as ReactKeyboardEvent,
   type MouseEvent as ReactMouseEvent,
   type ReactNode,
 } from "react";
@@ -75,7 +77,9 @@ export function Stage({
     if (!pointer || perLetter) return;
     const el = editRef.current;
     if (!el) return;
-    const onMove = (e: PointerEvent) => {
+    // pointerdown as well as pointermove so a touch tap (which never fires move)
+    // still positions the effect at the finger.
+    const setVars = (e: PointerEvent) => {
       const r = el.getBoundingClientRect();
       if (!r.width || !r.height) return;
       el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
@@ -87,11 +91,17 @@ export function Stage({
       el.style.removeProperty("--mx");
       el.style.removeProperty("--my");
     };
-    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointermove", setVars);
+    el.addEventListener("pointerdown", setVars);
     el.addEventListener("pointerleave", onLeave);
     return () => {
-      el.removeEventListener("pointermove", onMove);
+      el.removeEventListener("pointermove", setVars);
+      el.removeEventListener("pointerdown", setVars);
       el.removeEventListener("pointerleave", onLeave);
+      // The single-element branch keeps a constant key across pointer→pointer
+      // switches, so clear stale coords or the next effect inherits them.
+      el.style.removeProperty("--mx");
+      el.style.removeProperty("--my");
     };
   }, [pointer, perLetter]);
 
@@ -103,9 +113,25 @@ export function Stage({
     onTextChange(t);
   };
 
+  // The text model is a single line; contenteditable's Enter would insert a block
+  // element, after which textContent silently merges the two lines (state/DOM desync).
+  const handleKeyDown = (e: ReactKeyboardEvent) => {
+    if (e.key === "Enter") e.preventDefault();
+  };
+
+  // Strip formatting/markup on paste: take plain text only, collapse whitespace runs
+  // to single spaces (the model is one line), and insert at the caret via execCommand
+  // so undo and the onInput flow keep working.
+  const handlePaste = (e: ReactClipboardEvent) => {
+    e.preventDefault();
+    const txt = e.clipboardData.getData("text/plain").replace(/\s+/g, " ");
+    document.execCommand("insertText", false, txt);
+  };
+
   // While the text is still the untouched starter, focusing the field selects all
-  // of it so the first keystroke replaces it (instead of leaving the default behind).
-  // Deferred a tick so a mouse click's caret placement doesn't collapse the selection.
+  // of it so the first keystroke replaces it. Mouse focus is handled synchronously in
+  // handleStageMouseDown; this covers programmatic/keyboard (Tab) focus.
+  // Deferred a tick so focus's default caret placement doesn't collapse the selection.
   // Re-checked inside: bail if the field blurred or if anything was typed in the meantime
   // (the timer must never re-select mid-typing and eat the just-typed character).
   const handleFocus = () => {
@@ -118,13 +144,22 @@ export function Stage({
     }, 0);
   };
 
-  // Clicking the empty stage (not the glyphs) still focuses the text and drops the caret
-  // at the nearest edge — left half → before the first character, right half → after the
-  // last — so you don't have to land exactly on a letter to start typing.
   const handleStageMouseDown = (e: ReactMouseEvent) => {
     if (e.button !== 0) return; // primary button only; leave right-click/context menu alone
     const el = editRef.current;
-    if (!el || el.contains(e.target as Node)) return; // clicked on the text → let the browser place the caret
+    if (!el) return;
+    // Pristine starter text: any click (on the glyphs or the empty stage) selects it
+    // all so the first keystroke replaces it. preventDefault stops native mouseup caret
+    // placement from collapsing the selection.
+    if (selectAllOnFocus) {
+      e.preventDefault();
+      el.focus();
+      selectAllContents(el);
+      return;
+    }
+    if (el.contains(e.target as Node)) return; // clicked on the text → let the browser place the caret
+    // Clicking the empty stage (not the glyphs) still focuses the text and drops the caret
+    // at the nearest edge — left half → before the first character, right half → after the last.
     e.preventDefault(); // we manage focus + caret ourselves (keeps the selection)
     el.focus();
     const rect = el.getBoundingClientRect();
@@ -152,6 +187,8 @@ export function Stage({
             suppressContentEditableWarning
             spellCheck={false}
             onInput={handleInput}
+            onKeyDown={handleKeyDown}
+            onPaste={handlePaste}
             onFocus={handleFocus}
             role="textbox"
             aria-label="Effect text"
@@ -167,6 +204,8 @@ export function Stage({
           suppressContentEditableWarning
           spellCheck={false}
           onInput={handleInput}
+          onKeyDown={handleKeyDown}
+          onPaste={handlePaste}
           onFocus={handleFocus}
           role="textbox"
           aria-label="Effect text"
@@ -183,7 +222,7 @@ export function Stage({
         />
       ) : null}
 
-      <span className={styles.caption}>click to edit</span>
+      <span className={styles.caption}>click or tap to edit</span>
     </div>
   );
 }

@@ -34,6 +34,15 @@
   line-height: 1;
 }
 
+.lockLabel {
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
 .lock {
   font-size: 12px;
   font-weight: 700;
@@ -88,4 +97,11 @@
 .badgeName {
   font-size: 16px;
   font-weight: 700;
+}
+
+@media (pointer: coarse) {
+  .secondary,
+  .lock {
+    min-height: 44px;
+  }
 }

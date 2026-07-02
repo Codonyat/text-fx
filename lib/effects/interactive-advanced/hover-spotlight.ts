@@ -9,7 +9,7 @@ const hoverSpotlight: EffectDefinition = {
   id: "hover-spotlight",
   name: "Hover Spotlight",
   category: "interactive-advanced",
-  tags: ["interactive", "hover", "spotlight", "reveal", "mask", "animated"],
+  tags: ["interactive", "hover", "spotlight", "reveal", "mask"],
   caps: ["dataText"],
   pngSupport: "partial",
   supports: "Reveals on :hover via a radial-gradient mask — static preview is dim.",

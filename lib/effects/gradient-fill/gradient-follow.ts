@@ -11,7 +11,7 @@ const gradientFollow: EffectDefinition = {
   id: "gradient-follow",
   name: "Gradient Follow",
   category: "gradient-fill",
-  tags: ["gradient", "pointer", "interactive", "radial", "follow", "animated"],
+  tags: ["gradient", "pointer", "interactive", "radial", "follow"],
   caps: ["pointer"],
   pngSupport: "partial",
   supports: "background-clip:text radial gradient centred on the pointer (--mx/--my).",
